@@ -5,4 +5,5 @@ export type Options = {
     textContent?: string;
     classes: string[];
     callback?: void;
+    id?: string;
 };

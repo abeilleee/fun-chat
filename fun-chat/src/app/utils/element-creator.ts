@@ -17,6 +17,7 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
         this.setTextContent(options, element);
         this.setParentElement(options, element);
         this.addInnerElement(options, element);
+        this.setId(options, element);
         return element;
     }
 
@@ -41,6 +42,12 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
     private setParentElement(options: Options, element: T | HTMLElement): void {
         if (options.parent) {
             options.parent.append(element);
+        }
+    }
+
+    private setId(options: Options, element: T | HTMLElement): void {
+        if (options.id) {
+            element.id = String(options.id);
         }
     }
 }

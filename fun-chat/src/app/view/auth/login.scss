@@ -1,0 +1,18 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    width: 200px;
+    height: 400px;
+    border: 1px solid black;
+    margin: 0 auto;
+}
+
+.label-login {
+    text-align: left;
+}
+
+.button-login {
+    width: 100%;
+}
