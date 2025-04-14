@@ -5,6 +5,7 @@ export class App {
 
     constructor() {
         this.header = null;
+        this.createView();
     }
 
     private createView(): void {

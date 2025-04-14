@@ -1,2 +1,4 @@
 @use './styles/base/reset';
-@use './app/view/container/container.scss';
+@use './app/view/container/container';
+@use './app/view/header/header';
+@use './app/components/buttons/buttons';
