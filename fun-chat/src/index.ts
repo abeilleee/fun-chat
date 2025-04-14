@@ -1,1 +1,2 @@
-console.log('test');
+import './styles.scss';
+require.context('./assets/images', true);
