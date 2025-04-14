@@ -41,6 +41,9 @@ export default defineConfig([
                 tsconfigRootDir: import.meta.dirname,
             },
         },
+        linterOptions: {
+            noInlineConfig: true,
+        },
         rules: {
             'no-plusplus': 'off',
             'no-console': 'off',
