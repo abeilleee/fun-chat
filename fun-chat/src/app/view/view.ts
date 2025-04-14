@@ -1,8 +1,8 @@
-import { Options } from '../utils/types';
+import type { Options } from '../utils/types';
 import { ElementCreator } from '../utils/element-creator';
 
 export class View {
-    element: ElementCreator;
+    private element: ElementCreator;
 
     constructor(options: Options) {
         this.element = this.createView(options);
@@ -12,12 +12,12 @@ export class View {
         return this.element.getElement();
     }
 
+    public addInnerElements(elements: HTMLElement[]): void {
+        elements.forEach((child: HTMLElement) => this.element.getElement().append(child));
+    }
+
     private createView(options: Options): ElementCreator {
         const element = new ElementCreator(options);
         return element;
-    }
-
-    public addInnerElements(elements: HTMLElement[]): void {
-        elements.forEach((child: HTMLElement) => this.element.getElement().append(child));
     }
 }

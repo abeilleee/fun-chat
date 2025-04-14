@@ -1,4 +1,4 @@
-import { Options } from '../../utils/types';
+import type { Options } from '../../utils/types';
 import { View } from '../view';
 
 export class HeaderView extends View {
