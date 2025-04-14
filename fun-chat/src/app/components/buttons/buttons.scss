@@ -9,3 +9,8 @@
         background-color: rgb(255, 255, 255);
     }
 }
+
+.disabled {
+    color: var(--btn-disabled-color);
+    background-color: var(--bg-btn-disabled-color);
+}
