@@ -6,5 +6,7 @@
 @use './app/view/auth/login.scss';
 @use './app/view/chat/chat-container.ts/contacts/contacts.scss';
 @use './app/view/about/about.scss';
+@use './app/view/chat/chat-container.ts/chat-container.scss';
 @use './app/view/not-found/not-found.scss';
 @use './app/view/chat/footer/footer.scss';
+@use './styles/utils/variables.scss';
