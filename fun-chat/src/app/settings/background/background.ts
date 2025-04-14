@@ -13,7 +13,7 @@ export class Background {
         }).getElement();
 
         if (this.bgImg instanceof HTMLImageElement) {
-            this.bgImg.src = './assets/images/bg.webp';
+            this.bgImg.src = './assets/images/bg.jpg';
         }
     }
 

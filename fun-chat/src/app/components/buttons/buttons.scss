@@ -1,6 +1,11 @@
 .button {
     width: 5rem;
     padding: 8px;
-    border: 1px solid black;
     border-radius: 4px;
+    background-color: var(--bg-btn-color);
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: rgb(255, 255, 255);
+    }
 }
