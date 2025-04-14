@@ -20,6 +20,14 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
         return element;
     }
 
+    public addInnerElement(options: Options, element: T | HTMLElement): void {
+        if (options.children) {
+            options.children.forEach((child) => {
+                element.append(child);
+            });
+        }
+    }
+
     private setClasses(options: Options, element: T | HTMLElement): void {
         options.classes.forEach((className: string) => element.classList.add(className));
     }
@@ -33,14 +41,6 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
     private setParentElement(options: Options, element: T | HTMLElement): void {
         if (options.parent) {
             options.parent.append(element);
-        }
-    }
-
-    public addInnerElement(options: Options, element: T | HTMLElement): void {
-        if (options.children) {
-            options.children.forEach((child) => {
-                element.append(child);
-            });
         }
     }
 }

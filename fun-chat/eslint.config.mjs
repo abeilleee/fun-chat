@@ -82,7 +82,7 @@ export default defineConfig([
                 { accessibility: 'explicit', overrides: { constructors: 'off' } },
             ],
             '@typescript-eslint/member-ordering': 'error',
-            'class-methods-use-this': 'error',
+            'class-methods-use-this': 'off', //makes it mandatory to use 'this' inside methods
         },
     },
     eslintPluginUnicorn.configs.recommended,
