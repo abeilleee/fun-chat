@@ -2,7 +2,7 @@ import type { Options } from '../utils/types';
 import { ElementCreator } from '../utils/element-creator';
 
 export class View {
-    private element: ElementCreator;
+    protected element: ElementCreator;
 
     constructor(options: Options) {
         this.element = this.createView(options);

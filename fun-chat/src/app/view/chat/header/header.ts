@@ -1,15 +1,16 @@
-import { Button } from '../../components/buttons/buttons';
-import { BUTTON_NAME } from '../../components/buttons/constants';
-import { ElementCreator } from '../../utils/element-creator';
-import type { Options } from '../../utils/types';
-import { ContainerView } from '../container/container';
-import { View } from '../view';
+import { Button } from '../../../components/buttons/buttons';
+import { BUTTON_NAME } from '../../../components/buttons/constants';
+import { ElementCreator } from '../../../utils/element-creator';
+import type { Options } from '../../../utils/types';
+import { ContainerView } from '../../container/container';
+import { View } from '../../view';
 
 export class HeaderView extends View {
-    constructor() {
+    constructor(parent: HTMLElement) {
         const options: Options = {
             tagName: 'header',
             classes: ['header'],
+            parent: parent,
         };
         super(options);
         this.configure();

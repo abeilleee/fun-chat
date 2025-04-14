@@ -1,8 +1,8 @@
 @use './styles/base/reset';
 @use './app/view/container/container';
-@use './app/view/header/header';
+@use './app/view/chat/header/header.scss';
 @use './app/components/buttons/buttons';
 @use './app/view/auth/login.scss';
 @use './app/view/about/about.scss';
 @use './app/view/not-found/not-found.scss';
-@use './app/view/footer/footer';
+@use './app/view/chat/footer/footer.scss';
