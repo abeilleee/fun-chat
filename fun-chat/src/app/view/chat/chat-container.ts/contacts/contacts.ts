@@ -1,9 +1,12 @@
+import { InputElement } from '../../../../components/input/input';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
+    private inputSearch: InputElement;
+
     constructor(parent: HTMLElement) {
         const options: Options = {
             tagName: 'div',
@@ -12,11 +15,20 @@ export class Contacts extends View {
         };
 
         super(options);
-        this.contactList = new ElementCreator<HTMLUListElement>({ tagName: 'ul', classes: ['contact-list'] });
+        this.inputSearch = new InputElement('Search...', 'search', ['input-search'], this.getHTMLElement());
+        this.contactList = new ElementCreator({
+            tagName: 'ul',
+            classes: ['contacts-list'],
+            parent: this.getHTMLElement(),
+        });
+        this.addContact('Mayya');
+        this.addContact('Mayya');
+        this.addContact('Mayya');
+        this.addContact('Mayya');
         this.addContact('Mayya');
     }
 
-    private addContact(userName: string): HTMLElement {
+    public addContact(userName: string): HTMLElement {
         const user = new ElementCreator({
             tagName: 'li',
             classes: ['user-element'],
@@ -25,4 +37,9 @@ export class Contacts extends View {
         });
         return user.getElement();
     }
+
+    // private setSearchInput(parent: HTMLElement): HTMLElement {
+    //     const inputSearch = new InputElement('Search...', 'search', ['input-search'], parent);
+    //     return inputSearch.getElement();
+    // }
 }

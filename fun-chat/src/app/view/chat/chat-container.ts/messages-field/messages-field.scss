@@ -1,19 +1,10 @@
-.contacts-box {
-    display: flex;
-    flex-direction: column;
+.message-field {
     border: 1px solid black;
-    gap: 12px;
-    width: 200px;
     height: 600px;
+    width: 300px;
     background-color: var(--background-transparent);
     border-radius: 10px;
     overflow: auto;
     scrollbar-color: rgba(169, 144, 245, 0.354) transparent;
     scrollbar-width: thin;
-}
-
-.contacts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
 }
