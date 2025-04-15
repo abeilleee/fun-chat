@@ -18,7 +18,7 @@ export class ChatView extends View {
         };
         super(options);
         this.router = router;
-        this.header = new HeaderView(this.getHTMLElement());
+        this.header = new HeaderView(this.getHTMLElement(), this.router);
         this.chat = new ChatContainerView(this.getHTMLElement());
         this.footer = new FooterView(this.getHTMLElement());
         this.configureView();

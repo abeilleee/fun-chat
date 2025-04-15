@@ -1,19 +1,29 @@
 import { Button } from '../../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../../components/buttons/constants';
+import { handlerBtnAbout, handlerBtnLogout } from '../../../components/buttons/handlers';
+import type { Router } from '../../../services/router/router';
 import { ElementCreator } from '../../../utils/element-creator';
 import type { Options } from '../../../utils/types';
 import { ContainerView } from '../../container/container';
 import { View } from '../../view';
 
 export class HeaderView extends View {
-    constructor(parent: HTMLElement) {
+    private headerWrapper: ElementCreator | null;
+    private buttonsBox: HTMLElement | null;
+    private router: Router;
+
+    constructor(parent: HTMLElement, router: Router) {
         const options: Options = {
             tagName: 'header',
             classes: ['header'],
             parent: parent,
         };
         super(options);
+        this.router = router;
+        this.headerWrapper = null;
+        this.buttonsBox = null;
         this.configure();
+        this.buttonsEventListeners();
     }
 
     public setUserName(parent: HTMLElement, id: number): HTMLElement {
@@ -28,13 +38,13 @@ export class HeaderView extends View {
 
     private configure(): void {
         const container = new ContainerView(['container'], this.getHTMLElement());
-        const headerWrapper = new ElementCreator({
+        this.headerWrapper = new ElementCreator({
             tagName: 'div',
             classes: ['header-wrapper'],
             parent: container.getHTMLElement(),
         });
-        this.setTitle(headerWrapper.getElement());
-        this.createButtons(headerWrapper.getElement());
+        this.setTitle(this.headerWrapper.getElement());
+        this.buttonsBox = this.createButtons(this.headerWrapper.getElement());
     }
 
     private setTitle(parent: HTMLElement): HTMLElement {
@@ -54,8 +64,33 @@ export class HeaderView extends View {
             parent: parent,
         });
 
-        const buttonAbout = new Button(BUTTON_NAME.ABOUT, ['button-about'], buttonsBox.getElement());
-        const buttonLogout = new Button(BUTTON_NAME.LOGOUT, ['button-logout'], buttonsBox.getElement());
+        const buttonAbout = new Button(BUTTON_NAME.ABOUT, ['button-about'], buttonsBox.getElement(), BUTTON_NAME.ABOUT);
+        const buttonLogout = new Button(
+            BUTTON_NAME.LOGOUT,
+            ['button-logout'],
+            buttonsBox.getElement(),
+            BUTTON_NAME.LOGOUT
+        );
         return buttonsBox.getElement();
+    }
+
+    private buttonsEventListeners(): void {
+        this.buttonsBox?.addEventListener('click', (event: MouseEvent) => {
+            const targetElement = event?.target;
+            if (targetElement instanceof HTMLElement) {
+                const action = targetElement.getAttribute('data-action');
+
+                switch (action) {
+                    case 'About': {
+                        handlerBtnAbout(this.router);
+                        break;
+                    }
+                    case 'Logout': {
+                        handlerBtnLogout(this.router);
+                        break;
+                    }
+                }
+            }
+        });
     }
 }

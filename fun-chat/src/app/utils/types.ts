@@ -6,4 +6,5 @@ export type Options = {
     classes: string[];
     callback?: void;
     id?: string;
+    attr?: string;
 };

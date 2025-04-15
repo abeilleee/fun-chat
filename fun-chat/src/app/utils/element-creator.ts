@@ -18,6 +18,7 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
         this.setParentElement(options, element);
         this.addInnerElement(options, element);
         this.setId(options, element);
+        this.setAttribute(options, element);
         return element;
     }
 
@@ -48,6 +49,12 @@ export class ElementCreator<T extends HTMLElement = HTMLElement> {
     private setId(options: Options, element: T | HTMLElement): void {
         if (options.id) {
             element.id = String(options.id);
+        }
+    }
+
+    private setAttribute(options: Options, element: T | HTMLElement): void {
+        if (options.attr) {
+            element.setAttribute('data-action', options.attr);
         }
     }
 }
