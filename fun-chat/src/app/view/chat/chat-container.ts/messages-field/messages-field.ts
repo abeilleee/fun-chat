@@ -1,5 +1,6 @@
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
+import { MessagesHeader } from './messages-header';
 
 export class MessageField extends View {
     constructor(parent: HTMLElement) {
@@ -9,5 +10,7 @@ export class MessageField extends View {
             parent: parent,
         };
         super(options);
+
+        const messagesHeader = new MessagesHeader(this.getHTMLElement());
     }
 }
