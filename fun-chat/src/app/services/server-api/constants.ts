@@ -1,0 +1,29 @@
+export const URL = 'ws://localhost:4000';
+
+export const enum APP_ERROR {
+    ERROR = 'ERROR',
+}
+
+export const enum SERVER_ACTIONS {
+    INCOMING = 'SERVER_INCOMING',
+    OUTCOMING = 'SERVER_OUTCOMING',
+}
+
+export const enum USER_ACTIONS {
+    LOGIN = 'USER_LOGIN',
+    LOGOUT = 'USER_LOGOUT',
+    ACTIVE = 'USER_ACTIVE',
+    INACTIVE = 'USER_INACTIVE',
+}
+
+export const enum MESSAGE_ACTIONS {
+    MSG_SEND = 'MSG_SEND',
+    MSG_DELIVER = 'MSG_DELIVER',
+    MSG_READ = 'MSG_READ',
+    MSG_DELETE = 'MSG_DELETE',
+    MSG_EDIT = 'MSG_EDIT',
+    MSG_CLEAR_HISTORY = 'MSG_CLEAR_HISTORY',
+    MSG_FROM_USER = 'MSG_FROM_USER',
+    SELECT_MESSAGE = 'SELECT_MESSAGE',
+    UNSELECT_MESSAGE = 'UNSELECT_MESSAGE',
+}
