@@ -10,7 +10,6 @@ export class Router {
         this.handler = new HistoryRoutesHandler(this.urlHandler.bind(this));
 
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('hi');
             const historyState = history.state;
             this.handler.navigate(historyState);
             // this.redirectToMainPage();

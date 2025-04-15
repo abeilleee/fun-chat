@@ -13,6 +13,17 @@
     text-align: left;
 }
 
+.buttons-login-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
 .button-login {
+    width: 100%;
+}
+
+.button-about-auth {
     width: 100%;
 }

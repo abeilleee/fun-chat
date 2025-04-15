@@ -48,7 +48,6 @@ export class AboutView extends View {
 
     private buttonEventListeners(): void {
         this.buttonBack?.getElement().addEventListener('click', () => {
-            console.log('hi');
             handlerBtnBack(this.router);
         });
     }

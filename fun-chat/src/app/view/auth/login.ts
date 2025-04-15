@@ -1,5 +1,6 @@
 import { Button } from '../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../components/buttons/constants';
+import { handlerBtnAbout, handlerBtnLogin } from '../../components/buttons/handlers';
 import { InputElement } from '../../components/input/input';
 import type { Router } from '../../services/router/router';
 import { ElementCreator } from '../../utils/element-creator';
@@ -8,6 +9,7 @@ import { View } from '../view';
 
 export class LoginPageView extends View {
     public router: Router;
+    private buttonsBox: ElementCreator | null;
 
     constructor(router: Router) {
         const options: Options = {
@@ -16,7 +18,9 @@ export class LoginPageView extends View {
         };
         super(options);
         this.router = router;
+        this.buttonsBox = null;
         this.configure();
+        this.buttonsEventListeners();
     }
 
     private configure(): void {
@@ -57,7 +61,45 @@ export class LoginPageView extends View {
     }
 
     private createButtons(parent: HTMLElement): HTMLElement {
-        const loginButton = new Button(BUTTON_NAME.LOGIN, ['button-login'], parent);
-        return loginButton.getElement();
+        this.buttonsBox = new ElementCreator({
+            tagName: 'div',
+            classes: ['buttons-login-box'],
+            parent: parent,
+        });
+        const loginButton = new Button(
+            BUTTON_NAME.LOGIN,
+            ['button-login'],
+            this.buttonsBox.getElement(),
+            BUTTON_NAME.LOGIN
+        );
+        const buttonAbout = new Button(
+            BUTTON_NAME.ABOUT,
+            ['button-about-auth'],
+            this.buttonsBox.getElement(),
+            BUTTON_NAME.ABOUT
+        );
+        return this.buttonsBox.getElement();
+    }
+
+    private buttonsEventListeners(): void {
+        this.buttonsBox?.getElement().addEventListener('click', (event: MouseEvent) => {
+            const targetElement = event?.target;
+
+            if (targetElement instanceof HTMLElement) {
+                const action = targetElement.getAttribute('data-action');
+
+                switch (action) {
+                    case 'About': {
+                        event.preventDefault();
+                        handlerBtnAbout(this.router);
+                        break;
+                    }
+                    case 'Login': {
+                        handlerBtnLogin(this.router);
+                        break;
+                    }
+                }
+            }
+        });
     }
 }
