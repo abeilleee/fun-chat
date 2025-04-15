@@ -1,9 +1,9 @@
-import type { RouterHandlerOptions, UserRequest } from './types.ts';
+import type { RouterHandlerOptions, UserRequest } from './types.js';
 
 export class HistoryRoutesHandler {
-    callback: (arg: UserRequest) => void;
-    handler: (url: string | PopStateEvent | Event) => void;
-    options: RouterHandlerOptions;
+    private callback: (arg: UserRequest) => void;
+    private handler: (url: string | PopStateEvent | Event) => void;
+    private options: RouterHandlerOptions;
 
     constructor(callback: (arg: UserRequest) => void) {
         this.options = {

@@ -77,12 +77,16 @@ export default defineConfig([
             '@typescript-eslint/consistent-type-imports': 'error',
             '@typescript-eslint/explicit-function-return-type': 'error',
             '@typescript-eslint/no-unused-vars': 'off',
+            '@typescript-eslint/no-misused-promises': 'off',
             '@typescript-eslint/explicit-member-accessibility': [
                 'error',
                 { accessibility: 'explicit', overrides: { constructors: 'off' } },
             ],
             '@typescript-eslint/member-ordering': 'error',
             'class-methods-use-this': 'off', //makes it mandatory to use 'this' inside methods
+
+            '@typescript-eslint/no-unsafe-argument': 'off', // make troubles for routing, change!
+            '@typescript-eslint/no-unsafe-assignment': 'off',
         },
     },
     eslintPluginUnicorn.configs.recommended,
@@ -100,6 +104,7 @@ export default defineConfig([
             'unicorn/no-for-loop': 'off',
             'unicorn/prefer-math-min-max': 'off',
             'unicorn/prefer-spread': 'off',
+            'unicorn/prefer-global-this': 'off',
         },
     },
 ]);

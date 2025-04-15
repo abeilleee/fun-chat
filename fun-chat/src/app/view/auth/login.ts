@@ -1,17 +1,21 @@
 import { Button } from '../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../components/buttons/constants';
 import { InputElement } from '../../components/input/input';
+import type { Router } from '../../services/router/router';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
 import { View } from '../view';
 
 export class LoginPageView extends View {
-    constructor() {
+    public router: Router;
+
+    constructor(router: Router) {
         const options: Options = {
             tagName: 'section',
             classes: ['section-auth'],
         };
         super(options);
+        this.router = router;
         this.configure();
     }
 

@@ -1,18 +1,21 @@
 import { Button } from '../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../components/buttons/constants';
+import type { Router } from '../../services/router/router';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
 import { View } from '../view';
 
 export class NotFoundView extends View {
+    public router: Router;
     #default_text = 'Error. Page not found';
 
-    constructor() {
+    constructor(router: Router) {
         const options: Options = {
             tagName: 'main',
             classes: ['not-found'],
         };
         super(options);
+        this.router = router;
         this.configureView();
     }
 

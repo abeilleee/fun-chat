@@ -14,8 +14,9 @@ export type UserRequest = {
 };
 
 export enum PAGES {
+    AUTH = 'auth',
     MAIN = 'main',
     LOGIN = 'login',
-    ABOUT = 'about  ',
+    ABOUT = 'about',
     NOT_FOUND = 'not-found',
 }
