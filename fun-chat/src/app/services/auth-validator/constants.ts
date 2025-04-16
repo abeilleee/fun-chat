@@ -14,3 +14,8 @@ export enum ERROR_MESSAGES {
     REQUIRED = 'The field is required',
     LETTERS = 'The password must contain at least 1 uppercase letter',
 }
+
+export enum INPUT_TYPE {
+    LOGIN = 'login',
+    PASSWORD = 'password',
+}

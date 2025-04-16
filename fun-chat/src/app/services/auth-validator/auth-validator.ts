@@ -1,19 +1,31 @@
-import { ERROR_MESSAGES, VALID_LOGIN_PARAMS, VALID_PASSWORD_PARAMS } from './constants';
+import { ERROR_MESSAGES, INPUT_TYPE, VALID_LOGIN_PARAMS, VALID_PASSWORD_PARAMS } from './constants';
 
 export class AuthValidator {
     constructor() {}
 
-    public checkMinLength(targetLength: number, value: string): string | boolean {
+    public checkMinLength(value: string, type: INPUT_TYPE): string | boolean {
         //|| value.trim().length === 0
-        if (value.trim().length < +VALID_LOGIN_PARAMS.MIN_LENGTH) {
+        const targetLength =
+            type === INPUT_TYPE.LOGIN ? VALID_LOGIN_PARAMS.MIN_LENGTH : VALID_PASSWORD_PARAMS.MIN_LENGTH;
+
+        const option = type === INPUT_TYPE.LOGIN ? value.trim().length : value.length;
+
+        if (option < +targetLength) {
             const errorMessage = `${ERROR_MESSAGES.SHORT} ${targetLength} characters`;
             return errorMessage;
         }
         return true;
     }
 
-    public checkMaxLength(targetLength: number, value: string): string | boolean {
-        if (value.length > +VALID_LOGIN_PARAMS.MAX_LENGTH || value.trim().length === 0) {
+    public checkMaxLength(value: string, type: INPUT_TYPE): string | boolean {
+        const targetLength =
+            type === INPUT_TYPE.LOGIN ? VALID_LOGIN_PARAMS.MAX_LENGTH : VALID_PASSWORD_PARAMS.MAX_LENGTH;
+
+        const option = type === INPUT_TYPE.LOGIN ? value.trim().length : value.length;
+
+        console.log('option: ', option);
+
+        if (option > +targetLength) {
             const errorMessage = `${ERROR_MESSAGES.LONG} ${targetLength} characters`;
             return errorMessage;
         }
@@ -29,10 +41,7 @@ export class AuthValidator {
     }
 
     public checkRequiredLetters(password: string): string | boolean | undefined {
-        if (
-            this.checkMinLength(VALID_PASSWORD_PARAMS.MIN_LENGTH, password) &&
-            this.checkMaxLength(VALID_PASSWORD_PARAMS.MAX_LENGTH, password)
-        ) {
+        if (this.checkMinLength(password, INPUT_TYPE.PASSWORD) && this.checkMaxLength(password, INPUT_TYPE.PASSWORD)) {
             const uppercaseRegex = /A-Z/;
             if (!uppercaseRegex.test(password)) {
                 return ERROR_MESSAGES.LETTERS;

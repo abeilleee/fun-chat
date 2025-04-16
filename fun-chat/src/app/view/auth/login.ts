@@ -3,7 +3,7 @@ import { BUTTON_NAME } from '../../components/buttons/constants';
 import { handlerBtnAbout, handlerBtnLogin } from '../../components/buttons/handlers';
 import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
-import { VALID_LOGIN_PARAMS } from '../../services/auth-validator/constants';
+import { INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Router } from '../../services/router/router';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
@@ -33,6 +33,7 @@ export class LoginPageView extends View {
         this.validator = new AuthValidator();
         this.configure();
         this.setLoginInputListener();
+        this.setPasswordInputListener();
         this.buttonsEventListeners();
     }
 
@@ -107,16 +108,16 @@ export class LoginPageView extends View {
         this.loginInput?.getElement().addEventListener('input', () => {
             if (this.loginInput) {
                 const value = this.loginInput.getValue();
-                this.cleanErrorMessage('login');
+                this.cleanErrorMessage(INPUT_TYPE.LOGIN);
 
                 if (value) {
                     let errorMessage: string | null = null;
 
-                    const minLengthCheck = this.validator.checkMinLength(VALID_LOGIN_PARAMS.MIN_LENGTH, value);
+                    const minLengthCheck = this.validator.checkMinLength(value, INPUT_TYPE.LOGIN);
                     if (typeof minLengthCheck === 'string') {
                         errorMessage = minLengthCheck;
                     } else {
-                        const maxLengthCheck = this.validator.checkMaxLength(VALID_LOGIN_PARAMS.MAX_LENGTH, value);
+                        const maxLengthCheck = this.validator.checkMaxLength(value, INPUT_TYPE.LOGIN);
                         if (typeof maxLengthCheck === 'string') {
                             errorMessage = maxLengthCheck;
                         } else {
@@ -127,7 +128,39 @@ export class LoginPageView extends View {
                         }
                     }
                     if (errorMessage) {
-                        this.setErrorMessage(errorMessage, 'login');
+                        this.setErrorMessage(errorMessage, INPUT_TYPE.LOGIN);
+                    }
+                }
+            }
+        });
+    }
+
+    private setPasswordInputListener(): void {
+        this.passwordInput?.getElement().addEventListener('input', () => {
+            if (this.passwordInput) {
+                const value = this.passwordInput.getValue();
+                this.cleanErrorMessage(INPUT_TYPE.PASSWORD);
+
+                if (value) {
+                    let errorMessage: string | null = null;
+
+                    const minLengthCheck = this.validator.checkMinLength(value, INPUT_TYPE.PASSWORD);
+                    if (typeof minLengthCheck === 'string') {
+                        console.log('HERE');
+                        errorMessage = minLengthCheck;
+                    } else {
+                        const maxLengthCheck = this.validator.checkMaxLength(value, INPUT_TYPE.PASSWORD);
+                        if (typeof maxLengthCheck === 'string') {
+                            errorMessage = maxLengthCheck;
+                        } else {
+                            const emptyCheck = this.validator.checkIsEmpty(value);
+                            if (typeof emptyCheck === 'string') {
+                                errorMessage = emptyCheck;
+                            }
+                        }
+                    }
+                    if (errorMessage) {
+                        this.setErrorMessage(errorMessage, INPUT_TYPE.PASSWORD);
                     }
                 }
             }
@@ -156,18 +189,18 @@ export class LoginPageView extends View {
         });
     }
 
-    private setErrorMessage(value: string, type: 'login' | 'password'): void {
-        if (type === 'login' && this.loginErrorMessage && typeof value === 'string') {
+    private setErrorMessage(value: string, type: INPUT_TYPE): void {
+        if (type === INPUT_TYPE.LOGIN && this.loginErrorMessage && typeof value === 'string') {
             this.loginErrorMessage.getElement().textContent = value;
-        } else if (type === 'password' && this.passwordErrorMessage && typeof value === 'string') {
+        } else if (type === INPUT_TYPE.PASSWORD && this.passwordErrorMessage && typeof value === 'string') {
             this.passwordErrorMessage.getElement().textContent = value;
         }
     }
 
-    private cleanErrorMessage(type: 'login' | 'password'): void {
-        if (type === 'login' && this.loginErrorMessage) {
+    private cleanErrorMessage(type: INPUT_TYPE): void {
+        if (type === INPUT_TYPE.LOGIN && this.loginErrorMessage) {
             this.loginErrorMessage.getElement().textContent = '';
-        } else if (type === 'password' && this.passwordErrorMessage) {
+        } else if (type === INPUT_TYPE.PASSWORD && this.passwordErrorMessage) {
             this.passwordErrorMessage.getElement().textContent = '';
         }
     }
