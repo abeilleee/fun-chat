@@ -8,6 +8,7 @@ import type { Router } from '../../services/router/router';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
 import { View } from '../view';
+import { loginInputHandlers } from './handlers';
 
 export class LoginPageView extends View {
     public router: Router;
@@ -17,6 +18,9 @@ export class LoginPageView extends View {
     private validator: AuthValidator;
     private loginErrorMessage: ElementCreator | null;
     private passwordErrorMessage: ElementCreator | null;
+    private loginButton: Button | null;
+    private isValidLogin: boolean = false;
+    private isValidPassword: boolean = false;
 
     constructor(router: Router) {
         const options: Options = {
@@ -30,6 +34,7 @@ export class LoginPageView extends View {
         this.buttonsBox = null;
         this.loginErrorMessage = null;
         this.passwordErrorMessage = null;
+        this.loginButton = null;
         this.validator = new AuthValidator();
         this.configure();
         this.setLoginInputListener();
@@ -89,9 +94,9 @@ export class LoginPageView extends View {
             classes: ['buttons-login-box'],
             parent: parent,
         });
-        const loginButton = new Button(
+        this.loginButton = new Button(
             BUTTON_NAME.LOGIN,
-            ['button-login'],
+            ['button-login', 'disabled'],
             this.buttonsBox.getElement(),
             BUTTON_NAME.LOGIN
         );
@@ -107,29 +112,18 @@ export class LoginPageView extends View {
     private setLoginInputListener(): void {
         this.loginInput?.getElement().addEventListener('input', () => {
             if (this.loginInput) {
-                const value = this.loginInput.getValue();
                 this.cleanErrorMessage(INPUT_TYPE.LOGIN);
+                const result = loginInputHandlers(this.loginInput, this.validator);
 
-                if (value) {
-                    let errorMessage: string | null = null;
-
-                    const minLengthCheck = this.validator.checkMinLength(value, INPUT_TYPE.LOGIN);
-                    if (typeof minLengthCheck === 'string') {
-                        errorMessage = minLengthCheck;
-                    } else {
-                        const maxLengthCheck = this.validator.checkMaxLength(value, INPUT_TYPE.LOGIN);
-                        if (typeof maxLengthCheck === 'string') {
-                            errorMessage = maxLengthCheck;
-                        } else {
-                            const emptyCheck = this.validator.checkIsEmpty(value);
-                            if (typeof emptyCheck === 'string') {
-                                errorMessage = emptyCheck;
-                            }
-                        }
-                    }
-                    if (errorMessage) {
-                        this.setErrorMessage(errorMessage, INPUT_TYPE.LOGIN);
-                    }
+                if (typeof result === 'string') {
+                    this.setErrorMessage(result, INPUT_TYPE.LOGIN);
+                    this.loginButton?.setDisabled(true);
+                    console.log('invalid login');
+                    this.isValidLogin = false;
+                } else {
+                    this.isValidLogin = true;
+                    console.log('valid login');
+                    this.isValidLogin = true;
                 }
             }
         });
@@ -161,6 +155,8 @@ export class LoginPageView extends View {
                     }
                     if (errorMessage) {
                         this.setErrorMessage(errorMessage, INPUT_TYPE.PASSWORD);
+                    } else {
+                        this.isValidPassword = true;
                     }
                 }
             }
@@ -181,7 +177,7 @@ export class LoginPageView extends View {
                         break;
                     }
                     case 'Login': {
-                        handlerBtnLogin(this.router);
+                        handlerBtnLogin(this.router, this.isValidLogin, this.isValidPassword);
                         break;
                     }
                 }

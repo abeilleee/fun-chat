@@ -17,7 +17,11 @@ export class Button extends ElementCreator<HTMLButtonElement> {
         super(options);
     }
 
-    public disableBtn(btn: HTMLElement): void {
-        btn.classList.add('disabled');
+    public setDisabled(option: boolean): void {
+        if (option) {
+            this.getElement().classList.add('disabled');
+            return;
+        }
+        this.getElement().classList.remove('disabled');
     }
 }
