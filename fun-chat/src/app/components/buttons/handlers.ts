@@ -1,5 +1,6 @@
 import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
+import { WebSocketConnection } from '../../web-socket-connection/web-socket-connection';
 
 export function handlerBtnAbout(router: Router): void {
     router.navigate(PAGES.ABOUT);
@@ -16,4 +17,5 @@ export function handlerBtnBack(router: Router): void {
 
 export function handlerBtnLogin(router: Router): void {
     router.navigate(PAGES.MAIN);
+    new WebSocketConnection();
 }
