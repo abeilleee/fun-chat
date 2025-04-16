@@ -4,7 +4,8 @@ export class AuthValidator {
     constructor() {}
 
     public checkMinLength(targetLength: number, value: string): string | boolean {
-        if (value.length < VALID_LOGIN_PARAMS.MIN_LENGTH || value.trim().length === 0) {
+        //|| value.trim().length === 0
+        if (value.trim().length < +VALID_LOGIN_PARAMS.MIN_LENGTH) {
             const errorMessage = `${ERROR_MESSAGES.SHORT} ${targetLength} characters`;
             return errorMessage;
         }
@@ -12,7 +13,7 @@ export class AuthValidator {
     }
 
     public checkMaxLength(targetLength: number, value: string): string | boolean {
-        if (value.length > VALID_LOGIN_PARAMS.MAX_LENGTH || value.trim().length === 0) {
+        if (value.length > +VALID_LOGIN_PARAMS.MAX_LENGTH || value.trim().length === 0) {
             const errorMessage = `${ERROR_MESSAGES.LONG} ${targetLength} characters`;
             return errorMessage;
         }
