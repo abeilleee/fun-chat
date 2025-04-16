@@ -10,7 +10,8 @@ export class AuthValidator {
 
         const option = type === INPUT_TYPE.LOGIN ? value.trim().length : value.length;
 
-        if (option < +targetLength) {
+        if (value.length < +targetLength) {
+            console.log('length: ', value.length);
             const errorMessage = `${ERROR_MESSAGES.SHORT} ${targetLength} characters`;
             return errorMessage;
         }
@@ -23,9 +24,7 @@ export class AuthValidator {
 
         const option = type === INPUT_TYPE.LOGIN ? value.trim().length : value.length;
 
-        console.log('option: ', option);
-
-        if (option > +targetLength) {
+        if (value.length > +targetLength) {
             const errorMessage = `${ERROR_MESSAGES.LONG} ${targetLength} characters`;
             return errorMessage;
         }

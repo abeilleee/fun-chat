@@ -8,7 +8,7 @@ import type { Router } from '../../services/router/router';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
 import { View } from '../view';
-import { loginInputHandlers } from './handlers';
+import { loginHandler, passwordHandler } from './handlers';
 
 export class LoginPageView extends View {
     public router: Router;
@@ -113,7 +113,7 @@ export class LoginPageView extends View {
         this.loginInput?.getElement().addEventListener('input', () => {
             if (this.loginInput) {
                 this.cleanErrorMessage(INPUT_TYPE.LOGIN);
-                const result = loginInputHandlers(this.loginInput, this.validator);
+                const result = loginHandler(this.loginInput, this.validator);
 
                 if (typeof result === 'string') {
                     this.setErrorMessage(result, INPUT_TYPE.LOGIN);
@@ -132,34 +132,50 @@ export class LoginPageView extends View {
     private setPasswordInputListener(): void {
         this.passwordInput?.getElement().addEventListener('input', () => {
             if (this.passwordInput) {
-                const value = this.passwordInput.getValue();
                 this.cleanErrorMessage(INPUT_TYPE.PASSWORD);
+                const result = passwordHandler(this.passwordInput, this.validator);
 
-                if (value) {
-                    let errorMessage: string | null = null;
-
-                    const minLengthCheck = this.validator.checkMinLength(value, INPUT_TYPE.PASSWORD);
-                    if (typeof minLengthCheck === 'string') {
-                        console.log('HERE');
-                        errorMessage = minLengthCheck;
-                    } else {
-                        const maxLengthCheck = this.validator.checkMaxLength(value, INPUT_TYPE.PASSWORD);
-                        if (typeof maxLengthCheck === 'string') {
-                            errorMessage = maxLengthCheck;
-                        } else {
-                            const emptyCheck = this.validator.checkIsEmpty(value);
-                            if (typeof emptyCheck === 'string') {
-                                errorMessage = emptyCheck;
-                            }
-                        }
-                    }
-                    if (errorMessage) {
-                        this.setErrorMessage(errorMessage, INPUT_TYPE.PASSWORD);
-                    } else {
-                        this.isValidPassword = true;
-                    }
+                if (typeof result === 'string') {
+                    this.setErrorMessage(result, INPUT_TYPE.PASSWORD);
+                    this.loginButton?.setDisabled(true);
+                    console.log('invalid password');
+                    this.isValidPassword = false;
+                } else {
+                    this.isValidLogin = true;
+                    console.log('valid password');
+                    this.isValidPassword = true;
                 }
             }
+
+            // if (this.passwordInput) {
+            //     const value = this.passwordInput.getValue();
+            //     this.cleanErrorMessage(INPUT_TYPE.PASSWORD);
+
+            //     if (value) {
+            //         let errorMessage: string | null = null;
+
+            //         const minLengthCheck = this.validator.checkMinLength(value, INPUT_TYPE.PASSWORD);
+            //         if (typeof minLengthCheck === 'string') {
+            //             console.log('HERE');
+            //             errorMessage = minLengthCheck;
+            //         } else {
+            //             const maxLengthCheck = this.validator.checkMaxLength(value, INPUT_TYPE.PASSWORD);
+            //             if (typeof maxLengthCheck === 'string') {
+            //                 errorMessage = maxLengthCheck;
+            //             } else {
+            //                 const emptyCheck = this.validator.checkIsEmpty(value);
+            //                 if (typeof emptyCheck === 'string') {
+            //                     errorMessage = emptyCheck;
+            //                 }
+            //             }
+            //         }
+            //         if (errorMessage) {
+            //             this.setErrorMessage(errorMessage, INPUT_TYPE.PASSWORD);
+            //         } else {
+            //             this.isValidPassword = true;
+            //         }
+            //     }
+            // }
         });
     }
 
