@@ -1,6 +1,7 @@
 import { Router } from './services/router/router';
 import { PAGES, type Route } from './services/router/types';
 import { Background } from './settings/background/background';
+import { generateId } from './utils/id-generator';
 import { ChatView } from './view/chat/chat';
 import { MainView } from './view/main-view';
 import type { View } from './view/view';
