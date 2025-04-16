@@ -1,11 +1,8 @@
 import { Router } from './services/router/router';
 import { PAGES, type Route } from './services/router/types';
 import { Background } from './settings/background/background';
-import { AboutView } from './view/about/about';
-import { LoginPageView } from './view/auth/login';
 import { ChatView } from './view/chat/chat';
 import { MainView } from './view/main-view';
-import { NotFoundView } from './view/not-found/not-found';
 import type { View } from './view/view';
 import { WebSocketConnection } from './web-socket-connection/web-socket-connection';
 
