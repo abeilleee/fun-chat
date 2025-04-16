@@ -3,7 +3,7 @@ import { BUTTON_NAME } from '../../components/buttons/constants';
 import { handlerBtnAbout, handlerBtnLogin } from '../../components/buttons/handlers';
 import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
-import { INPUT_TYPE } from '../../services/auth-validator/constants';
+import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Router } from '../../services/router/router';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
@@ -111,14 +111,15 @@ export class LoginPageView extends View {
 
     private setLoginInputListener(): void {
         this.loginInput?.getElement().addEventListener('input', () => {
-            if (this.loginInput) {
+            if (this.loginInput && this.loginButton) {
                 this.cleanErrorMessage(INPUT_TYPE.LOGIN);
-                const result = loginHandler(this.loginInput, this.validator);
+                const result = loginHandler(this.loginInput, this.validator, this.loginButton);
 
-                if (typeof result === 'string') {
+                if (typeof result === 'string' && result !== EMPTY) {
                     this.setErrorMessage(result, INPUT_TYPE.LOGIN);
-                    this.loginButton?.setDisabled(true);
                     console.log('invalid login');
+                    this.isValidLogin = false;
+                } else if (result && result === EMPTY) {
                     this.isValidLogin = false;
                 } else {
                     this.isValidLogin = true;
@@ -126,56 +127,29 @@ export class LoginPageView extends View {
                     this.isValidLogin = true;
                 }
             }
+            if (this.loginButton) this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
         });
     }
 
     private setPasswordInputListener(): void {
         this.passwordInput?.getElement().addEventListener('input', () => {
-            if (this.passwordInput) {
+            if (this.passwordInput && this.loginButton) {
                 this.cleanErrorMessage(INPUT_TYPE.PASSWORD);
-                const result = passwordHandler(this.passwordInput, this.validator);
+                const result = passwordHandler(this.passwordInput, this.validator, this.loginButton);
 
-                if (typeof result === 'string') {
+                if (typeof result === 'string' && result !== EMPTY) {
                     this.setErrorMessage(result, INPUT_TYPE.PASSWORD);
-                    this.loginButton?.setDisabled(true);
                     console.log('invalid password');
                     this.isValidPassword = false;
+                } else if (result && result === EMPTY) {
+                    this.isValidLogin = false;
                 } else {
                     this.isValidLogin = true;
                     console.log('valid password');
                     this.isValidPassword = true;
                 }
             }
-
-            // if (this.passwordInput) {
-            //     const value = this.passwordInput.getValue();
-            //     this.cleanErrorMessage(INPUT_TYPE.PASSWORD);
-
-            //     if (value) {
-            //         let errorMessage: string | null = null;
-
-            //         const minLengthCheck = this.validator.checkMinLength(value, INPUT_TYPE.PASSWORD);
-            //         if (typeof minLengthCheck === 'string') {
-            //             console.log('HERE');
-            //             errorMessage = minLengthCheck;
-            //         } else {
-            //             const maxLengthCheck = this.validator.checkMaxLength(value, INPUT_TYPE.PASSWORD);
-            //             if (typeof maxLengthCheck === 'string') {
-            //                 errorMessage = maxLengthCheck;
-            //             } else {
-            //                 const emptyCheck = this.validator.checkIsEmpty(value);
-            //                 if (typeof emptyCheck === 'string') {
-            //                     errorMessage = emptyCheck;
-            //                 }
-            //             }
-            //         }
-            //         if (errorMessage) {
-            //             this.setErrorMessage(errorMessage, INPUT_TYPE.PASSWORD);
-            //         } else {
-            //             this.isValidPassword = true;
-            //         }
-            //     }
-            // }
+            if (this.loginButton) this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
         });
     }
 

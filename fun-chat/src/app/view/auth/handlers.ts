@@ -1,9 +1,18 @@
+import type { Button } from '../../components/buttons/buttons';
 import type { InputElement } from '../../components/input/input';
 import type { AuthValidator } from '../../services/auth-validator/auth-validator';
-import { INPUT_TYPE } from '../../services/auth-validator/constants';
+import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 
-export function loginHandler(loginElement: InputElement, validator: AuthValidator): string | null | undefined {
+export function loginHandler(
+    loginElement: InputElement,
+    validator: AuthValidator,
+    btn: Button
+): string | null | undefined {
     const value = loginElement.getValue();
+
+    if (!value) {
+        return EMPTY;
+    }
 
     if (value) {
         let errorMessage: string | null = null;
@@ -27,8 +36,16 @@ export function loginHandler(loginElement: InputElement, validator: AuthValidato
     return;
 }
 
-export function passwordHandler(passwordElement: InputElement, validator: AuthValidator): string | null | undefined {
+export function passwordHandler(
+    passwordElement: InputElement,
+    validator: AuthValidator,
+    btn: Button
+): string | null | undefined {
     const value = passwordElement.getValue();
+
+    if (!value) {
+        return EMPTY;
+    }
 
     if (value) {
         let errorMessage: string | null = null;

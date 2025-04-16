@@ -1,3 +1,4 @@
+import type { Button } from '../../components/buttons/buttons';
 import { ERROR_MESSAGES, INPUT_TYPE, VALID_LOGIN_PARAMS, VALID_PASSWORD_PARAMS } from './constants';
 
 export class AuthValidator {
@@ -47,5 +48,13 @@ export class AuthValidator {
             }
             return true;
         }
+    }
+
+    public checkValid(loginIsValid: boolean, passwordIsValid: boolean, btn: Button): void {
+        if (loginIsValid && passwordIsValid) {
+            btn.setDisabled(false);
+            return;
+        }
+        btn.setDisabled(true);
     }
 }
