@@ -1,5 +1,3 @@
-export const URL = 'ws://localhost:4000';
-
 export const enum APP_ERROR {
     ERROR = 'ERROR',
 }

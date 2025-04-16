@@ -7,17 +7,20 @@ import { ChatView } from './view/chat/chat';
 import { MainView } from './view/main-view';
 import { NotFoundView } from './view/not-found/not-found';
 import type { View } from './view/view';
+import { WebSocketConnection } from './web-socket-connection/web-socket-connection';
 
 export class App {
     public router: Router;
     private background: Background;
     private mainView: MainView | null;
     private chatPage: ChatView | null;
+    private WebSocketConnection: WebSocketConnection;
 
     constructor() {
         const routes = this.createRoutes();
         this.router = new Router(routes);
         this.background = new Background();
+        this.WebSocketConnection = new WebSocketConnection();
         this.mainView = null;
         this.chatPage = null;
         this.createView();
