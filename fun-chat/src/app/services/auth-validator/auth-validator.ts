@@ -12,7 +12,6 @@ export class AuthValidator {
         const option = type === INPUT_TYPE.LOGIN ? value.trim().length : value.length;
 
         if (value.length < +targetLength) {
-            console.log('length: ', value.length);
             const errorMessage = `${ERROR_MESSAGES.SHORT} ${targetLength} characters`;
             return errorMessage;
         }

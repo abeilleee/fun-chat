@@ -1,4 +1,4 @@
-import { User } from '../server-api/types/user-actions';
+import type { User } from '../server-api/types/user-actions';
 
 export class SessionStorage {
     protected STORAGE_NAME: string = 'abeilleee_fun-chat';
@@ -9,9 +9,9 @@ export class SessionStorage {
         sessionStorage.setItem(this.STORAGE_NAME, JSON.stringify(data));
     }
 
-    public getData(): User | null {
+    public getData(): string | null {
         const data = sessionStorage.getItem(this.STORAGE_NAME);
-        if (data) {
+        if (data && typeof JSON.parse(data) === 'string') {
             return JSON.parse(data);
         }
         return null;

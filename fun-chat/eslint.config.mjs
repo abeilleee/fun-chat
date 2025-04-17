@@ -87,6 +87,7 @@ export default defineConfig([
 
             '@typescript-eslint/no-unsafe-argument': 'off', // make troubles for routing, change!
             '@typescript-eslint/no-unsafe-assignment': 'off',
+            '@typescript-eslint/no-unsafe-return': 'off',
         },
     },
     eslintPluginUnicorn.configs.recommended,

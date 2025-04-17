@@ -18,13 +18,7 @@ export type MessageStatus = {
 export type UserRequest = {
     id: string;
     type: USER_MESSAGE_TYPE | MESSAGE_ACTIONS | APP_ERROR;
-    payload: {
-        error?: string;
-        user?: User;
-        users?: User[];
-        message?: Message;
-        messages?: Message[];
-    } | null;
+    payload: Payload | null;
 };
 
 export type User = {
@@ -32,3 +26,11 @@ export type User = {
     password?: string | null;
     isLogined?: boolean;
 };
+
+export type Payload = {
+    user?: User;
+    users?: User[];
+    message?: Message;
+    messages?: Message[];
+    error?: string;
+} | null;

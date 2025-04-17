@@ -50,7 +50,7 @@ export class App {
                 path: `${PAGES.AUTH}`,
                 callback: async (): Promise<void> => {
                     const { LoginPageView } = await import('./view/auth/login');
-                    this.setContent(new LoginPageView(this.router));
+                    this.setContent(new LoginPageView(this.router, this.WebSocketConnection));
                 },
             },
             {

@@ -5,6 +5,9 @@ import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Router } from '../../services/router/router';
+import { ClientApi } from '../../services/server-api/api';
+import { SessionStorage } from '../../services/storage/storage';
+import type { WebSocketConnection } from '../../services/web-socket-connection/web-socket-connection';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
 import { View } from '../view';
@@ -21,8 +24,10 @@ export class LoginPageView extends View {
     private loginButton: Button | null;
     private isValidLogin: boolean = false;
     private isValidPassword: boolean = false;
+    private storage: SessionStorage;
+    private clientApi: ClientApi;
 
-    constructor(router: Router) {
+    constructor(router: Router, websocket: WebSocketConnection) {
         const options: Options = {
             tagName: 'section',
             classes: ['section-auth'],
@@ -36,6 +41,8 @@ export class LoginPageView extends View {
         this.passwordErrorMessage = null;
         this.loginButton = null;
         this.validator = new AuthValidator();
+        this.storage = new SessionStorage();
+        this.clientApi = new ClientApi(websocket);
         this.configure();
         this.setLoginInputListener();
         this.setPasswordInputListener();
@@ -117,13 +124,11 @@ export class LoginPageView extends View {
 
                 if (typeof result === 'string' && result !== EMPTY) {
                     this.setErrorMessage(result, INPUT_TYPE.LOGIN);
-                    console.log('invalid login');
                     this.isValidLogin = false;
                 } else if (result && result === EMPTY) {
                     this.isValidLogin = false;
                 } else {
                     this.isValidLogin = true;
-                    console.log('valid login');
                     this.isValidLogin = true;
                 }
             }
@@ -139,13 +144,11 @@ export class LoginPageView extends View {
 
                 if (typeof result === 'string' && result !== EMPTY) {
                     this.setErrorMessage(result, INPUT_TYPE.PASSWORD);
-                    console.log('invalid password');
                     this.isValidPassword = false;
                 } else if (result && result === EMPTY) {
                     this.isValidLogin = false;
                 } else {
                     this.isValidLogin = true;
-                    console.log('valid password');
                     this.isValidPassword = true;
                 }
             }
@@ -167,7 +170,18 @@ export class LoginPageView extends View {
                         break;
                     }
                     case 'Login': {
-                        handlerBtnLogin(this.router, this.isValidLogin, this.isValidPassword);
+                        const login = this.loginInput?.getValue();
+                        const password = this.passwordInput?.getValue();
+                        if (login && password)
+                            handlerBtnLogin(
+                                this.router,
+                                this.isValidLogin,
+                                this.isValidPassword,
+                                login,
+                                password,
+                                this.clientApi,
+                                this.storage
+                            );
                         break;
                     }
                 }

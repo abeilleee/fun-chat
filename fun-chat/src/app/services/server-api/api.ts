@@ -1,6 +1,8 @@
-import { WebSocketConnection } from '../web-socket-connection/web-socket-connection';
+import type { WebSocketConnection } from '../web-socket-connection/web-socket-connection';
 import { SessionStorage } from '../storage/storage';
-import { USER_MESSAGE_TYPE } from './constants';
+import type { MESSAGE_ACTIONS, USER_MESSAGE_TYPE } from './constants';
+import { generateId } from '../../utils/id-generator';
+import type { Payload } from './types/user-actions';
 
 export class ClientApi {
     private webSocket: WebSocketConnection;
@@ -11,12 +13,14 @@ export class ClientApi {
         this.storage = new SessionStorage();
     }
 
-    public userLogin(type: USER_MESSAGE_TYPE.LOGIN) {
-        const currentUser = this.storage.getData();
-    }
+    public sendRequestToServer(type: USER_MESSAGE_TYPE | MESSAGE_ACTIONS, payload: Payload): void {
+        const id = generateId();
+        const message = {
+            id: id,
+            type: type,
+            payload: payload,
+        };
 
-    // userAuth = () => {
-    //     const { currentUser } = state.getState();
-    //     sendMessageToServer('USER_LOGIN', { user: currentUser });
-    // };
+        this.webSocket.send(message);
+    }
 }
