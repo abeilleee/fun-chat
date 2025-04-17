@@ -1,6 +1,6 @@
 import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
-import { WebSocketConnection } from '../../web-socket-connection/web-socket-connection';
+import { WebSocketConnection } from '../../services/web-socket-connection/web-socket-connection';
 import { Button } from './buttons';
 
 export function handlerBtnAbout(router: Router): void {

@@ -5,7 +5,7 @@ import { generateId } from './utils/id-generator';
 import { ChatView } from './view/chat/chat';
 import { MainView } from './view/main-view';
 import type { View } from './view/view';
-import { WebSocketConnection } from './web-socket-connection/web-socket-connection';
+import { WebSocketConnection } from './services/web-socket-connection/web-socket-connection';
 
 export class App {
     public router: Router;
