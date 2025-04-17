@@ -9,7 +9,7 @@ export class SessionStorage {
         sessionStorage.setItem(this.STORAGE_NAME, JSON.stringify(data));
     }
 
-    public getData(): string | null {
+    public getData(): object | null {
         const data = sessionStorage.getItem(this.STORAGE_NAME);
         if (data) {
             return JSON.parse(data);
