@@ -6,6 +6,7 @@ import { ChatView } from './view/chat/chat';
 import { MainView } from './view/main-view';
 import type { View } from './view/view';
 import { WebSocketConnection } from './services/web-socket-connection/web-socket-connection';
+import { SessionStorage } from './services/storage/storage';
 
 export class App {
     public router: Router;
@@ -15,19 +16,19 @@ export class App {
     private WebSocketConnection: WebSocketConnection;
 
     constructor() {
-        const routes = this.createRoutes();
-        this.router = new Router(routes);
         this.background = new Background();
         this.WebSocketConnection = new WebSocketConnection();
         this.mainView = null;
         this.chatPage = null;
         this.createView();
+        const routes = this.createRoutes();
+        this.router = new Router(routes);
     }
 
     private createView(): void {
         this.chatPage = new ChatView(this.router);
         this.mainView = new MainView();
-        if (this.mainView) document.body.append(this.background.getHTMLElement(), this.mainView.getHTMLElement());
+        if (this.mainView) document.body.append(this.mainView.getHTMLElement(), this.background.getHTMLElement());
     }
 
     private createRoutes(): Route[] {

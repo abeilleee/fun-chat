@@ -11,7 +11,7 @@ export class SessionStorage {
 
     public getData(): string | null {
         const data = sessionStorage.getItem(this.STORAGE_NAME);
-        if (data && typeof JSON.parse(data) === 'string') {
+        if (data) {
             return JSON.parse(data);
         }
         return null;
