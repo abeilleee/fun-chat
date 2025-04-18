@@ -7,6 +7,10 @@ import type { AllUsers } from './types';
 export const allUsers: AllUsers = {
     inactive: [],
     active: [],
+    selectedUser: {
+        username: '',
+        status: USER_STATUS.INACTIVE,
+    },
 };
 
 export function getUsers(data: string): void {

@@ -16,6 +16,13 @@ export class View {
         elements.forEach((child: HTMLElement) => this.element.getElement().append(child));
     }
 
+    public removeChildren(): void {
+        const HTMLElement = this.getHTMLElement();
+        while (HTMLElement.firstChild) {
+            HTMLElement.removeChild(HTMLElement.firstChild);
+        }
+    }
+
     private createView(options: Options): ElementCreator {
         const element = new ElementCreator(options);
         return element;

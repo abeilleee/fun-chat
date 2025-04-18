@@ -63,6 +63,7 @@ export class Contacts extends View {
 
     public renderContacts(): void {
         addEventListener('onAllUsersChange', () => {
+            this.cleanContacts();
             console.log('allUsers was changed:');
 
             const users = getAllUsers();
@@ -74,13 +75,13 @@ export class Contacts extends View {
         });
     }
 
-    // private cleanContacts(): void {
-    //     const contactList = this.contactList.getElement();
-    //     while (contactList.firstChild) {
-    //         console.log('hi');
-    //         contactList.removeChild(contactList.firstChild);
-    //     }
-    // }
+    private cleanContacts(): void {
+        const contactList = this.contactList.getElement();
+        while (contactList.firstChild) {
+            console.log('hi');
+            contactList.removeChild(contactList.firstChild);
+        }
+    }
 
     private addEventListeners(): void {
         if (this.contactList) {
