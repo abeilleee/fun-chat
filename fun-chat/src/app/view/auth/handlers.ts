@@ -4,8 +4,7 @@ import type { AuthValidator } from '../../services/auth-validator/auth-validator
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Payload, User } from '../../services/server-api/types/user-actions';
 import type { ClientApi } from '../../services/server-api/api';
-import { USER_MESSAGE_TYPE } from '../../services/server-api/constants';
-import type { SessionStorage } from '../../services/storage/storage';
+import { USER_STATUS } from '../../services/server-api/constants';
 
 export function loginHandler(
     loginElement: InputElement,
@@ -73,21 +72,3 @@ export function passwordHandler(
     }
     return;
 }
-
-// export function submitHandler(login: string, password: string, clientApi: ClientApi, storage: SessionStorage): void {
-//     const payload: Payload = {
-//         user: {
-//             login: login,
-//             password: password,
-//         },
-//     };
-
-//     const userData: User = {
-//         login: login,
-//         password: password,
-//         isLogined: true,
-//     };
-
-//     clientApi.sendRequestToServer(USER_MESSAGE_TYPE.LOGIN, payload);
-//     storage.setData(userData);
-// }

@@ -1,11 +1,9 @@
+import { getStorageData } from '../../../../services/storage/storage';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { SessionStorage } from '../../../../services/storage/storage';
-import type { User } from '../../../../services/server-api/types/user-actions';
 
 export class MessagesHeader extends View {
-    private storage: SessionStorage;
     constructor(parent: HTMLElement) {
         const options: Options = {
             tagName: 'div',
@@ -13,7 +11,6 @@ export class MessagesHeader extends View {
             parent: parent,
         };
         super(options);
-        this.storage = new SessionStorage();
         this.setUserName('Mayya');
         this.setUserStatus('Online');
         this.getUserName();
@@ -39,7 +36,7 @@ export class MessagesHeader extends View {
     }
 
     private getUserName(): string | undefined {
-        const userData = this.storage.getData();
+        const userData = getStorageData();
         if (userData && 'login' in userData && typeof userData.login === 'string') {
             return userData.login;
         }

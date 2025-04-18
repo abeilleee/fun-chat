@@ -6,7 +6,6 @@ import { ChatView } from './view/chat/chat';
 import { MainView } from './view/main-view';
 import type { View } from './view/view';
 import { WebSocketConnection } from './services/web-socket-connection/web-socket-connection';
-import { SessionStorage } from './services/storage/storage';
 
 export class App {
     public router: Router;
@@ -26,7 +25,7 @@ export class App {
     }
 
     private createView(): void {
-        this.chatPage = new ChatView(this.router);
+        this.chatPage = new ChatView(this.router, this.WebSocketConnection);
         this.mainView = new MainView();
         if (this.mainView) document.body.append(this.mainView.getHTMLElement(), this.background.getHTMLElement());
     }
@@ -37,14 +36,14 @@ export class App {
                 path: ``,
                 callback: async (): Promise<void> => {
                     const { ChatView } = await import('./view/chat/chat');
-                    this.setContent(new ChatView(this.router));
+                    this.setContent(new ChatView(this.router, this.WebSocketConnection));
                 },
             },
             {
                 path: `${PAGES.MAIN}`,
                 callback: async (): Promise<void> => {
                     const { ChatView } = await import('./view/chat/chat');
-                    this.setContent(new ChatView(this.router));
+                    this.setContent(new ChatView(this.router, this.WebSocketConnection));
                 },
             },
             {

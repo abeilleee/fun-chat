@@ -88,6 +88,8 @@ export default defineConfig([
             '@typescript-eslint/no-unsafe-argument': 'off', // make troubles for routing, change!
             '@typescript-eslint/no-unsafe-assignment': 'off',
             '@typescript-eslint/no-unsafe-return': 'off',
+            '@typescript-eslint/no-redundant-type-constituents': 'off',
+            '@typescript-eslint/no-unsafe-member-access': 'off',
         },
     },
     eslintPluginUnicorn.configs.recommended,
@@ -106,6 +108,8 @@ export default defineConfig([
             'unicorn/prefer-math-min-max': 'off',
             'unicorn/prefer-spread': 'off',
             'unicorn/prefer-global-this': 'off',
+            'unicorn/prefer-logical-operator-over-ternary': 'off',
+            'unicorn/new-for-builtins': 'off',
         },
     },
 ]);

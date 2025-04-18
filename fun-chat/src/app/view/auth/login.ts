@@ -6,7 +6,6 @@ import { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Router } from '../../services/router/router';
 import { ClientApi } from '../../services/server-api/api';
-import { SessionStorage } from '../../services/storage/storage';
 import type { WebSocketConnection } from '../../services/web-socket-connection/web-socket-connection';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
@@ -24,7 +23,6 @@ export class LoginPageView extends View {
     private loginButton: Button | null;
     private isValidLogin: boolean = false;
     private isValidPassword: boolean = false;
-    private storage: SessionStorage;
     private clientApi: ClientApi;
 
     constructor(router: Router, websocket: WebSocketConnection) {
@@ -41,7 +39,6 @@ export class LoginPageView extends View {
         this.passwordErrorMessage = null;
         this.loginButton = null;
         this.validator = new AuthValidator();
-        this.storage = new SessionStorage();
         this.clientApi = new ClientApi(websocket);
         this.configure();
         this.setLoginInputListener();
@@ -179,8 +176,7 @@ export class LoginPageView extends View {
                                 this.isValidPassword,
                                 login,
                                 password,
-                                this.clientApi,
-                                this.storage
+                                this.clientApi
                             );
                         break;
                     }

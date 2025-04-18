@@ -7,7 +7,7 @@ export const enum SERVER_ACTIONS {
     OUTCOMING = 'SERVER_OUTCOMING',
 }
 
-export const enum USER_MESSAGE_TYPE {
+export const enum USER_STATUS {
     LOGIN = 'USER_LOGIN',
     LOGOUT = 'USER_LOGOUT',
     ACTIVE = 'USER_ACTIVE',

@@ -16,3 +16,34 @@
     flex-direction: column;
     gap: 8px;
 }
+
+.user-box {
+    display: flex;
+    padding-left: 5px;
+    // justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.user-selected {
+    background-color: rgb(133, 75, 240);
+}
+
+.user-indicator {
+    border-radius: 100%;
+    width: 8px;
+    height: 8px;
+    border: 1px solid black;
+
+    &--online {
+        background-color: var(--bg-color-online-indicator);
+    }
+
+    &--offline {
+        background-color: var(--bg-color-offline-indicator);
+    }
+}

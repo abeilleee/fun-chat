@@ -1,4 +1,4 @@
-import { APP_ERROR, MESSAGE_ACTIONS, USER_MESSAGE_TYPE } from '../constants';
+import { APP_ERROR, MESSAGE_ACTIONS, USER_STATUS } from '../constants';
 
 export type Message = {
     id: string;
@@ -17,7 +17,7 @@ export type MessageStatus = {
 
 export type UserRequest = {
     id: string;
-    type: USER_MESSAGE_TYPE | MESSAGE_ACTIONS | APP_ERROR;
+    type: USER_STATUS | MESSAGE_ACTIONS | APP_ERROR;
     payload: Payload | null;
 };
 
@@ -25,6 +25,7 @@ export type User = {
     login: string | null;
     password?: string | null;
     isLogined?: boolean;
+    id?: string;
 };
 
 export type Payload = {
