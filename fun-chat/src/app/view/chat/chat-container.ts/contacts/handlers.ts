@@ -1,5 +1,5 @@
 import { selectedUserChanged } from '../../../../services/custom-events/custom-events';
-import { allUsers } from '../../../../services/state/reducers/users/user-states';
+import { allUsers } from '../../../../services/state/reducers/users/user-states-reducer';
 
 export function handleUserSelect(targetElement: HTMLElement, list: HTMLElement): void {
     const elements = list.children;
@@ -12,9 +12,8 @@ export function handleUserSelect(targetElement: HTMLElement, list: HTMLElement):
 
     const userBoxElements = userBox?.children;
     Array.from(elements).forEach((child) => {
-        if (child.classList.contains('user-indicator--online')) {
-            console.log('ONLINE');
-        }
+        // if (child.classList.contains('user-indicator--online')) {
+        // }
     });
 
     if (username) {
@@ -22,7 +21,6 @@ export function handleUserSelect(targetElement: HTMLElement, list: HTMLElement):
         const status = allUsers.inactive.some((elem) => elem.login === username) ? 'offline' : 'online';
         allUsers.selectedUser.status = status;
         dispatchEvent(selectedUserChanged);
-        console.log('allUsers: ', allUsers);
     }
     if (userBox) {
         userBox.classList.toggle('user-selected');

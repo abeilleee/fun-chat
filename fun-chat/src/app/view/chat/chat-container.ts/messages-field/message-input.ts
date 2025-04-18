@@ -1,25 +1,33 @@
 import { Button } from '../../../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../../../components/buttons/constants';
+import { handlerBtnSend } from '../../../../components/buttons/handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
 import { InputElement } from '../../../../components/input/input';
+import type { ClientApi } from '../../../../services/server-api/api';
+import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
+import { MessageElement } from './message';
 
 export class MessageInput extends View {
     private input: InputElement | null;
     private sendButton: Button | null;
+    private clientApi: ClientApi;
 
-    constructor(parent: HTMLElement) {
+    constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
             tagName: 'div',
             classes: ['message-input-box', 'hidden'],
             parent: parent,
         };
         super(options);
+        this.clientApi = clientApi;
         this.input = null;
         this.sendButton = null;
         this.configure(parent);
-        this.addEventListener();
+        this.addInputEventListener();
+        this.addBtnEventListener();
+        // this.handlerSendMsg();
     }
 
     private configure(parent: HTMLElement): void {
@@ -32,7 +40,7 @@ export class MessageInput extends View {
         );
     }
 
-    private addEventListener(): void {
+    private addInputEventListener(): void {
         this.input?.getElement().addEventListener('input', () => {
             this.input?.getElement().addEventListener('input', () => {
                 const inputValue = this.input?.getValue() || '';
@@ -40,4 +48,20 @@ export class MessageInput extends View {
             });
         });
     }
+
+    private addBtnEventListener(): void {
+        this.sendButton?.getElement().addEventListener('click', () => {
+            const text = this.input?.getValue();
+            if (text) handlerBtnSend(text, this.clientApi);
+        });
+    }
+
+    // private handlerSendMsg(): void {
+    //     addEventListener('onMsgSend', () => {
+    //         const dialog = dialogState;
+    //         console.log('dialog state: ', dialog);
+    //         const
+    //         const msg = new MessageElement(parent);
+    //     });
+    // }
 }

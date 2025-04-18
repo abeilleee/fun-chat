@@ -1,12 +1,12 @@
 import { APP_ERROR, MESSAGE_ACTIONS, USER_STATUS } from '../constants';
 
 export type Message = {
-    id: string;
-    from: string;
-    to: string;
-    text: string;
-    datetime: number;
-    status: MessageStatus;
+    id?: string;
+    from?: string;
+    to?: string;
+    text?: string;
+    datetime?: number;
+    status?: MessageStatus;
 };
 
 export type MessageStatus = {

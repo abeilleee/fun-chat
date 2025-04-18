@@ -20,7 +20,6 @@ export function getUsers(data: string): void {
             const currentUser = getCurrentUsername();
             const inactiveUsers = payload.users;
             if (Array.isArray(inactiveUsers)) {
-                console.log('inactiveUsers: ', inactiveUsers);
                 allUsers.inactive = inactiveUsers.filter((elem) => elem.login !== currentUser);
             }
             dispatchEvent(allUsersChange);
@@ -31,7 +30,6 @@ export function getUsers(data: string): void {
             const currentUser = getCurrentUsername();
             const activeUsers = payload.users;
             if (Array.isArray(activeUsers)) {
-                console.log('activeUsers: ', activeUsers);
                 allUsers.active = activeUsers.filter((elem) => elem.login !== currentUser);
             }
             dispatchEvent(allUsersChange);

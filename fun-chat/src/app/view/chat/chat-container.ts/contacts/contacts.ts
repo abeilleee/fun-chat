@@ -4,7 +4,7 @@ import { USER_STATUS } from '../../../../services/server-api/constants';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { getAllUsers } from '../../../../services/state/reducers/users/user-states';
+import { getAllUsers } from '../../../../services/state/reducers/users/user-states-reducer';
 import type { User } from '../../../../services/server-api/types/user-actions';
 import type { WebSocketConnection } from '../../../../services/web-socket-connection/web-socket-connection';
 import { handleUserSelect } from './handlers';
@@ -64,7 +64,6 @@ export class Contacts extends View {
     public renderContacts(): void {
         addEventListener('onAllUsersChange', () => {
             this.cleanContacts();
-            console.log('allUsers was changed:');
 
             const users = getAllUsers();
             const activeUsers = users.active;

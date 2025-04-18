@@ -1,6 +1,6 @@
-import { Message } from '../../../../services/server-api/types/user-actions';
+import type { Message } from '../../../../services/server-api/types/user-actions';
 import { ElementCreator } from '../../../../utils/element-creator';
-import { Options } from '../../../../utils/types';
+import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 
 export class MessageElement extends View {
@@ -13,7 +13,7 @@ export class MessageElement extends View {
         super(options);
     }
 
-    public createMessage(message: Message) {
+    public createMessage(message: Message): void {
         const upperBox = new ElementCreator({ tagName: 'div', classes: ['upper-box'], parent: this.getHTMLElement() });
         const sender = new ElementCreator({
             tagName: 'div',
@@ -37,11 +37,11 @@ export class MessageElement extends View {
         const status = new ElementCreator({ tagName: 'div', classes: ['status'], parent: lowerBox.getElement() });
     }
 
-    public createSender(senderName: string = 'you'): void {
-        const sender = new ElementCreator({ tagName: 'p', classes: ['sender'], textContent: senderName });
-    }
+    // public createSender(senderName: string = 'you'): void {
+    //     const sender = new ElementCreator({ tagName: 'p', classes: ['sender'], textContent: senderName });
+    // }
 
-    public createDate(message: Message): void {
-        const date = message.datetime;
-    }
+    // public createDate(message: Message): void {
+    //     const date = message.datetime;
+    // }
 }

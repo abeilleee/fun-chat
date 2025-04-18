@@ -20,3 +20,27 @@ export function getCurrentUsername(): string | undefined {
         return String(data.login);
     }
 }
+
+export function toggleIsLogined() {
+    const data = getStorageData();
+    if (data && 'login' in data && 'password' in data) {
+        const login = data.login;
+        const password = data.password;
+
+        if (data && 'isLogined' in data && typeof login === 'string' && typeof password === 'string') {
+            const isLogined = !data.isLogined;
+
+            const user: User = {
+                login: login,
+                password: password,
+                isLogined: isLogined,
+            };
+            console.log('toggle storage');
+            setData(user);
+        }
+    }
+}
+
+export function cleanStorage() {
+    sessionStorage.clear();
+}

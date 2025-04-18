@@ -1,6 +1,5 @@
 import type { WebSocketConnection } from '../web-socket-connection/web-socket-connection';
 import type { MESSAGE_ACTIONS, USER_STATUS } from './constants';
-import { generateId } from '../../utils/id-generator';
 import type { Payload } from './types/user-actions';
 
 export class ClientApi {

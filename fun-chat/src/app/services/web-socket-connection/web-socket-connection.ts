@@ -1,8 +1,9 @@
 import { ClientApi } from '../server-api/api';
 import type { ServerMessage } from '../server-api/types/server-actions';
-import { getUsers } from '../state/reducers/users/user-states';
+import { getMessages } from '../state/reducers/dialog/dialog-reducer';
+import { getUsers } from '../state/reducers/users/user-states-reducer';
 import { EVENT_TYPE, SERVER_URL } from './constants';
-import { openHandler } from './handlers';
+import { openHandler, reloadPage } from './handlers';
 
 export class WebSocketConnection {
     public isOpen: boolean = false;
@@ -33,7 +34,10 @@ export class WebSocketConnection {
 
         this.websocket.addEventListener(EVENT_TYPE.OPEN, () => {
             this.isOpen = true;
-            if (this.clientApi) openHandler(this.clientApi);
+            if (this.clientApi) {
+                openHandler(this.clientApi);
+                reloadPage(this.clientApi); //TODO: delete
+            }
         });
 
         this.websocket.addEventListener(EVENT_TYPE.ERROR, () => {});
@@ -45,8 +49,8 @@ export class WebSocketConnection {
         if (this.websocket) {
             this.websocket.addEventListener(EVENT_TYPE.MESSAGE, (message: MessageEvent) => {
                 const response = message.data;
-                console.log('response: ', response);
                 getUsers(response);
+                getMessages(response);
             });
             this.websocket.addEventListener(EVENT_TYPE.CLOSE, () => {
                 this.isOpen = false;

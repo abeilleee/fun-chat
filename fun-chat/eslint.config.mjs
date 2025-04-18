@@ -91,6 +91,7 @@ export default defineConfig([
             '@typescript-eslint/no-redundant-type-constituents': 'off',
             '@typescript-eslint/no-unsafe-member-access': 'off',
             '@typescript-eslint/no-unused-expressions': 'off',
+            '@typescript-eslint/no-base-to-string': 'off',
         },
     },
     eslintPluginUnicorn.configs.recommended,

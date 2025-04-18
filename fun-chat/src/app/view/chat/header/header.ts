@@ -2,6 +2,7 @@ import { Button } from '../../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../../components/buttons/constants';
 import { handlerBtnAbout, handlerBtnLogout } from '../../../components/buttons/handlers';
 import type { Router } from '../../../services/router/router';
+import type { ClientApi } from '../../../services/server-api/api';
 import { getCurrentUsername } from '../../../services/storage/storage';
 import { ElementCreator } from '../../../utils/element-creator';
 import type { Options } from '../../../utils/types';
@@ -12,8 +13,9 @@ export class HeaderView extends View {
     private headerWrapper: ElementCreator | null;
     private buttonsBox: HTMLElement | null;
     private router: Router;
+    private clientApi: ClientApi;
 
-    constructor(parent: HTMLElement, router: Router) {
+    constructor(parent: HTMLElement, router: Router, clientApi: ClientApi) {
         const options: Options = {
             tagName: 'header',
             classes: ['header'],
@@ -23,6 +25,7 @@ export class HeaderView extends View {
         this.router = router;
         this.headerWrapper = null;
         this.buttonsBox = null;
+        this.clientApi = clientApi;
         this.configure();
         this.buttonsEventListeners();
     }
@@ -90,7 +93,7 @@ export class HeaderView extends View {
                         break;
                     }
                     case 'Logout': {
-                        handlerBtnLogout(this.router);
+                        handlerBtnLogout(this.router, this.clientApi);
                         break;
                     }
                 }

@@ -35,8 +35,8 @@ export class App {
             {
                 path: ``,
                 callback: async (): Promise<void> => {
-                    const { ChatView } = await import('./view/chat/chat');
-                    this.setContent(new ChatView(this.router, this.WebSocketConnection));
+                    const { LoginPageView } = await import('./view/auth/login');
+                    this.setContent(new LoginPageView(this.router, this.WebSocketConnection));
                 },
             },
             {

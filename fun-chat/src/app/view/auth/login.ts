@@ -86,7 +86,7 @@ export class LoginPageView extends View {
             form.getElement(),
             'password'
         );
-        this.passwordErrorMessage = new ElementCreator({tagName: 'span',classes: ['error-message'],
+        this.passwordErrorMessage = new ElementCreator({tagName: 'span', classes: ['error-message'],
             parent: form.getElement(),
         });
         return form.getElement();

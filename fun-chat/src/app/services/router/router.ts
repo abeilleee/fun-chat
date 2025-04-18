@@ -23,18 +23,23 @@ export class Router {
 
     public redirectToMainPage(): void {
         const data = getStorageData();
-        const path = window.location.pathname;
-
-        if (path === `/${PAGES.AUTH}` && true) {
-            this.navigate(PAGES.MAIN);
+        // const path = window.location.pathname;
+        console.log(data);
+        if (data && 'isLogined' in data && data.isLogined === true) {
+            console.log('authorized');
+            const timerId = setTimeout(() => {
+                this.navigate(PAGES.MAIN);
+            }, 100);
+            // clearInterval(timerId);
         }
     }
 
     public redirectToAuthPage(): void {
         const data = getStorageData();
-        const path = window.location.pathname;
+        // const path = window.location.pathname;
 
-        if (path === `/${PAGES.MAIN}` && !data) {
+        if (!data || ('isLogined' in data && data.isLogined === false)) {
+            console.log('dont authorized');
             this.navigate(PAGES.AUTH);
         }
     }

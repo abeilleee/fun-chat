@@ -24,7 +24,7 @@ export class ChatView extends View {
         this.router = router;
         this.clientApi = new ClientApi(webSocket);
         this.websocket = webSocket;
-        this.header = new HeaderView(this.getHTMLElement(), this.router);
+        this.header = new HeaderView(this.getHTMLElement(), this.router, this.clientApi);
         this.chat = new ChatContainerView(this.getHTMLElement(), this.clientApi, this.websocket);
         this.footer = new FooterView(this.getHTMLElement());
         this.configureView();
