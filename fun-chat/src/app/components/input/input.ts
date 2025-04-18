@@ -1,11 +1,12 @@
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
+import type { PLACEHOLDER } from './constants';
 
 export class InputElement extends ElementCreator<HTMLInputElement> {
     private placeholder: string;
     private type: string;
 
-    constructor(placeholder: string, type: string, classes?: string[], parent?: HTMLElement, id?: string) {
+    constructor(placeholder: PLACEHOLDER, type: string, classes?: string[], parent?: HTMLElement, id?: string) {
         const options: Options = {
             tagName: 'input',
             classes: classes ? ['input', ...classes] : ['input'],

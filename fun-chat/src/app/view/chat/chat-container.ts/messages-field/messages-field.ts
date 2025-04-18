@@ -3,12 +3,14 @@ import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { CHAT_INTRO_TEXT } from '../constants';
+import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
 
 export class MessageField extends View {
     private clientApi: ClientApi;
     private startWrapper: ElementCreator | null;
     private messagesHeader: MessagesHeader | null;
+    private messagesInputBox: MessageInput | null;
 
     constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
@@ -20,6 +22,7 @@ export class MessageField extends View {
         this.clientApi = clientApi;
         this.startWrapper = null;
         this.messagesHeader = null;
+        this.messagesInputBox = null;
         this.setEventListener();
         this.configure();
     }
@@ -32,11 +35,13 @@ export class MessageField extends View {
             parent: this.getHTMLElement(),
             textContent: CHAT_INTRO_TEXT.SELECT,
         });
+        this.messagesInputBox = new MessageInput(this.getHTMLElement());
     }
 
     private setEventListener(): void {
         addEventListener('onselectedUserChanged', () => {
             this.messagesHeader?.getHTMLElement().classList.remove('hidden');
+            this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
             this.changeTextContent();
         });
     }

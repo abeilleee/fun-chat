@@ -1,6 +1,7 @@
 import { Button } from '../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../components/buttons/constants';
 import { handlerBtnAbout, handlerBtnLogin } from '../../components/buttons/handlers';
+import { PLACEHOLDER } from '../../components/input/constants';
 import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
@@ -57,38 +58,37 @@ export class LoginPageView extends View {
             classes: ['form'],
             parent: this.getHTMLElement(),
         });
-
         const labelLogin = new ElementCreator<HTMLLabelElement>({
             tagName: 'label',
             classes: ['label', 'label-login'],
             parent: form.getElement(),
             textContent: 'Enter your login',
         }).getElement();
-
         if (labelLogin instanceof HTMLLabelElement) {
             labelLogin.htmlFor = 'Login';
         }
-        this.loginInput = new InputElement('Login', 'text', ['input-login'], form.getElement(), 'login');
+        this.loginInput = new InputElement(PLACEHOLDER.LOGIN, 'text', ['input-login'], form.getElement(), 'login');
         this.loginErrorMessage = new ElementCreator({
             tagName: 'span',
             classes: ['error-message'],
             parent: form.getElement(),
         });
-
         const labelPassword = new ElementCreator<HTMLLabelElement>({
             tagName: 'label',
             classes: ['label', 'label-password'],
             parent: form.getElement(),
             textContent: 'Enter your password',
         });
-
-        this.passwordInput = new InputElement('Password', 'text', ['input-password'], form.getElement(), 'password');
-        this.passwordErrorMessage = new ElementCreator({
-            tagName: 'span',
-            classes: ['error-message'],
+        this.passwordInput = new InputElement(
+            PLACEHOLDER.PASSWORD,
+            'text',
+            ['input-password'],
+            form.getElement(),
+            'password'
+        );
+        this.passwordErrorMessage = new ElementCreator({tagName: 'span',classes: ['error-message'],
             parent: form.getElement(),
         });
-
         return form.getElement();
     }
 

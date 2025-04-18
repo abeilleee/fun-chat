@@ -4,11 +4,11 @@ import { USER_STATUS } from '../../../../services/server-api/constants';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { getAllUsers, getUsers } from '../../../../services/state/reducers/users/user-states';
+import { getAllUsers } from '../../../../services/state/reducers/users/user-states';
 import type { User } from '../../../../services/server-api/types/user-actions';
 import type { WebSocketConnection } from '../../../../services/web-socket-connection/web-socket-connection';
-import { EVENT_TYPE } from '../../../../services/web-socket-connection/constants';
 import { handleUserSelect } from './handlers';
+import { PLACEHOLDER } from '../../../../components/input/constants';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
@@ -27,7 +27,7 @@ export class Contacts extends View {
         super(options);
         this.clientApi = clientApi;
         this.websocket = websocket;
-        this.inputSearch = new InputElement('Search...', 'search', ['input-search'], this.getHTMLElement());
+        this.inputSearch = new InputElement(PLACEHOLDER.SEARCH, 'search', ['input-search'], this.getHTMLElement());
         this.contactList = new ElementCreator({
             tagName: 'ul',
             classes: ['contacts-list'],
