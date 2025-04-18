@@ -2,6 +2,7 @@ import { Button } from '../../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../../components/buttons/constants';
 import { handlerBtnAbout, handlerBtnLogout } from '../../../components/buttons/handlers';
 import type { Router } from '../../../services/router/router';
+import { getCurrentUsername } from '../../../services/storage/storage';
 import { ElementCreator } from '../../../utils/element-creator';
 import type { Options } from '../../../utils/types';
 import { ContainerView } from '../../container/container';
@@ -26,14 +27,16 @@ export class HeaderView extends View {
         this.buttonsEventListeners();
     }
 
-    public setUserName(parent: HTMLElement, id: number): HTMLElement {
-        const userName = new ElementCreator({
-            tagName: 'h3',
-            classes: ['user-name'],
-            parent: parent,
-            textContent: `User: ${id}`,
-        });
-        return userName.getElement();
+    public setUserName(parent: HTMLElement): void {
+        const userLogin = getCurrentUsername();
+        if (userLogin) {
+            const userName = new ElementCreator({
+                tagName: 'h3',
+                classes: ['user-name'],
+                parent: parent,
+                textContent: `User: ${userLogin}`,
+            });
+        }
     }
 
     private configure(): void {
@@ -44,6 +47,7 @@ export class HeaderView extends View {
             parent: container.getHTMLElement(),
         });
         this.setTitle(this.headerWrapper.getElement());
+        this.setUserName(this.headerWrapper.getElement());
         this.buttonsBox = this.createButtons(this.headerWrapper.getElement());
     }
 
