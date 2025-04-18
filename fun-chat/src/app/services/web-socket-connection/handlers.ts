@@ -7,8 +7,8 @@ import { getStorageData } from '../storage/storage';
 export function openHandler(clientApi: ClientApi): void {
     const id = generateId();
     const payload = null;
-    clientApi.sendRequestToServer(USER_STATUS.INACTIVE, payload, String(id));
-    clientApi.sendRequestToServer(USER_STATUS.ACTIVE, payload, String(id));
+    // clientApi.sendRequestToServer(USER_STATUS.INACTIVE, payload, String(id));
+    // clientApi.sendRequestToServer(USER_STATUS.ACTIVE, payload, String(id));
 }
 
 export function reloadPage(clientApi: ClientApi): void {

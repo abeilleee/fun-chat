@@ -21,6 +21,13 @@ export function getCurrentUsername(): string | undefined {
     }
 }
 
+export function getPassword(): string | undefined {
+    const data = getStorageData();
+    if (data && 'password' in data) {
+        return String(data.password);
+    }
+}
+
 export function toggleIsLogined(): void {
     const data = getStorageData();
     if (data && 'login' in data && 'password' in data) {

@@ -6,12 +6,17 @@ import { ChatView } from './view/chat/chat';
 import { MainView } from './view/main-view';
 import type { View } from './view/view';
 import { WebSocketConnection } from './services/web-socket-connection/web-socket-connection';
+import { USER_STATUS } from './services/server-api/constants';
+import { ClientApi } from './services/server-api/api';
+import { getCurrentUsername, getPassword } from './services/storage/storage';
+import { allUsers } from './services/state/reducers/users/user-states-reducer';
 
 export class App {
     public router: Router;
     private background: Background;
     private mainView: MainView | null;
     private chatPage: ChatView | null;
+    private clientApi: ClientApi;
     private WebSocketConnection: WebSocketConnection;
 
     constructor() {
@@ -19,9 +24,22 @@ export class App {
         this.WebSocketConnection = new WebSocketConnection();
         this.mainView = null;
         this.chatPage = null;
-        this.createView();
+
         const routes = this.createRoutes();
         this.router = new Router(routes);
+        this.clientApi = new ClientApi(this.WebSocketConnection);
+
+        window.addEventListener('beforeunload', () => {
+            const id = generateId();
+            const login = getCurrentUsername();
+            const password = getPassword();
+            this.clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
+            this.clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
+            console.log('reload');
+        });
+        this.createView();
+
+        console.log(allUsers);
     }
 
     private createView(): void {
@@ -78,5 +96,16 @@ export class App {
             }
             this.mainView.getHTMLElement().append(view.getHTMLElement());
         }
+    }
+
+    private sendRequests(): void {
+        window.addEventListener('beforeunload', () => {
+            const id = generateId();
+            const login = getCurrentUsername();
+            const password = getPassword();
+            this.clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
+            this.clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
+            console.log('reload');
+        });
     }
 }
