@@ -30,7 +30,6 @@ export class Router {
             const timerId = setTimeout(() => {
                 this.navigate(PAGES.MAIN);
             }, 100);
-            // clearInterval(timerId);
         }
     }
 
@@ -39,7 +38,6 @@ export class Router {
         // const path = window.location.pathname;
 
         if (!data || ('isLogined' in data && data.isLogined === false)) {
-            console.log('dont authorized');
             this.navigate(PAGES.AUTH);
         }
     }

@@ -21,7 +21,7 @@ export function getCurrentUsername(): string | undefined {
     }
 }
 
-export function toggleIsLogined() {
+export function toggleIsLogined(): void {
     const data = getStorageData();
     if (data && 'login' in data && 'password' in data) {
         const login = data.login;
@@ -39,8 +39,4 @@ export function toggleIsLogined() {
             setData(user);
         }
     }
-}
-
-export function cleanStorage() {
-    sessionStorage.clear();
 }
