@@ -11,4 +11,5 @@ export function openHandler(clientApi: ClientApi): void {
     }
     const payload = null;
     clientApi.sendRequestToServer(USER_STATUS.INACTIVE, payload, String(id));
+    clientApi.sendRequestToServer(USER_STATUS.ACTIVE, payload, String(id));
 }

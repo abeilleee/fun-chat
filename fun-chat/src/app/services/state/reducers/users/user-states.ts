@@ -1,6 +1,5 @@
 import { allUsersChange } from '../../../custom-events/custom-events';
 import { USER_STATUS } from '../../../server-api/constants';
-import type { User } from '../../../server-api/types/user-actions';
 import { getCurrentUsername } from '../../../storage/storage';
 import type { AllUsers } from './types';
 
@@ -9,7 +8,7 @@ export const allUsers: AllUsers = {
     active: [],
     selectedUser: {
         username: '',
-        status: USER_STATUS.INACTIVE,
+        status: '',
     },
 };
 

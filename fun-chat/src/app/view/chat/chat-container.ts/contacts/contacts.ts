@@ -69,7 +69,6 @@ export class Contacts extends View {
             const users = getAllUsers();
             const activeUsers = users.active;
             const inactiveUsers = users.inactive;
-            console.log('users: ', users, typeof users);
             activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
             inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
         });
@@ -78,7 +77,6 @@ export class Contacts extends View {
     private cleanContacts(): void {
         const contactList = this.contactList.getElement();
         while (contactList.firstChild) {
-            console.log('hi');
             contactList.removeChild(contactList.firstChild);
         }
     }
