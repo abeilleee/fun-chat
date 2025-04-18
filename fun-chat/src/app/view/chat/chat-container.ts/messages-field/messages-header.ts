@@ -10,13 +10,12 @@ export class MessagesHeader extends View {
     constructor(parent: HTMLElement) {
         const options: Options = {
             tagName: 'div',
-            classes: ['messages-header'],
+            classes: ['messages-header', 'hidden'],
             parent: parent,
         };
         super(options);
         this.userName = null;
         this.setUserName();
-        // this.setUserStatus('Online');
     }
 
     public setUserName(): void {
@@ -32,13 +31,4 @@ export class MessagesHeader extends View {
             });
         });
     }
-
-    // public setUserStatus(status: string): void {
-    //     const statusElement = new ElementCreator({
-    //         tagName: 'p',
-    //         classes: ['header-username'],
-    //         textContent: status,
-    //         parent: this.getHTMLElement(),
-    //     });
-    // }
 }
