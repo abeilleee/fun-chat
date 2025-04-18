@@ -19,6 +19,7 @@ export class MessageInput extends View {
         this.input = null;
         this.sendButton = null;
         this.configure(parent);
+        this.addEventListener();
     }
 
     private configure(parent: HTMLElement): void {
@@ -29,5 +30,14 @@ export class MessageInput extends View {
             this.getHTMLElement(),
             BUTTON_NAME.SEND
         );
+    }
+
+    private addEventListener(): void {
+        this.input?.getElement().addEventListener('input', () => {
+            this.input?.getElement().addEventListener('input', () => {
+                const inputValue = this.input?.getValue() || '';
+                this.sendButton?.setDisabled(inputValue.length === 0);
+            });
+        });
     }
 }
