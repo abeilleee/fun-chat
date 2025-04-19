@@ -10,6 +10,7 @@ import { USER_STATUS } from './services/server-api/constants';
 import { ClientApi } from './services/server-api/api';
 import { getCurrentUsername, getPassword } from './services/storage/storage';
 import { allUsers } from './services/state/reducers/users/user-states-reducer';
+import { ConnectionWaiter } from './components/connection-waiter/connection-waiter';
 
 export class App {
     public router: Router;
@@ -18,6 +19,7 @@ export class App {
     private chatPage: ChatView | null;
     private clientApi: ClientApi;
     private WebSocketConnection: WebSocketConnection;
+    private connectionWaiter: ConnectionWaiter;
 
     constructor() {
         this.background = new Background();
@@ -28,6 +30,7 @@ export class App {
         const routes = this.createRoutes();
         this.router = new Router(routes);
         this.clientApi = new ClientApi(this.WebSocketConnection);
+        this.connectionWaiter = new ConnectionWaiter(this.WebSocketConnection);
 
         window.addEventListener('beforeunload', () => {
             const id = generateId();

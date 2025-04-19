@@ -9,6 +9,7 @@
 @use './app/view/chat/chat-container.ts/messages-field/messages-field.scss';
 @use './app/view/about/about.scss';
 @use './app/view/chat/chat-container.ts/chat-container.scss';
+@use './app/components/connection-waiter/connection-waiter.scss';
 @use './app/view/not-found/not-found.scss';
 @use './app/view/chat/footer/footer.scss';
 @use './styles/utils/variables.scss';

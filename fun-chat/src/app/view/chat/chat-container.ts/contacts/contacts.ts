@@ -64,7 +64,6 @@ export class Contacts extends View {
     public renderContacts(): void {
         addEventListener('onAllUsersChange', () => {
             this.cleanContacts();
-
             const users = getAllUsers();
             const activeUsers = users.active;
             const inactiveUsers = users.inactive;
