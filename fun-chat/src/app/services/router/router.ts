@@ -1,4 +1,4 @@
-import { getStorageData } from '../storage/storage';
+import { getStorageData, isLogined } from '../storage/storage';
 import { HistoryRoutesHandler } from './history-routes-handler';
 import { PAGES, type UserRequest, type Route } from './types';
 
@@ -22,20 +22,17 @@ export class Router {
     }
 
     public redirectToMainPage(): void {
-        const data = getStorageData();
-        // const path = window.location.pathname;
-        if (data && 'isLogined' in data && data.isLogined === true) {
-            const timerId = setTimeout(() => {
-                this.navigate(PAGES.MAIN);
-            }, 100);
+        const isAuth = isLogined();
+        const path = window.location.pathname;
+        if (isAuth && path === '/auth') {
+            this.navigate(PAGES.MAIN);
         }
     }
 
     public redirectToAuthPage(): void {
-        const data = getStorageData();
-        // const path = window.location.pathname;
-
-        if (!data || ('isLogined' in data && data.isLogined === false)) {
+        const isAuth = isLogined();
+        const path = window.location.pathname;
+        if (!isAuth && path === '/main') {
             this.navigate(PAGES.AUTH);
         }
     }

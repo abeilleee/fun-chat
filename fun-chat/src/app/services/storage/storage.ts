@@ -28,6 +28,13 @@ export function getPassword(): string | undefined {
     }
 }
 
+export function isLogined(): boolean | undefined {
+    const data = getStorageData();
+    if (data && 'isLogined' in data && typeof data.isLogined === 'boolean') {
+        return data.isLogined;
+    }
+}
+
 export function toggleIsLogined(): void {
     const data = getStorageData();
     if (data && 'login' in data && 'password' in data) {

@@ -37,7 +37,6 @@ export class WebSocketConnection {
 
         this.websocket.addEventListener(EVENT_TYPE.OPEN, () => {
             this.isOpen = true;
-
             this.connectionWaiter.hideWaiter();
 
             openHandler(this.clientApi);

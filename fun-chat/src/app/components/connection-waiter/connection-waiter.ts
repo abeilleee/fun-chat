@@ -19,7 +19,6 @@ export class ConnectionWaiter {
     public hideWaiter(): void {
         this.isOpen = false;
         if (this.modalWrapper) {
-            console.log('inside hide waiter');
             this.modalWrapper.remove();
             document.body.style.overflow = '';
         }
