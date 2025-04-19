@@ -1,4 +1,4 @@
-import { ClientApi } from '../server-api/api';
+import { ClientApi } from '../server-api/client-api';
 import type { ServerMessage } from '../server-api/types/server-actions';
 import { getMessages } from '../state/reducers/dialog/dialog-reducer';
 import { getUsers } from '../state/reducers/users/user-states-reducer';
@@ -14,7 +14,7 @@ export class WebSocketConnection {
     private connectionWaiter: ConnectionWaiter;
 
     constructor() {
-        this.clientApi = new ClientApi();
+        this.clientApi = new ClientApi(this);
         this.openConnection();
         this.connectionWaiter = new ConnectionWaiter();
         closeHandler(this.connectionWaiter);
@@ -37,12 +37,11 @@ export class WebSocketConnection {
 
         this.websocket.addEventListener(EVENT_TYPE.OPEN, () => {
             this.isOpen = true;
-            if (this.connectionWaiter.isOpen) {
-                this.connectionWaiter.hideWaiter();
-            }
 
-            openHandler(this.connectionWaiter);
-            dispatchEvent(connectionOpen);
+            this.connectionWaiter.hideWaiter();
+
+            openHandler(this.clientApi);
+            dispatchEvent(connectionOpen); //TODO: delete
         });
 
         this.websocket.addEventListener(EVENT_TYPE.ERROR, () => {});

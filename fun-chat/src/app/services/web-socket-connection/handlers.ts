@@ -1,14 +1,13 @@
 import type { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
 import { generateId } from '../../utils/id-generator';
-import { ClientApi } from '../server-api/api';
+import type { ClientApi } from '../server-api/client-api';
 import { USER_STATUS } from '../server-api/constants';
 import type { Payload } from '../server-api/types/user-actions';
 import { getCurrentUsername, getStorageData } from '../storage/storage';
 import type { WebSocketConnection } from './web-socket-connection';
 
-export function openHandler(waiter: ConnectionWaiter): void {
+export function openHandler(clientApi: ClientApi): void {
     console.log('OPEN CONNECTION');
-    const clientApi = new ClientApi();
 
     const id = generateId();
     if (id) {

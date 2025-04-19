@@ -6,8 +6,7 @@ import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Router } from '../../services/router/router';
-import { ClientApi } from '../../services/server-api/api';
-import type { WebSocketConnection } from '../../services/web-socket-connection/web-socket-connection';
+import type { ClientApi } from '../../services/server-api/client-api';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
 import { View } from '../view';
@@ -26,7 +25,7 @@ export class LoginPageView extends View {
     private isValidPassword: boolean = false;
     private clientApi: ClientApi;
 
-    constructor(router: Router) {
+    constructor(router: Router, clientApi: ClientApi) {
         const options: Options = {
             tagName: 'section',
             classes: ['section-auth'],
@@ -40,7 +39,7 @@ export class LoginPageView extends View {
         this.passwordErrorMessage = null;
         this.loginButton = null;
         this.validator = new AuthValidator();
-        this.clientApi = new ClientApi();
+        this.clientApi = clientApi;
         this.configure();
         this.setLoginInputListener();
         this.setPasswordInputListener();

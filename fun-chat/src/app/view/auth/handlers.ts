@@ -3,7 +3,7 @@ import type { InputElement } from '../../components/input/input';
 import type { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Payload, User } from '../../services/server-api/types/user-actions';
-import type { ClientApi } from '../../services/server-api/api';
+import type { ClientApi } from '../../services/server-api/client-api';
 import { USER_STATUS } from '../../services/server-api/constants';
 
 export function loginHandler(

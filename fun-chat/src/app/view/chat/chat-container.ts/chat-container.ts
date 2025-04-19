@@ -1,5 +1,4 @@
-import type { ClientApi } from '../../../services/server-api/api';
-import type { WebSocketConnection } from '../../../services/web-socket-connection/web-socket-connection';
+import type { ClientApi } from '../../../services/server-api/client-api';
 import { ElementCreator } from '../../../utils/element-creator';
 import type { Options } from '../../../utils/types';
 import { ContainerView } from '../../container/container';

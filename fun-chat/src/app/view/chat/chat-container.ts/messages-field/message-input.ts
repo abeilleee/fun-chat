@@ -3,7 +3,7 @@ import { BUTTON_NAME } from '../../../../components/buttons/constants';
 import { handlerBtnSend } from '../../../../components/buttons/handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
 import { InputElement } from '../../../../components/input/input';
-import type { ClientApi } from '../../../../services/server-api/api';
+import type { ClientApi } from '../../../../services/server-api/client-api';
 import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';

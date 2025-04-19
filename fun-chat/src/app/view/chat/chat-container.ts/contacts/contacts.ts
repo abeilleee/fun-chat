@@ -1,5 +1,5 @@
 import { InputElement } from '../../../../components/input/input';
-import type { ClientApi } from '../../../../services/server-api/api';
+import type { ClientApi } from '../../../../services/server-api/client-api';
 import { USER_STATUS } from '../../../../services/server-api/constants';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';

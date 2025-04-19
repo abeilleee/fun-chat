@@ -1,5 +1,5 @@
 import type { Router } from '../../services/router/router';
-import { ClientApi } from '../../services/server-api/api';
+import type { ClientApi } from '../../services/server-api/client-api';
 import type { WebSocketConnection } from '../../services/web-socket-connection/web-socket-connection';
 import type { Options } from '../../utils/types';
 import { View } from '../view';
@@ -14,14 +14,14 @@ export class ChatView extends View {
     private chat: ChatContainerView;
     private footer: FooterView;
 
-    constructor(router: Router) {
+    constructor(router: Router, clientApi: ClientApi) {
         const options: Options = {
             tagName: 'main',
             classes: ['main'],
         };
         super(options);
         this.router = router;
-        this.clientApi = new ClientApi();
+        this.clientApi = clientApi;
         this.header = new HeaderView(this.getHTMLElement(), this.router, this.clientApi);
         this.chat = new ChatContainerView(this.getHTMLElement(), this.clientApi);
         this.footer = new FooterView(this.getHTMLElement());

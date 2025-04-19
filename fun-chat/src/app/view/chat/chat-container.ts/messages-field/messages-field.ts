@@ -1,4 +1,4 @@
-import type { ClientApi } from '../../../../services/server-api/api';
+import type { ClientApi } from '../../../../services/server-api/client-api';
 import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { generateId } from '../../../../utils/id-generator';

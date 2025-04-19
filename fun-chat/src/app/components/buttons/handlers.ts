@@ -1,6 +1,6 @@
 import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
-import type { ClientApi } from '../../services/server-api/api';
+import type { ClientApi } from '../../services/server-api/client-api';
 import { MESSAGE_ACTIONS, USER_STATUS } from '../../services/server-api/constants';
 import type { Payload, User } from '../../services/server-api/types/user-actions';
 import { allUsers } from '../../services/state/reducers/users/user-states-reducer';
