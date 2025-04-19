@@ -4,7 +4,7 @@ import type { ClientApi } from '../../services/server-api/client-api';
 import { MESSAGE_ACTIONS, USER_STATUS } from '../../services/server-api/constants';
 import type { Payload, User } from '../../services/server-api/types/user-actions';
 import { allUsers } from '../../services/state/reducers/users/user-states-reducer';
-import { getStorageData, setData, toggleIsLogined } from '../../services/storage/storage';
+import { getStorageData, isLogined, setData, toggleIsLogined } from '../../services/storage/storage';
 import { generateId } from '../../utils/id-generator';
 
 export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
@@ -32,7 +32,8 @@ export function handlerBtnAbout(router: Router): void {
 }
 
 export function handlerBtnBack(router: Router): void {
-    history.back();
+    const isAuth = isLogined();
+    isAuth ? router.navigate(PAGES.MAIN) : router.navigate(PAGES.AUTH);
 }
 
 export function handlerBtnLogin(

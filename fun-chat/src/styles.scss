@@ -1,6 +1,7 @@
 @use './styles/base/typography.scss';
 @use './styles/base/reset';
 @use './app/settings/background/background.scss';
+@use './styles/base/globals.scss';
 @use './app/view/container/container';
 @use './app/view/chat/header/header.scss';
 @use './app/components/buttons/buttons';

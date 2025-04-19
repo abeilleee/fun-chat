@@ -24,7 +24,7 @@ export class Router {
     public redirectToMainPage(): void {
         const isAuth = isLogined();
         const path = window.location.pathname;
-        if (isAuth && path === '/auth') {
+        if (isAuth && path === `/${PAGES.AUTH}`) {
             this.navigate(PAGES.MAIN);
         }
     }
@@ -32,7 +32,7 @@ export class Router {
     public redirectToAuthPage(): void {
         const isAuth = isLogined();
         const path = window.location.pathname;
-        if (!isAuth && path === '/main') {
+        if (!isAuth && path === `/${PAGES.MAIN}`) {
             this.navigate(PAGES.AUTH);
         }
     }
