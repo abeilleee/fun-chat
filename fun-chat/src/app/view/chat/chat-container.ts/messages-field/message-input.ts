@@ -54,13 +54,4 @@ export class MessageInput extends View {
             if (text) handlerBtnSend(text, this.clientApi);
         });
     }
-
-    // private handlerSendMsg(): void {
-    //     addEventListener('onMsgSend', () => {
-    //         const dialog = dialogState;
-    //         console.log('dialog state: ', dialog);
-    //         const
-    //         const msg = new MessageElement(parent);
-    //     });
-    // }
 }

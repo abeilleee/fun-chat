@@ -24,15 +24,6 @@ export class App {
         this.router = new Router(routes);
         this.websocket = new WebSocketConnection();
         this.clientApi = new ClientApi(this.websocket);
-
-        // window.addEventListener('beforeunload', () => {
-        //     const id = generateId();
-        //     const login = getCurrentUsername();
-        //     const password = getPassword();
-        //     this.clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
-        //     this.clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
-        //     console.log('reload');
-        // });
         this.createView();
     }
 

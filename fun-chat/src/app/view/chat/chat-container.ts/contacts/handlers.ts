@@ -11,10 +11,7 @@ export function handleUserSelect(targetElement: HTMLElement, list: HTMLElement):
     const username = userBox?.textContent;
 
     const userBoxElements = userBox?.children;
-    Array.from(elements).forEach((child) => {
-        // if (child.classList.contains('user-indicator--online')) {
-        // }
-    });
+    Array.from(elements).forEach((child) => {});
 
     if (username) {
         allUsers.selectedUser.username = username;

@@ -33,7 +33,7 @@ export class Contacts extends View {
         });
         this.userBox = null;
         this.renderContacts();
-        this.addEventListeners();
+        this.setEventListeners();
     }
 
     public addContact(userName: User, status: USER_STATUS.ACTIVE | USER_STATUS.INACTIVE): void {
@@ -60,14 +60,13 @@ export class Contacts extends View {
     }
 
     public renderContacts(): void {
-        addEventListener('onAllUsersChange', () => {
-            this.cleanContacts();
-            const users = getAllUsers();
-            const activeUsers = users.active;
-            const inactiveUsers = users.inactive;
-            activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
-            inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
-        });
+        const users = getAllUsers();
+        this.cleanContacts();
+        console.log('render contacts');
+        const activeUsers = users.active;
+        const inactiveUsers = users.inactive;
+        activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
+        inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
     }
 
     private cleanContacts(): void {
@@ -77,7 +76,7 @@ export class Contacts extends View {
         }
     }
 
-    private addEventListeners(): void {
+    private setEventListeners(): void {
         if (this.contactList) {
             this.contactList.getElement().addEventListener('click', (event) => {
                 const targetElement = event.target;
@@ -87,5 +86,9 @@ export class Contacts extends View {
                 }
             });
         }
+
+        addEventListener('onAllUsersChange', () => {
+            this.renderContacts();
+        });
     }
 }

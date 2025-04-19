@@ -42,7 +42,6 @@ export class NotFoundView extends View {
 
     private addEventListener(): void {
         this.buttonBack?.getElement().addEventListener('click', () => {
-            console.log('hi');
             handlerBtnBack(this.router);
         });
     }

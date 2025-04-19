@@ -15,8 +15,6 @@ export const allUsers: AllUsers = {
 export function getUsers(data: string): void {
     const { id, type, payload } = JSON.parse(data);
 
-    console.log(allUsers);
-
     switch (type) {
         case USER_STATUS.INACTIVE: {
             const currentUser = getCurrentUsername();
