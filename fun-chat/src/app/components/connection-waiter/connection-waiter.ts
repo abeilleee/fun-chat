@@ -3,23 +3,23 @@ import { ElementCreator } from '../../utils/element-creator';
 import { MODAL_TEXT } from './constants';
 
 export class ConnectionWaiter {
-    private websocket: WebSocketConnection;
+    public isOpen: boolean = false;
     private modalWrapper: HTMLElement | null | HTMLDialogElement;
-    // private checkInterval: number;
-    // private timeout: number;
 
-    constructor(websocket: WebSocketConnection) {
-        this.websocket = websocket;
+    constructor() {
         this.modalWrapper = null;
     }
 
     public showWaiter(): void {
+        this.isOpen = true;
         this.createComponent();
         document.body.style.overflow = 'hidden';
     }
 
     public hideWaiter(): void {
+        this.isOpen = false;
         if (this.modalWrapper) {
+            console.log('inside hide waiter');
             this.modalWrapper.remove();
             document.body.style.overflow = '';
         }

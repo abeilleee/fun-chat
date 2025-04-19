@@ -42,7 +42,6 @@ export function toggleIsLogined(): void {
                 password: password,
                 isLogined: isLogined,
             };
-            console.log('toggle storage');
             setData(user);
         }
     }

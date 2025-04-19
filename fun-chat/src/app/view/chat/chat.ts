@@ -10,22 +10,20 @@ import { HeaderView } from './header/header';
 export class ChatView extends View {
     public router: Router;
     private clientApi: ClientApi;
-    private websocket: WebSocketConnection;
     private header: HeaderView;
     private chat: ChatContainerView;
     private footer: FooterView;
 
-    constructor(router: Router, webSocket: WebSocketConnection) {
+    constructor(router: Router) {
         const options: Options = {
             tagName: 'main',
             classes: ['main'],
         };
         super(options);
         this.router = router;
-        this.clientApi = new ClientApi(webSocket);
-        this.websocket = webSocket;
+        this.clientApi = new ClientApi();
         this.header = new HeaderView(this.getHTMLElement(), this.router, this.clientApi);
-        this.chat = new ChatContainerView(this.getHTMLElement(), this.clientApi, this.websocket);
+        this.chat = new ChatContainerView(this.getHTMLElement(), this.clientApi);
         this.footer = new FooterView(this.getHTMLElement());
         this.configureView();
     }

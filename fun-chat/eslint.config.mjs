@@ -112,6 +112,7 @@ export default defineConfig([
             'unicorn/prefer-global-this': 'off',
             'unicorn/prefer-logical-operator-over-ternary': 'off',
             'unicorn/new-for-builtins': 'off',
+            'unicorn/no-negated-condition': 'off',
         },
     },
 ]);

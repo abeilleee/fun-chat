@@ -23,8 +23,6 @@ export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
             clientApi.sendRequestToServer(USER_STATUS.LOGOUT, payload, id);
             router.navigate(PAGES.AUTH);
             toggleIsLogined();
-        } else {
-            console.log('Error, data options are not STRING type'); //delete
         }
     }
 }

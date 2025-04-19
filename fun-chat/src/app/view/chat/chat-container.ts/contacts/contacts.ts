@@ -12,12 +12,11 @@ import { PLACEHOLDER } from '../../../../components/input/constants';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
-    private websocket: WebSocketConnection;
     private inputSearch: InputElement;
     private clientApi: ClientApi;
     private userBox: ElementCreator | null;
 
-    constructor(parent: HTMLElement, clientApi: ClientApi, websocket: WebSocketConnection) {
+    constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
             tagName: 'div',
             classes: ['contacts-box'],
@@ -26,7 +25,6 @@ export class Contacts extends View {
 
         super(options);
         this.clientApi = clientApi;
-        this.websocket = websocket;
         this.inputSearch = new InputElement(PLACEHOLDER.SEARCH, 'search', ['input-search'], this.getHTMLElement());
         this.contactList = new ElementCreator({
             tagName: 'ul',

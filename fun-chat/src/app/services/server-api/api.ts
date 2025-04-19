@@ -3,11 +3,7 @@ import type { MESSAGE_ACTIONS, USER_STATUS } from './constants';
 import type { Payload } from './types/user-actions';
 
 export class ClientApi {
-    private webSocket: WebSocketConnection;
-
-    constructor(webSocket: WebSocketConnection) {
-        this.webSocket = webSocket;
-    }
+    constructor() {}
 
     public sendRequestToServer(type: USER_STATUS | MESSAGE_ACTIONS, payload: Payload, id: string): void {
         const message = {
@@ -16,6 +12,6 @@ export class ClientApi {
             payload: payload,
         };
 
-        this.webSocket.send(message);
+        // this.webSocket.send(message);
     }
 }

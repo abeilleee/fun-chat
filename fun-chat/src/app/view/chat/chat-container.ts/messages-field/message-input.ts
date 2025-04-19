@@ -27,7 +27,6 @@ export class MessageInput extends View {
         this.configure(parent);
         this.addInputEventListener();
         this.addBtnEventListener();
-        // this.handlerSendMsg();
     }
 
     private configure(parent: HTMLElement): void {

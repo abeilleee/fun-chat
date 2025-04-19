@@ -24,9 +24,7 @@ export class Router {
     public redirectToMainPage(): void {
         const data = getStorageData();
         // const path = window.location.pathname;
-        console.log(data);
         if (data && 'isLogined' in data && data.isLogined === true) {
-            console.log('authorized');
             const timerId = setTimeout(() => {
                 this.navigate(PAGES.MAIN);
             }, 100);

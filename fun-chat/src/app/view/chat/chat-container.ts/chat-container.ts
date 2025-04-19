@@ -9,9 +9,8 @@ import { MessageField } from './messages-field/messages-field';
 
 export class ChatContainerView extends View {
     private clientApi: ClientApi;
-    private websocket: WebSocketConnection;
 
-    constructor(parent: HTMLElement, clientApi: ClientApi, websocket: WebSocketConnection) {
+    constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
             tagName: 'section',
             classes: ['section-chat'],
@@ -19,7 +18,6 @@ export class ChatContainerView extends View {
         };
         super(options);
         this.clientApi = clientApi;
-        this.websocket = websocket;
         this.configureView();
     }
 
@@ -30,7 +28,7 @@ export class ChatContainerView extends View {
             classes: ['chat-wrapper'],
             parent: container.getHTMLElement(),
         });
-        const contactsList = new Contacts(chatWrapper.getElement(), this.clientApi, this.websocket);
+        const contactsList = new Contacts(chatWrapper.getElement(), this.clientApi);
         const messageField = new MessageField(chatWrapper.getElement(), this.clientApi);
     }
 }

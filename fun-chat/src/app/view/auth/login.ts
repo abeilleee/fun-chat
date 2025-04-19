@@ -26,7 +26,7 @@ export class LoginPageView extends View {
     private isValidPassword: boolean = false;
     private clientApi: ClientApi;
 
-    constructor(router: Router, websocket: WebSocketConnection) {
+    constructor(router: Router) {
         const options: Options = {
             tagName: 'section',
             classes: ['section-auth'],
@@ -40,7 +40,7 @@ export class LoginPageView extends View {
         this.passwordErrorMessage = null;
         this.loginButton = null;
         this.validator = new AuthValidator();
-        this.clientApi = new ClientApi(websocket);
+        this.clientApi = new ClientApi();
         this.configure();
         this.setLoginInputListener();
         this.setPasswordInputListener();
@@ -125,7 +125,6 @@ export class LoginPageView extends View {
                 } else if (result && result === EMPTY) {
                     this.isValidLogin = false;
                 } else {
-                    this.isValidLogin = true;
                     this.isValidLogin = true;
                 }
             }

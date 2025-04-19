@@ -6,3 +6,10 @@ export enum EVENT_TYPE {
     ERROR = 'error',
     CLOSE = 'close',
 }
+
+export enum READYSTATE {
+    CONNECTING = 0,
+    OPEN = 1,
+    CLOSING = 2,
+    CLOSED = 3,
+}
