@@ -60,9 +60,9 @@ export class Contacts extends View {
     }
 
     public renderContacts(): void {
-        const users = getAllUsers();
         this.cleanContacts();
-        console.log('render contacts');
+        const users = getAllUsers();
+        console.log('all users inside render contacts: ', users);
         const activeUsers = users.active;
         const inactiveUsers = users.inactive;
         activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));

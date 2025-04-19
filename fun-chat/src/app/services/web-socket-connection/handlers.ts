@@ -4,15 +4,16 @@ import type { ClientApi } from '../server-api/client-api';
 import { USER_STATUS } from '../server-api/constants';
 import type { Payload } from '../server-api/types/user-actions';
 import { allUsers } from '../state/reducers/users/user-states-reducer';
-import { getCurrentUsername, getPassword } from '../storage/storage';
+import { getCurrentUsername, getPassword, isLogined } from '../storage/storage';
 
 export function openHandler(clientApi: ClientApi): void {
     const id = generateId();
     if (id) {
         const currentUserLogin = getCurrentUsername();
         const currentUserPassword = getPassword();
+        const isAuth = isLogined();
 
-        if (currentUserLogin && currentUserPassword) {
+        if (currentUserLogin && currentUserPassword && isAuth) {
             const payload: Payload = {
                 user: {
                     login: currentUserLogin,
