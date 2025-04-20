@@ -66,7 +66,9 @@ export class MessageField extends View {
     }
 
     private changeTextContent(content: CHAT_INTRO_TEXT = CHAT_INTRO_TEXT.WRITE): void {
-        if (this.dialogWrapper) this.dialogWrapper.getElement().textContent = content;
+        if (this.dialogWrapper) {
+            this.dialogWrapper.getElement().textContent = content;
+        }
     }
 
     private createMessage(message: Message, className?: string): void {
@@ -152,7 +154,7 @@ export class MessageField extends View {
 
     private renderDialogHistory(): void {
         const targetUser = selectedUser.username;
-        this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
+
         this.setActiveWrapper();
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
 
@@ -160,6 +162,9 @@ export class MessageField extends View {
 
         if (targetDialog) {
             const messages: Message[] = targetDialog?.messages;
+            if (messages.length > 0) {
+                this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
+            }
             messages.forEach((message: Message) => {
                 const className = message.from === targetUser ? '' : 'message-wrapper--right';
                 this.createMessage(message, className);
