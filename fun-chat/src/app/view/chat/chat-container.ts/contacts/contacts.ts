@@ -9,6 +9,7 @@ import type { User } from '../../../../services/server-api/types/user';
 import { handleUserSelect } from './handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
 import type { AllUsers } from '../../../../services/state/reducers/users/types';
+import { unreadMessagesNumber } from '../../../../services/state/reducers/dialog/dialog-reducer';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
@@ -36,7 +37,11 @@ export class Contacts extends View {
         this.setEventListeners();
     }
 
-    public addContact(userName: User, status: USER_STATUS.ACTIVE | USER_STATUS.INACTIVE): void {
+    public addContact(
+        userName: User,
+        status: USER_STATUS.ACTIVE | USER_STATUS.INACTIVE,
+        unreadMessages?: string
+    ): void {
         this.userBox = new ElementCreator({
             tagName: 'li',
             classes: ['user-box'],
@@ -56,13 +61,6 @@ export class Contacts extends View {
             classes: ['user-element'],
             parent: this.userBox.getElement(),
             textContent: userName.login ? userName.login : '',
-        });
-
-        const unreadMessagesIndicator = new ElementCreator({
-            tagName: 'div',
-            classes: ['messages-indicator'],
-            parent: this.userBox.getElement(),
-            textContent: '12',
         });
     }
 
@@ -84,8 +82,22 @@ export class Contacts extends View {
         if (users) {
             const activeUsers = users.active;
             const inactiveUsers = users.inactive;
+
             activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
             inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
+        }
+    }
+
+    private setUnreadMessagesIndicator(parent: HTMLElement, user: User): void {
+        const username = user.login;
+
+        if (this.userBox) {
+            const unreadMessagesIndicator = new ElementCreator({
+                tagName: 'div',
+                classes: ['messages-indicator'],
+                parent: parent,
+                textContent: '',
+            });
         }
     }
 
@@ -101,8 +113,6 @@ export class Contacts extends View {
             this.contactList.getElement().addEventListener('click', (event) => {
                 const targetElement = event.target;
 
-                console.log('click');
-
                 if (targetElement instanceof HTMLElement) {
                     handleUserSelect(targetElement, this.clientApi);
                     this.clientApi.requestChatHistory(selectedUser.username);
@@ -112,6 +122,11 @@ export class Contacts extends View {
 
         addEventListener('onAllUsersChange', () => {
             this.renderContacts();
+        });
+
+        addEventListener('getNewMessages', () => {
+            // console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+            // this.renderContacts();
         });
 
         this.inputSearch.getElement().addEventListener('input', () => {

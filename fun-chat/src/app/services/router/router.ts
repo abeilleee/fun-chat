@@ -17,8 +17,6 @@ export class Router {
         });
 
         window.addEventListener('popstate', () => {
-            console.log('popstate');
-            console.log(isLogined());
             this.redirectToMainPage();
             this.redirectToAuthPage();
         });

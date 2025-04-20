@@ -15,8 +15,9 @@ export function getMessages(data: string): void {
             let targetDialog: Dialog | undefined;
 
             if (!idResp) {
-                console.log('get new message (unread) (inside dialog reducer)');
+                console.log('get new message (unread) (inside dialog reducer). dispatch event here');
                 checkUnreadMessages();
+                dispatchEvent(getNewMessages);
             }
             const recipient = payload.message.to;
             const sender = payload.message.from;
@@ -67,14 +68,15 @@ export function isDialogToggler(value: boolean): void {
     isDialog = value;
 }
 
-export function checkUnreadMessages(): UserUnreadMessages[] {
-    const unreadMessagesNumber: UserUnreadMessages[] = [];
-    const state = dialogState;
+export let unreadMessagesNumber: UserUnreadMessages[] = [];
 
-    state.forEach((userdialog) => {
+export function checkUnreadMessages(): void {
+    console.log('check');
+    console.log('dialogState: ', dialogState);
+    unreadMessagesNumber = [];
+    dialogState.forEach((userdialog) => {
         const username = userdialog.login;
         let unreadMessagesCount = 0;
-
         userdialog.messages.forEach((message: Message) => {
             if (message.status?.isReaded === false) {
                 unreadMessagesCount++;
@@ -86,9 +88,20 @@ export function checkUnreadMessages(): UserUnreadMessages[] {
             unreadMessages: unreadMessagesCount,
         };
 
-        unreadMessagesNumber.push(result);
+        const hasUser = unreadMessagesNumber.some((user) => user.username === result.username);
+        if (hasUser) {
+            unreadMessagesNumber.forEach((user) => {
+                if (user.username === result.username) {
+                    user.unreadMessages += result.unreadMessages;
+                }
+            });
+        } else {
+            unreadMessagesNumber.push(result);
+        }
     });
-    console.log(unreadMessagesNumber);
-    dispatchEvent(getNewMessages);
-    return unreadMessagesNumber;
 }
+
+addEventListener('getNewMessages', () => {
+    // console.log('STATE: ', dialogState);
+    console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+});

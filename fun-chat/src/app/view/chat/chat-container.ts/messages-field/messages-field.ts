@@ -74,14 +74,13 @@ export class MessageField extends View {
 
         this.dialogWrapper?.getElement().addEventListener('click', () => {
             if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-                console.log('click inside chat');
                 dialogWrapperHandler(this.clientApi);
             }
         });
 
         this.dialogWrapper?.getElement().addEventListener('scroll', () => {
             if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-                console.log('scroll inside chat');
+                // console.log('scroll inside chat');
                 dialogWrapperHandler(this.clientApi);
             }
         });
@@ -177,8 +176,6 @@ export class MessageField extends View {
     private renderDialogHistory(): void {
         const targetUser = selectedUser.username;
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
-
-        // console.log('dialogState: ', dialogState);
 
         if (targetDialog) {
             const messages: Message[] = targetDialog?.messages;
