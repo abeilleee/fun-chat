@@ -1,6 +1,7 @@
-import { changeChatHistory, msgSend, selectedUserChanged } from '../../../custom-events/custom-events';
+import { changeChatHistory, getNewMessages, msgSend, selectedUserChanged } from '../../../custom-events/custom-events';
 import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
+import type { UserUnreadMessages } from '../../types';
 import { selectedUser } from '../users/user-states-reducer';
 
 export const dialogState = new Array<Dialog>();
@@ -13,6 +14,10 @@ export function getMessages(data: string): void {
             const message: Message = payload.message;
             let targetDialog: Dialog | undefined;
 
+            if (!idResp) {
+                console.log('get new message (unread) (inside dialog reducer)');
+                checkUnreadMessages();
+            }
             const recipient = payload.message.to;
             const sender = payload.message.from;
             targetDialog = idResp
@@ -55,4 +60,29 @@ export let isOpenChat = false;
 
 export function isOpenChatToggler(value: boolean): void {
     isOpenChat = value;
+}
+
+export function checkUnreadMessages(): void {
+    const unreadMessagesNumber: UserUnreadMessages[] = [];
+    const state = dialogState;
+
+    state.forEach((userdialog) => {
+        const username = userdialog.login;
+        let unreadMessagesCount = 0;
+
+        userdialog.messages.forEach((message: Message) => {
+            if (message.status?.isReaded === false) {
+                unreadMessagesCount++;
+            }
+        });
+
+        const result: UserUnreadMessages = {
+            username: username,
+            unreadMessages: unreadMessagesCount,
+        };
+
+        unreadMessagesNumber.push(result);
+    });
+
+    dispatchEvent(getNewMessages);
 }

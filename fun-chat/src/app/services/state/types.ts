@@ -3,3 +3,8 @@ export type StateParams = {
     inactiveUsers: string[];
     activeUsers: string[];
 };
+
+export type UserUnreadMessages = {
+    username: string;
+    unreadMessages: number;
+};
