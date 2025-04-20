@@ -4,10 +4,8 @@ import { handlerBtnSend } from '../../../../components/buttons/handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
 import { InputElement } from '../../../../components/input/input';
 import type { ClientApi } from '../../../../services/server-api/client-api';
-import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { MessageElement } from './message';
 
 export class MessageInput extends View {
     private input: InputElement | null;
@@ -41,18 +39,19 @@ export class MessageInput extends View {
 
     private addInputEventListener(): void {
         this.input?.getElement().addEventListener('input', () => {
-            this.input?.getElement().addEventListener('input', () => {
-                const inputValue = this.input?.getValue() || '';
-                this.sendButton?.setDisabled(inputValue.length === 0);
-            });
+            const inputValue = this.input?.getValue() || '';
+            this.sendButton?.setDisabled(inputValue.length === 0);
         });
     }
 
     private addBtnEventListener(): void {
         this.sendButton?.getElement().addEventListener('click', () => {
+            this.addInputEventListener();
             const text = this.input?.getValue();
+            console.log('send click');
             if (text) handlerBtnSend(text, this.clientApi);
             this.input?.cleanInput();
+            this.sendButton?.setDisabled(true);
         });
     }
 }

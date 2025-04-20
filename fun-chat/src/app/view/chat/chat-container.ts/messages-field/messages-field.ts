@@ -1,22 +1,20 @@
 import type { ClientApi } from '../../../../services/server-api/client-api';
 import type { Message } from '../../../../services/server-api/types/chat';
 import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
-import { allUsers } from '../../../../services/state/reducers/users/user-states-reducer';
+import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { CHAT_INTRO_TEXT, SEND } from '../constants';
-import { MessageElement } from './message';
 import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
 
 export class MessageField extends View {
     private clientApi: ClientApi;
-    private startWrapper: ElementCreator | null;
+    private dialogWrapper: ElementCreator | null;
     private messagesHeader: MessagesHeader | null;
     private messagesInputBox: MessageInput | null;
-    // private newMessage: MessageElement;
 
     constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
@@ -26,18 +24,18 @@ export class MessageField extends View {
         };
         super(options);
         this.clientApi = clientApi;
-        this.startWrapper = null;
+        this.dialogWrapper = null;
         this.messagesHeader = null;
         this.messagesInputBox = null;
-        // this.newMessage = new MessageElement(this.getHTMLElement());
         this.setEventListener();
         this.handlerSendMsg();
         this.configure();
+        this.renderDialogHistory();
     }
 
     public configure(): void {
         this.messagesHeader = new MessagesHeader(this.getHTMLElement());
-        this.startWrapper = new ElementCreator({
+        this.dialogWrapper = new ElementCreator({
             tagName: 'div',
             classes: ['start-wrapper', 'start-wrapper--active'],
             parent: this.getHTMLElement(),
@@ -47,7 +45,7 @@ export class MessageField extends View {
     }
 
     private setEventListener(): void {
-        addEventListener('onselectedUserChanged', () => {
+        addEventListener('onSelectedUserChanged', () => {
             this.messagesHeader?.getHTMLElement().classList.remove('hidden');
             this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
             this.changeTextContent();
@@ -55,14 +53,14 @@ export class MessageField extends View {
     }
 
     private changeTextContent(): void {
-        if (this.startWrapper) this.startWrapper.getElement().textContent = CHAT_INTRO_TEXT.WRITE;
+        if (this.dialogWrapper) this.dialogWrapper.getElement().textContent = CHAT_INTRO_TEXT.WRITE;
     }
 
-    private createMessage(message: Message): void {
+    private createMessage(message: Message, className?: 'left' | 'right'): void {
         const messageBox = new ElementCreator({
             tagName: 'div',
             classes: ['message-box'],
-            parent: this.startWrapper?.getElement(),
+            parent: this.dialogWrapper?.getElement(),
         });
         const upperBox = new ElementCreator({
             tagName: 'div',
@@ -92,7 +90,9 @@ export class MessageField extends View {
             classes: ['lower-box'],
             parent: messageBox.getElement(),
         });
-        const status = new ElementCreator({tagName: 'div', classes: ['status'],
+        const status = new ElementCreator({
+            tagName: 'div',
+            classes: ['status'],
             parent: lowerBox.getElement(),
             textContent: this.getMsgStatus(message) || '',
         });
@@ -102,7 +102,6 @@ export class MessageField extends View {
         if (message.status) {
             for (const [key, value] of Object.entries(message.status)) {
                 if (value === true) {
-                    console.log('status: ', key);
                     return key;
                 }
             }
@@ -114,23 +113,23 @@ export class MessageField extends View {
         addEventListener('onMsgSend', () => {
             const id = generateId();
             const dialogs = dialogState;
-            const selectedUser = allUsers.selectedUser;
-            console.log('dialogs: ', dialogs);
-
-            if (this.startWrapper) {
-                this.startWrapper.getElement().textContent = '';
+            if (this.dialogWrapper) {
+                this.dialogWrapper.getElement().textContent = '';
             }
-
             const foundDialog = dialogs.find((dialog) => dialog.login === selectedUser.username);
-            console.log('foundDialog: ', foundDialog);
-
             if (foundDialog && 'messages' in foundDialog) {
                 const message: Message = foundDialog.messages[foundDialog.messages.length - 1];
-
-                console.log('message: ', message);
-                // this.newMessage?.createMessage(message);
                 this.createMessage(message);
             }
+        });
+    }
+
+    private renderDialogHistory(): void {
+        addEventListener('onSelectedUserChanged', () => {
+            const targetUser = selectedUser.username;
+            const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
+            console.log('render dialog history');
+            console.log('targetDialog: ', targetDialog);
         });
     }
 }

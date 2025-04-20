@@ -1,11 +1,11 @@
 import { ClientApi } from '../server-api/client-api';
-import type { ServerMessage } from '../server-api/types/server';
 import { getMessages } from '../state/reducers/dialog/dialog-reducer';
 import { getUsers } from '../state/reducers/users/user-states-reducer';
 import { EVENT_TYPE, SERVER_URL } from './constants';
 import { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
 import { connectionClosed, connectionOpen } from '../custom-events/custom-events';
 import { closeHandler, openHandler } from './handlers';
+import type { Message } from '../server-api/types/chat';
 
 export class WebSocketConnection {
     public isOpen: boolean = false;
@@ -20,7 +20,7 @@ export class WebSocketConnection {
         closeHandler(this.connectionWaiter);
     }
 
-    public send(message: ServerMessage): void {
+    public send(message: Message): void {
         this.websocket?.send(JSON.stringify(message));
     }
 

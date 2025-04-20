@@ -4,7 +4,7 @@ import { USER_STATUS } from '../../../../services/server-api/constants';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { getAllUsers } from '../../../../services/state/reducers/users/user-states-reducer';
+import { getAllUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import type { User } from '../../../../services/server-api/types/user';
 import type { WebSocketConnection } from '../../../../services/web-socket-connection/web-socket-connection';
 import { handleUserSelect } from './handlers';
@@ -81,7 +81,8 @@ export class Contacts extends View {
                 const targetElement = event.target;
 
                 if (targetElement instanceof HTMLElement) {
-                    handleUserSelect(targetElement, this.contactList.getElement());
+                    handleUserSelect(targetElement, this.contactList.getElement(), this.clientApi);
+                    this.clientApi.requestChatHistory(selectedUser.username);
                 }
             });
         }

@@ -1,4 +1,4 @@
-import { allUsers } from '../../../../services/state/reducers/users/user-states-reducer';
+import { allUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { getCurrentUsername, getStorageData } from '../../../../services/storage/storage';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
@@ -19,10 +19,10 @@ export class MessagesHeader extends View {
     }
 
     public setUserName(): void {
-        addEventListener('onselectedUserChanged', () => {
+        addEventListener('onSelectedUserChanged', () => {
             this.removeChildren();
-            const login = allUsers.selectedUser.username;
-            const status = allUsers.selectedUser.status;
+            const login = selectedUser.username;
+            const status = selectedUser.status;
             this.userName = new ElementCreator({
                 tagName: 'p',
                 classes: ['header-username'],

@@ -1,25 +1,19 @@
 import { selectedUserChanged } from '../../../../services/custom-events/custom-events';
-import { allUsers } from '../../../../services/state/reducers/users/user-states-reducer';
+import type { ClientApi } from '../../../../services/server-api/client-api';
+import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
+import { allUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 
-export function handleUserSelect(targetElement: HTMLElement, list: HTMLElement): void {
-    const elements = list.children;
-    Array.from(elements).forEach((child) => {
-        child.classList.remove('user-selected');
-    });
+export function handleUserSelect(targetElement: HTMLElement, list: HTMLElement, clientApi: ClientApi): void {
+    clientApi.requestChatHistory(selectedUser.username);
+    console.log('all messages: ', dialogState);
 
     const userBox = targetElement.classList.contains('user-box') ? targetElement : targetElement.closest('.user-box');
     const username = userBox?.textContent;
 
-    const userBoxElements = userBox?.children;
-    Array.from(elements).forEach((child) => {});
-
     if (username) {
-        allUsers.selectedUser.username = username;
+        selectedUser.username = username;
         const status = allUsers.inactive.some((elem) => elem.login === username) ? 'offline' : 'online';
-        allUsers.selectedUser.status = status;
+        selectedUser.status = status;
         dispatchEvent(selectedUserChanged);
-    }
-    if (userBox) {
-        userBox.classList.toggle('user-selected');
     }
 }

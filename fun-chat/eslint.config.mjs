@@ -114,6 +114,7 @@ export default defineConfig([
             'unicorn/new-for-builtins': 'off',
             'unicorn/no-negated-condition': 'off',
             'unicorn/prefer-at': 'off', //O_O
+            'unicorn/no-new-array': 'off',
         },
     },
 ]);

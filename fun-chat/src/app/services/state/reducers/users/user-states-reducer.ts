@@ -2,17 +2,16 @@ import { allUsersChange } from '../../../custom-events/custom-events';
 import { USER_STATUS } from '../../../server-api/constants';
 import type { User } from '../../../server-api/types/user';
 import { getCurrentUsername } from '../../../storage/storage';
-import type { AllUsers } from './types';
+import type { AllUsers, SelectedUser } from './types';
 
 export const allUsers: AllUsers = {
     inactive: [],
     active: [],
-    selectedUser: {
-        username: '',
-        status: '',
-    },
 };
-
+export const selectedUser: SelectedUser = {
+    username: '',
+    status: '',
+};
 export function getUsers(data: string): void {
     const { id, type, payload } = JSON.parse(data);
     switch (type) {
@@ -22,6 +21,7 @@ export function getUsers(data: string): void {
             if (Array.isArray(inactiveUsers)) {
                 allUsers.inactive = inactiveUsers.filter((elem) => elem.login !== currentUser);
             }
+            dispatchEvent(allUsersChange);
             break;
         }
         case USER_STATUS.ACTIVE: {
@@ -30,6 +30,7 @@ export function getUsers(data: string): void {
             if (Array.isArray(activeUsers)) {
                 allUsers.active = activeUsers.filter((elem) => elem.login !== currentUser);
             }
+            dispatchEvent(allUsersChange);
             break;
         }
         case USER_STATUS.EXTERNAL_LOGOUT: {
@@ -38,6 +39,7 @@ export function getUsers(data: string): void {
             const active = allUsers.active.filter((elem: User) => elem.login !== logoutUserLogin);
             allUsers.active = active;
             allUsers.inactive = [...allUsers.inactive, logoutUser];
+            dispatchEvent(allUsersChange);
             break;
         }
         case USER_STATUS.EXTERNAL_LOGIN: {
@@ -46,6 +48,7 @@ export function getUsers(data: string): void {
             const inactive = allUsers.inactive.filter((elem: User) => elem.login !== loginUserLogin);
             allUsers.inactive = inactive;
             allUsers.active = [...allUsers.active, loginUser];
+            dispatchEvent(allUsersChange);
             break;
         }
     }

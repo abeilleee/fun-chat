@@ -128,7 +128,7 @@ export class LoginPageView extends View {
                 }
             }
             if (this.loginButton)
-            this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
+                this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
         });
     }
 
@@ -148,7 +148,7 @@ export class LoginPageView extends View {
                 }
             }
             if (this.loginButton)
-            this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
+                this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
         });
     }
 

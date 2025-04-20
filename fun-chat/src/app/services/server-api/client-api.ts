@@ -1,5 +1,6 @@
+import { generateId } from '../../utils/id-generator';
 import type { WebSocketConnection } from '../web-socket-connection/web-socket-connection';
-import type { MESSAGE_ACTIONS, USER_STATUS } from './constants';
+import { MESSAGE_ACTIONS, type USER_STATUS } from './constants';
 import type { Payload } from './types/user';
 
 export class ClientApi {
@@ -14,6 +15,38 @@ export class ClientApi {
             id: id,
             type: type,
             payload: payload,
+        };
+
+        this.webSocket.send(message);
+    }
+
+    public sendMessage(recipient: string, text: string): void {
+        const id = generateId();
+        const message = {
+            id: id,
+            type: MESSAGE_ACTIONS.MSG_SEND,
+            payload: {
+                message: {
+                    to: recipient,
+                    text: text,
+                },
+            },
+        };
+
+        this.webSocket.send(message);
+    }
+
+    public requestChatHistory(selectedUser: string): void {
+        const id = generateId();
+
+        const message = {
+            id: id,
+            type: MESSAGE_ACTIONS.MSG_FROM_USER,
+            payload: {
+                user: {
+                    login: selectedUser,
+                },
+            },
         };
 
         this.webSocket.send(message);
