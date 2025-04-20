@@ -36,6 +36,22 @@ export class ClientApi {
         this.webSocket.send(message);
     }
 
+    public readMessage(messageId: string): void {
+        const id = generateId();
+
+        const message = {
+            id: id,
+            type: MESSAGE_ACTIONS.MSG_READ,
+            payload: {
+                message: {
+                    id: messageId,
+                },
+            },
+        };
+
+        this.webSocket.send(message);
+    }
+
     public requestChatHistory(selectedUser: string): void {
         const id = generateId();
 

@@ -7,7 +7,6 @@ export const dialogState = new Array<Dialog>();
 
 export function getMessages(data: string): void {
     const { id, type, payload } = JSON.parse(data);
-
     switch (type) {
         case MESSAGE_ACTIONS.MSG_SEND: {
             const idResp = id;

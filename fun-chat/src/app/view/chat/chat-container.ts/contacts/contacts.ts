@@ -6,10 +6,9 @@ import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { getAllUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import type { User } from '../../../../services/server-api/types/user';
-import type { WebSocketConnection } from '../../../../services/web-socket-connection/web-socket-connection';
 import { handleUserSelect } from './handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
-import { AllUsers } from '../../../../services/state/reducers/users/types';
+import type { AllUsers } from '../../../../services/state/reducers/users/types';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
@@ -74,12 +73,7 @@ export class Contacts extends View {
 
     public renderContacts(filter?: boolean): void {
         this.cleanContacts();
-        let users: AllUsers | undefined;
-        if (filter) {
-            users = this.filterContacts();
-        } else {
-            users = getAllUsers();
-        }
+        const users: AllUsers | undefined = filter ? this.filterContacts() : getAllUsers();
         if (users) {
             const activeUsers = users.active;
             const inactiveUsers = users.inactive;
@@ -114,7 +108,6 @@ export class Contacts extends View {
         this.inputSearch.getElement().addEventListener('input', () => {
             const value = this.inputSearch.getValue();
             if (value) {
-                console.log('filter');
                 this.renderContacts(true);
             } else if (value === '') {
                 this.renderContacts();

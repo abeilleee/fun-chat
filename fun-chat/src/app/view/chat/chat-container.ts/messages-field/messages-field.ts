@@ -154,7 +154,7 @@ export class MessageField extends View {
         this.setActiveWrapper();
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
         // console.log('targetUser: ', targetUser);
-        // console.log('dialogState: ', dialogState);
+        console.log('dialogState: ', dialogState);
         // console.log('targetDialog: ', targetDialog);
         if (targetDialog) {
             const messages: Message[] = targetDialog?.messages;
