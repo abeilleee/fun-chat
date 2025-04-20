@@ -32,8 +32,9 @@ export function handlerBtnAbout(router: Router): void {
 }
 
 export function handlerBtnBack(router: Router): void {
-    const isAuth = isLogined();
-    isAuth ? router.navigate(PAGES.MAIN) : router.navigate(PAGES.AUTH);
+    // const isAuth = isLogined();
+    // isAuth ? router.navigate(PAGES.MAIN) : router.navigate(PAGES.AUTH);
+    history.back();
 }
 
 export function handlerBtnLogin(

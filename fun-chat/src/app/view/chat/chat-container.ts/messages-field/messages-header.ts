@@ -15,20 +15,25 @@ export class MessagesHeader extends View {
         };
         super(options);
         this.userName = null;
+        this.configure();
         this.setUserName();
+    }
+
+    private configure(): void {
+        const text = selectedUser ? `${selectedUser.username} ${selectedUser.status}` : '';
+
+        this.userName = new ElementCreator({
+            tagName: 'p',
+            classes: ['header-username'],
+            textContent: text,
+            parent: this.getHTMLElement(),
+        });
     }
 
     public setUserName(): void {
         addEventListener('onSelectedUserChanged', () => {
-            this.removeChildren();
-            const login = selectedUser.username;
-            const status = selectedUser.status;
-            this.userName = new ElementCreator({
-                tagName: 'p',
-                classes: ['header-username'],
-                textContent: `${login} ${status}`,
-                parent: this.getHTMLElement(),
-            });
+            const text = `${selectedUser.username} ${selectedUser.status}`;
+            if (this.userName) this.userName.getElement().textContent = text;
         });
     }
 }

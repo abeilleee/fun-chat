@@ -32,6 +32,7 @@ export class MessageField extends View {
         this.handlerSendMsg();
         this.configure();
         this.renderDialogHistory();
+        this.showHeaderAndInput();
     }
 
     public configure(): void {
@@ -49,8 +50,8 @@ export class MessageField extends View {
 
     private setEventListeners(): void {
         addEventListener('onSelectedUserChanged', () => {
-            this.messagesHeader?.getHTMLElement().classList.remove('hidden');
-            this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
+            // this.messagesHeader?.getHTMLElement().classList.remove('hidden');
+            // this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
             this.changeTextContent();
         });
 
@@ -169,5 +170,12 @@ export class MessageField extends View {
 
     private setActiveWrapper(): void {
         this.dialogWrapper?.getElement().classList.add('dialog-wrapper--active');
+    }
+
+    private showHeaderAndInput() {
+        if (selectedUser) {
+            this.messagesHeader?.getHTMLElement().classList.remove('hidden');
+            this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
+        }
     }
 }
