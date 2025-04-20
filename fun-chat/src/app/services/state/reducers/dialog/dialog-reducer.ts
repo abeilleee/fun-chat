@@ -12,20 +12,24 @@ export function getMessages(data: string): void {
         case MESSAGE_ACTIONS.MSG_SEND: {
             const idResp = id;
             const message: Message = payload.message;
+            let targetDialog: Dialog | undefined;
+
             const recipient = payload.message.to;
-            if (idResp) {
-                let targetDialog = dialogState.find((dialog) => dialog.login === recipient);
-                if (!targetDialog) {
-                    const newDialog = { login: recipient, messages: [] };
-                    dialogState.push(newDialog);
-                    targetDialog = newDialog;
-                }
-                //bcz of eslint error '@typescript-eslint/no-unsafe-call'
-                if (targetDialog && Array.isArray(targetDialog.messages)) {
-                    targetDialog.messages.push(message);
-                }
-                dispatchEvent(msgSend);
+            const sender = payload.message.from;
+            targetDialog = idResp
+                ? dialogState.find((dialog) => dialog.login === recipient)
+                : dialogState.find((dialog) => dialog.login === sender);
+            if (!targetDialog) {
+                const newDialog = { login: recipient, messages: [] };
+                dialogState.push(newDialog);
+                targetDialog = newDialog;
             }
+            //bcz of eslint error '@typescript-eslint/no-unsafe-call'
+            if (targetDialog && Array.isArray(targetDialog.messages)) {
+                targetDialog.messages.push(message);
+            }
+            dispatchEvent(msgSend);
+            dispatchEvent(requestChatHistory);
             break;
         }
         case MESSAGE_ACTIONS.MSG_FROM_USER: {

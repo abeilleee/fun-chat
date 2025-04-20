@@ -28,7 +28,7 @@ export class MessageField extends View {
         this.dialogWrapper = null;
         this.messagesHeader = null;
         this.messagesInputBox = null;
-        this.setEventListener();
+        this.setEventListeners();
         this.handlerSendMsg();
         this.configure();
         this.renderDialogHistory();
@@ -45,11 +45,15 @@ export class MessageField extends View {
         this.messagesInputBox = new MessageInput(this.getHTMLElement(), this.clientApi);
     }
 
-    private setEventListener(): void {
+    private setEventListeners(): void {
         addEventListener('onSelectedUserChanged', () => {
             this.messagesHeader?.getHTMLElement().classList.remove('hidden');
             this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
             this.changeTextContent();
+        });
+
+        addEventListener('onSelectedUserChanged', () => {
+            this.renderDialogHistory();
         });
     }
 
@@ -139,23 +143,20 @@ export class MessageField extends View {
     }
 
     private renderDialogHistory(): void {
-        addEventListener('onSelectedUserChanged', () => {
-            const targetUser = selectedUser.username;
-            this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
-            this.setActiveWrapper();
-            const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
-            console.log('targetUser: ', targetUser);
-            console.log('dialogState: ', dialogState);
-            console.log('targetDialog: ', targetDialog);
-            if (targetDialog) {
-                const messages: Message[] = targetDialog?.messages;
-                messages.forEach((message: Message) => {
-                    const { datetime, from, id, status, text, to } = message;
-                    const className = from === targetUser ? '' : 'message-wrapper--left';
-                    this.createMessage(message, className);
-                });
-            }
-        });
+        const targetUser = selectedUser.username;
+        this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
+        this.setActiveWrapper();
+        const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
+        // console.log('targetUser: ', targetUser);
+        // console.log('dialogState: ', dialogState);
+        // console.log('targetDialog: ', targetDialog);
+        if (targetDialog) {
+            const messages: Message[] = targetDialog?.messages;
+            messages.forEach((message: Message) => {
+                const className = message.from === targetUser ? '' : 'message-wrapper--right';
+                this.createMessage(message, className);
+            });
+        }
     }
 
     private setActiveWrapper(): void {
