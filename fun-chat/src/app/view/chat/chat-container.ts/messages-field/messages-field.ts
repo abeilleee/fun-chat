@@ -1,10 +1,12 @@
 import type { ClientApi } from '../../../../services/server-api/client-api';
+import type { Message } from '../../../../services/server-api/types/user';
 import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
+import { allUsers } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { CHAT_INTRO_TEXT } from '../constants';
+import { CHAT_INTRO_TEXT, SEND } from '../constants';
 import { MessageElement } from './message';
 import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
@@ -14,7 +16,7 @@ export class MessageField extends View {
     private startWrapper: ElementCreator | null;
     private messagesHeader: MessagesHeader | null;
     private messagesInputBox: MessageInput | null;
-    private newMessage: MessageElement;
+    // private newMessage: MessageElement;
 
     constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
@@ -27,7 +29,7 @@ export class MessageField extends View {
         this.startWrapper = null;
         this.messagesHeader = null;
         this.messagesInputBox = null;
-        this.newMessage = new MessageElement(this.getHTMLElement());
+        // this.newMessage = new MessageElement(this.getHTMLElement());
         this.setEventListener();
         this.handlerSendMsg();
         this.configure();
@@ -56,20 +58,81 @@ export class MessageField extends View {
         if (this.startWrapper) this.startWrapper.getElement().textContent = CHAT_INTRO_TEXT.WRITE;
     }
 
+    private createMessage(message: Message): void {
+        const messageBox = new ElementCreator({
+            tagName: 'div',
+            classes: ['message-box'],
+            parent: this.startWrapper?.getElement(),
+        });
+        const upperBox = new ElementCreator({
+            tagName: 'div',
+            classes: ['upper-box'],
+            parent: messageBox.getElement(),
+        });
+        const sender = new ElementCreator({
+            tagName: 'div',
+            classes: ['sender'],
+            parent: upperBox.getElement(),
+            textContent: message.from,
+        });
+        const messageField = new ElementCreator({
+            tagName: 'div',
+            classes: ['message'],
+            parent: messageBox.getElement(),
+            textContent: message.text,
+        });
+        const date = new ElementCreator({
+            tagName: 'div',
+            classes: ['date'],
+            parent: upperBox.getElement(),
+            textContent: String(message.datetime),
+        });
+        const lowerBox = new ElementCreator({
+            tagName: 'div',
+            classes: ['lower-box'],
+            parent: messageBox.getElement(),
+        });
+        const status = new ElementCreator({
+            tagName: 'div',
+            classes: ['status'],
+            parent: lowerBox.getElement(),
+            textContent: this.getMsgStatus(message) || '',
+        });
+    }
+
+    private getMsgStatus(message: Message): string | undefined {
+        if (message.status) {
+            for (const [key, value] of Object.entries(message.status)) {
+                if (value === true) {
+                    console.log('status: ', key);
+                    return key;
+                }
+            }
+            return SEND;
+        }
+    }
+
     private handlerSendMsg(): void {
         addEventListener('onMsgSend', () => {
             const id = generateId();
             const dialogs = dialogState;
+            const selectedUser = allUsers.selectedUser;
+            console.log('dialogs: ', dialogs);
 
-            // const foundDialog = dialogs.find((dialog) => dialog.id === id);
-            const foundDialog = dialogs[0];
-
-            if (foundDialog && 'messages' in foundDialog) {
-                const message = foundDialog.messages;
-                this.newMessage?.createMessage(message[0]);
+            if (this.startWrapper) {
+                this.startWrapper.getElement().textContent = '';
             }
 
-            // this.newMessage?.createMessage();
+            const foundDialog = dialogs.find((dialog) => dialog.login === selectedUser.username);
+            console.log('foundDialog: ', foundDialog);
+
+            if (foundDialog && 'messages' in foundDialog) {
+                const message: Message = foundDialog.messages[foundDialog.messages.length - 1];
+
+                console.log('message: ', message);
+                // this.newMessage?.createMessage(message);
+                this.createMessage(message);
+            }
         });
     }
 }

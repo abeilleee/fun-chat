@@ -2,7 +2,7 @@ import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
 import { MESSAGE_ACTIONS, USER_STATUS } from '../../services/server-api/constants';
-import type { Payload, User } from '../../services/server-api/types/user-actions';
+import type { Payload, User } from '../../services/server-api/types/user';
 import { allUsers } from '../../services/state/reducers/users/user-states-reducer';
 import { getStorageData, isLogined, setData, toggleIsLogined } from '../../services/storage/storage';
 import { generateId } from '../../utils/id-generator';
@@ -72,6 +72,7 @@ export function handlerBtnLogin(
 export function handlerBtnSend(text: string, clientApi: ClientApi): void {
     const id = generateId();
     const recipientName = allUsers.selectedUser.username;
+
     const payload = {
         message: {
             to: recipientName,

@@ -1,6 +1,6 @@
 import type { WebSocketConnection } from '../web-socket-connection/web-socket-connection';
 import type { MESSAGE_ACTIONS, USER_STATUS } from './constants';
-import type { Payload } from './types/user-actions';
+import type { Payload } from './types/user';
 
 export class ClientApi {
     private webSocket: WebSocketConnection;

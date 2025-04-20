@@ -52,6 +52,7 @@ export class MessageInput extends View {
         this.sendButton?.getElement().addEventListener('click', () => {
             const text = this.input?.getValue();
             if (text) handlerBtnSend(text, this.clientApi);
+            this.input?.cleanInput();
         });
     }
 }

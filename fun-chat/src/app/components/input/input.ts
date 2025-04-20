@@ -31,6 +31,15 @@ export class InputElement extends ElementCreator<HTMLInputElement> {
         }
     }
 
+    public cleanInput(): void {
+        if (this instanceof ElementCreator) {
+            const element = this.getElement();
+            if (element instanceof HTMLInputElement) {
+                element.value = '';
+            }
+        }
+    }
+
     private setPlaceholder(): void {
         const inputElement = this.getElement();
         if (inputElement instanceof HTMLInputElement) {

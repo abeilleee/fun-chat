@@ -1,5 +1,5 @@
 import { ClientApi } from '../server-api/client-api';
-import type { ServerMessage } from '../server-api/types/server-actions';
+import type { ServerMessage } from '../server-api/types/server';
 import { getMessages } from '../state/reducers/dialog/dialog-reducer';
 import { getUsers } from '../state/reducers/users/user-states-reducer';
 import { EVENT_TYPE, SERVER_URL } from './constants';

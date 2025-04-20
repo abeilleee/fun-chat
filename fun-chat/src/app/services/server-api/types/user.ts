@@ -1,19 +1,5 @@
 import { APP_ERROR, MESSAGE_ACTIONS, USER_STATUS } from '../constants';
-
-export type Message = {
-    id?: string;
-    from?: string;
-    to?: string;
-    text?: string;
-    datetime?: number;
-    status?: MessageStatus;
-};
-
-export type MessageStatus = {
-    isDelivered: boolean;
-    isReaded: boolean;
-    isEdited: boolean;
-};
+import { Message } from './chat';
 
 export type UserRequest = {
     id: string;

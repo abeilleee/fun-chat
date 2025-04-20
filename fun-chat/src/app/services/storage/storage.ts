@@ -1,4 +1,4 @@
-import type { User } from '../server-api/types/user-actions';
+import type { User } from '../server-api/types/user';
 
 export const STORAGE_NAME: string = 'abeilleee_fun-chat';
 

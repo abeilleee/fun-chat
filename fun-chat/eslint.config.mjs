@@ -113,6 +113,7 @@ export default defineConfig([
             'unicorn/prefer-logical-operator-over-ternary': 'off',
             'unicorn/new-for-builtins': 'off',
             'unicorn/no-negated-condition': 'off',
+            'unicorn/prefer-at': 'off', //O_O
         },
     },
 ]);

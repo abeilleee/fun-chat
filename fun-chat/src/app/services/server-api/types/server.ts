@@ -1,4 +1,4 @@
-import { User } from './user-actions';
+import { User } from './user';
 import { APP_ERROR, MESSAGE_ACTIONS, USER_STATUS } from '../constants';
 
 export type ServerMessage = {

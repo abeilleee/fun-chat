@@ -5,7 +5,7 @@ import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { getAllUsers } from '../../../../services/state/reducers/users/user-states-reducer';
-import type { User } from '../../../../services/server-api/types/user-actions';
+import type { User } from '../../../../services/server-api/types/user';
 import type { WebSocketConnection } from '../../../../services/web-socket-connection/web-socket-connection';
 import { handleUserSelect } from './handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
@@ -62,7 +62,6 @@ export class Contacts extends View {
     public renderContacts(): void {
         this.cleanContacts();
         const users = getAllUsers();
-        console.log('all users inside render contacts: ', users);
         const activeUsers = users.active;
         const inactiveUsers = users.inactive;
         activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));

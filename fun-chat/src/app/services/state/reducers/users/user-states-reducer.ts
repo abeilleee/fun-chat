@@ -1,6 +1,6 @@
 import { allUsersChange } from '../../../custom-events/custom-events';
 import { USER_STATUS } from '../../../server-api/constants';
-import type { User } from '../../../server-api/types/user-actions';
+import type { User } from '../../../server-api/types/user';
 import { getCurrentUsername } from '../../../storage/storage';
 import type { AllUsers } from './types';
 
