@@ -3,8 +3,9 @@ import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
 import { MESSAGE_ACTIONS, USER_STATUS } from '../../services/server-api/constants';
 import type { Payload, User } from '../../services/server-api/types/user';
-import { allUsers, selectedUser } from '../../services/state/reducers/users/user-states-reducer';
-import { getStorageData, isLogined, setData, toggleIsLogined } from '../../services/storage/storage';
+import { isOpenChatToggler } from '../../services/state/reducers/dialog/dialog-reducer';
+import { selectedUser } from '../../services/state/reducers/users/user-states-reducer';
+import { getStorageData, setData, toggleIsLogined } from '../../services/storage/storage';
 import { generateId } from '../../utils/id-generator';
 
 export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
@@ -25,6 +26,9 @@ export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
             toggleIsLogined();
         }
     }
+    selectedUser.status = '';
+    selectedUser.username = '';
+    isOpenChatToggler(false);
 }
 
 export function handlerBtnAbout(router: Router): void {

@@ -16,7 +16,7 @@ export class MessagesHeader extends View {
         super(options);
         this.userName = null;
         this.configure();
-        this.setUserName();
+        this.setEventListener();
     }
 
     private configure(): void {
@@ -30,7 +30,7 @@ export class MessagesHeader extends View {
         });
     }
 
-    public setUserName(): void {
+    private setEventListener(): void {
         addEventListener('onSelectedUserChanged', () => {
             const text = `${selectedUser.username} ${selectedUser.status}`;
             if (this.userName) this.userName.getElement().textContent = text;

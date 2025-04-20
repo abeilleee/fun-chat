@@ -50,3 +50,9 @@ export function getMessages(data: string): void {
         }
     }
 }
+
+export let isOpenChat = false;
+
+export function isOpenChatToggler(value: boolean): void {
+    isOpenChat = value;
+}

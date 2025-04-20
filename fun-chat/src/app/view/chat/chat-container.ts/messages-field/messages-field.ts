@@ -1,6 +1,6 @@
 import type { ClientApi } from '../../../../services/server-api/client-api';
 import type { Message } from '../../../../services/server-api/types/chat';
-import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
+import { dialogState, isOpenChat, isOpenChatToggler } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { formatTime } from '../../../../utils/format-time';
@@ -50,8 +50,9 @@ export class MessageField extends View {
 
     private setEventListeners(): void {
         addEventListener('onSelectedUserChanged', () => {
-            // this.messagesHeader?.getHTMLElement().classList.remove('hidden');
-            // this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
+            isOpenChatToggler(true);
+            this.messagesHeader?.getHTMLElement().classList.remove('hidden');
+            this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
             this.changeTextContent();
         });
 
@@ -154,9 +155,9 @@ export class MessageField extends View {
         this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
         this.setActiveWrapper();
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
-        // console.log('targetUser: ', targetUser);
+
         console.log('dialogState: ', dialogState);
-        // console.log('targetDialog: ', targetDialog);
+
         if (targetDialog) {
             const messages: Message[] = targetDialog?.messages;
             messages.forEach((message: Message) => {
@@ -172,8 +173,8 @@ export class MessageField extends View {
         this.dialogWrapper?.getElement().classList.add('dialog-wrapper--active');
     }
 
-    private showHeaderAndInput() {
-        if (selectedUser) {
+    private showHeaderAndInput(): void {
+        if (isOpenChat) {
             this.messagesHeader?.getHTMLElement().classList.remove('hidden');
             this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
         }
