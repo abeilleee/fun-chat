@@ -3,7 +3,7 @@ import type { Message } from '../../../../services/server-api/types/chat';
 import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
-import { formatTime } from '../../../../utils/functions';
+import { formatTime } from '../../../../utils/format-time';
 import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';

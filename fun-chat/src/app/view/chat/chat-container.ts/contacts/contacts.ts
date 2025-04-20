@@ -9,6 +9,7 @@ import type { User } from '../../../../services/server-api/types/user';
 import type { WebSocketConnection } from '../../../../services/web-socket-connection/web-socket-connection';
 import { handleUserSelect } from './handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
+import { AllUsers } from '../../../../services/state/reducers/users/types';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
@@ -59,13 +60,32 @@ export class Contacts extends View {
         });
     }
 
-    public renderContacts(): void {
+    public filterContacts(): AllUsers | undefined {
+        const searchStr = this.inputSearch.getValue();
+        const allUsers = getAllUsers();
+        if (searchStr)
+            return {
+                active: allUsers.active.filter((user) => user.login.toLowerCase().includes(searchStr.toLowerCase())),
+                inactive: allUsers.inactive.filter((user) =>
+                    user.login.toLowerCase().includes(searchStr.toLowerCase())
+                ),
+            };
+    }
+
+    public renderContacts(filter?: boolean): void {
         this.cleanContacts();
-        const users = getAllUsers();
-        const activeUsers = users.active;
-        const inactiveUsers = users.inactive;
-        activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
-        inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
+        let users: AllUsers | undefined;
+        if (filter) {
+            users = this.filterContacts();
+        } else {
+            users = getAllUsers();
+        }
+        if (users) {
+            const activeUsers = users.active;
+            const inactiveUsers = users.inactive;
+            activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
+            inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
+        }
     }
 
     private cleanContacts(): void {
@@ -89,6 +109,16 @@ export class Contacts extends View {
 
         addEventListener('onAllUsersChange', () => {
             this.renderContacts();
+        });
+
+        this.inputSearch.getElement().addEventListener('input', () => {
+            const value = this.inputSearch.getValue();
+            if (value) {
+                console.log('filter');
+                this.renderContacts(true);
+            } else if (value === '') {
+                this.renderContacts();
+            }
         });
     }
 }

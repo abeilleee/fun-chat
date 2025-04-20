@@ -8,7 +8,7 @@ export type UserRequest = {
 };
 
 export type User = {
-    login: string | null;
+    login: string;
     password?: string | null;
     isLogined?: boolean;
     id?: string;
