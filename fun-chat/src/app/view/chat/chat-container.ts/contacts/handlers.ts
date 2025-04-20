@@ -5,7 +5,6 @@ import { allUsers, selectedUser } from '../../../../services/state/reducers/user
 
 export function handleUserSelect(targetElement: HTMLElement, list: HTMLElement, clientApi: ClientApi): void {
     clientApi.requestChatHistory(selectedUser.username);
-    console.log('all messages: ', dialogState);
 
     const userBox = targetElement.classList.contains('user-box') ? targetElement : targetElement.closest('.user-box');
     const username = userBox?.textContent;
@@ -14,6 +13,5 @@ export function handleUserSelect(targetElement: HTMLElement, list: HTMLElement, 
         selectedUser.username = username;
         const status = allUsers.inactive.some((elem) => elem.login === username) ? 'offline' : 'online';
         selectedUser.status = status;
-        dispatchEvent(selectedUserChanged);
     }
 }

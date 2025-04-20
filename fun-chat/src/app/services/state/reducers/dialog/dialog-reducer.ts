@@ -1,7 +1,7 @@
-import { msgSend, requestChatHistory } from '../../../custom-events/custom-events';
+import { msgSend, requestChatHistory, selectedUserChanged } from '../../../custom-events/custom-events';
 import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
-import { allUsers, selectedUser } from '../users/user-states-reducer';
+import { selectedUser } from '../users/user-states-reducer';
 
 export const dialogState = new Array<Dialog>();
 
@@ -13,8 +13,6 @@ export function getMessages(data: string): void {
             const idResp = id;
             const message: Message = payload.message;
             const recipient = payload.message.to;
-            console.log('responce get: ', data);
-            console.log('recipient: ', recipient);
             if (idResp) {
                 let targetDialog = dialogState.find((dialog) => dialog.login === recipient);
                 if (!targetDialog) {
@@ -26,7 +24,6 @@ export function getMessages(data: string): void {
                 if (targetDialog && Array.isArray(targetDialog.messages)) {
                     targetDialog.messages.push(message);
                 }
-                console.log('target dialog inside response from the serber: ', targetDialog);
                 dispatchEvent(msgSend);
             }
             break;
@@ -44,8 +41,8 @@ export function getMessages(data: string): void {
             }
             targetDialog.login = recipient;
             targetDialog.messages = messages;
-            console.log('get dialog history from server');
             dispatchEvent(requestChatHistory);
+            dispatchEvent(selectedUserChanged);
             break;
         }
     }

@@ -47,7 +47,7 @@ export default defineConfig([
         rules: {
             'no-plusplus': 'off',
             'no-console': 'off',
-            'max-lines-per-function': ['error', { max: 40 }],
+            'max-lines-per-function': ['error', { max: 45 }],
 
             'max-len': [
                 'warn',

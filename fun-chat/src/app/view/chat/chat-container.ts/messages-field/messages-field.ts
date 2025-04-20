@@ -3,6 +3,7 @@ import type { Message } from '../../../../services/server-api/types/chat';
 import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
+import { formatTime } from '../../../../utils/functions';
 import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
@@ -37,7 +38,7 @@ export class MessageField extends View {
         this.messagesHeader = new MessagesHeader(this.getHTMLElement());
         this.dialogWrapper = new ElementCreator({
             tagName: 'div',
-            classes: ['start-wrapper', 'start-wrapper--active'],
+            classes: ['dialog-wrapper'],
             parent: this.getHTMLElement(),
             textContent: CHAT_INTRO_TEXT.SELECT,
         });
@@ -52,15 +53,28 @@ export class MessageField extends View {
         });
     }
 
-    private changeTextContent(): void {
-        if (this.dialogWrapper) this.dialogWrapper.getElement().textContent = CHAT_INTRO_TEXT.WRITE;
+    private changeTextContent(content: CHAT_INTRO_TEXT = CHAT_INTRO_TEXT.WRITE): void {
+        if (this.dialogWrapper) this.dialogWrapper.getElement().textContent = content;
     }
 
-    private createMessage(message: Message, className?: 'left' | 'right'): void {
+    private createMessage(message: Message, className?: string): void {
+        const messageWrapper = new ElementCreator({
+            tagName: 'div',
+            classes: ['message-wrapper'],
+            parent: this.dialogWrapper?.getElement(),
+        });
+        if (className) {
+            messageWrapper.getElement().classList.add(className);
+        }
+
+        this.createMessageElements(message, messageWrapper.getElement());
+    }
+
+    private createMessageElements(message: Message, parent: HTMLElement): void {
         const messageBox = new ElementCreator({
             tagName: 'div',
             classes: ['message-box'],
-            parent: this.dialogWrapper?.getElement(),
+            parent: parent,
         });
         const upperBox = new ElementCreator({
             tagName: 'div',
@@ -83,7 +97,7 @@ export class MessageField extends View {
             tagName: 'div',
             classes: ['date'],
             parent: upperBox.getElement(),
-            textContent: String(message.datetime),
+            textContent: formatTime(Number(message.datetime)),
         });
         const lowerBox = new ElementCreator({
             tagName: 'div',
@@ -127,9 +141,24 @@ export class MessageField extends View {
     private renderDialogHistory(): void {
         addEventListener('onSelectedUserChanged', () => {
             const targetUser = selectedUser.username;
+            this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
+            this.setActiveWrapper();
             const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
-            console.log('render dialog history');
+            console.log('targetUser: ', targetUser);
+            console.log('dialogState: ', dialogState);
             console.log('targetDialog: ', targetDialog);
+            if (targetDialog) {
+                const messages: Message[] = targetDialog?.messages;
+                messages.forEach((message: Message) => {
+                    const { datetime, from, id, status, text, to } = message;
+                    const className = from === targetUser ? '' : 'message-wrapper--left';
+                    this.createMessage(message, className);
+                });
+            }
         });
+    }
+
+    private setActiveWrapper(): void {
+        this.dialogWrapper?.getElement().classList.add('dialog-wrapper--active');
     }
 }
