@@ -2,9 +2,6 @@ import type { Button } from '../../components/buttons/buttons';
 import type { InputElement } from '../../components/input/input';
 import type { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
-import type { Payload, User } from '../../services/server-api/types/user';
-import type { ClientApi } from '../../services/server-api/client-api';
-import { USER_STATUS } from '../../services/server-api/constants';
 
 export function loginHandler(
     loginElement: InputElement,
@@ -40,11 +37,7 @@ export function loginHandler(
     return;
 }
 
-export function passwordHandler(
-    passwordElement: InputElement,
-    validator: AuthValidator,
-    btn: Button
-): string | null | undefined {
+export function passwordHandler(passwordElement: InputElement, validator: AuthValidator): string | null | undefined {
     const value = passwordElement.getValue();
 
     if (!value) {
@@ -65,6 +58,11 @@ export function passwordHandler(
                 const emptyCheck = validator.checkIsEmpty(value);
                 if (typeof emptyCheck === 'string') {
                     errorMessage = emptyCheck;
+                } else {
+                    const isReqiredLetters = validator.checkRequiredLetters(value);
+                    if (typeof isReqiredLetters === 'string') {
+                        errorMessage = isReqiredLetters;
+                    }
                 }
             }
         }

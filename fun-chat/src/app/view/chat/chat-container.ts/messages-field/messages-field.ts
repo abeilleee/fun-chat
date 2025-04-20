@@ -1,5 +1,5 @@
 import type { ClientApi } from '../../../../services/server-api/client-api';
-import type { Message } from '../../../../services/server-api/types/user';
+import type { Message } from '../../../../services/server-api/types/chat';
 import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { allUsers } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
@@ -92,9 +92,7 @@ export class MessageField extends View {
             classes: ['lower-box'],
             parent: messageBox.getElement(),
         });
-        const status = new ElementCreator({
-            tagName: 'div',
-            classes: ['status'],
+        const status = new ElementCreator({tagName: 'div', classes: ['status'],
             parent: lowerBox.getElement(),
             textContent: this.getMsgStatus(message) || '',
         });

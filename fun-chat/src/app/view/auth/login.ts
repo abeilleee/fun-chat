@@ -80,12 +80,12 @@ export class LoginPageView extends View {
         });
         this.passwordInput = new InputElement(
             PLACEHOLDER.PASSWORD,
-            'text',
+            'password',
             ['input-password'],
             form.getElement(),
             'password'
         );
-        this.passwordErrorMessage = new ElementCreator({tagName: 'span', classes: ['error-message'],
+        this.passwordErrorMessage = new ElementCreator({ tagName: 'span', classes: ['error-message'],
             parent: form.getElement(),
         });
         return form.getElement();
@@ -127,7 +127,8 @@ export class LoginPageView extends View {
                     this.isValidLogin = true;
                 }
             }
-            if (this.loginButton) this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
+            if (this.loginButton)
+            this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
         });
     }
 
@@ -135,19 +136,19 @@ export class LoginPageView extends View {
         this.passwordInput?.getElement().addEventListener('input', () => {
             if (this.passwordInput && this.loginButton) {
                 this.cleanErrorMessage(INPUT_TYPE.PASSWORD);
-                const result = passwordHandler(this.passwordInput, this.validator, this.loginButton);
+                const result = passwordHandler(this.passwordInput, this.validator);
 
                 if (typeof result === 'string' && result !== EMPTY) {
                     this.setErrorMessage(result, INPUT_TYPE.PASSWORD);
                     this.isValidPassword = false;
                 } else if (result && result === EMPTY) {
-                    this.isValidLogin = false;
+                    this.isValidPassword = false;
                 } else {
-                    this.isValidLogin = true;
                     this.isValidPassword = true;
                 }
             }
-            if (this.loginButton) this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
+            if (this.loginButton)
+            this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
         });
     }
 

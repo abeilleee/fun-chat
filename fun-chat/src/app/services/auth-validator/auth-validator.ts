@@ -5,7 +5,6 @@ export class AuthValidator {
     constructor() {}
 
     public checkMinLength(value: string, type: INPUT_TYPE): string | boolean {
-        //|| value.trim().length === 0
         const targetLength =
             type === INPUT_TYPE.LOGIN ? VALID_LOGIN_PARAMS.MIN_LENGTH : VALID_PASSWORD_PARAMS.MIN_LENGTH;
 
@@ -39,14 +38,20 @@ export class AuthValidator {
         return true;
     }
 
-    public checkRequiredLetters(password: string): string | boolean | undefined {
-        if (this.checkMinLength(password, INPUT_TYPE.PASSWORD) && this.checkMaxLength(password, INPUT_TYPE.PASSWORD)) {
-            const uppercaseRegex = /A-Z/;
-            if (!uppercaseRegex.test(password)) {
-                return ERROR_MESSAGES.LETTERS;
-            }
-            return true;
+    public checkRequiredLetters(password: string): string | boolean {
+        // if (this.checkMinLength(password, INPUT_TYPE.PASSWORD)
+        //  && this.checkMaxLength(password, INPUT_TYPE.PASSWORD)) {
+        //     const uppercaseRegex = /A-Z/;
+        //     if (!uppercaseRegex.test(password)) {
+        //         return ERROR_MESSAGES.LETTERS;
+        //     }
+        //     return true;
+        // }
+        if (password.toUpperCase() === password && password.toLowerCase() === password) {
+            const errorMessage = ERROR_MESSAGES.LETTERS;
+            return errorMessage;
         }
+        return true;
     }
 
     public checkValid(loginIsValid: boolean, passwordIsValid: boolean, btn: Button): void {
