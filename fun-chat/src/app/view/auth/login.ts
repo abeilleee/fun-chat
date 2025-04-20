@@ -14,6 +14,7 @@ import { loginHandler, passwordHandler } from './handlers';
 
 export class LoginPageView extends View {
     public router: Router;
+    private formElement: ElementCreator | null;
     private buttonsBox: ElementCreator | null;
     private loginInput: InputElement | null;
     private passwordInput: InputElement | null;
@@ -32,6 +33,7 @@ export class LoginPageView extends View {
         };
         super(options);
         this.router = router;
+        this.formElement = null;
         this.loginInput = null;
         this.passwordInput = null;
         this.buttonsBox = null;
@@ -44,6 +46,7 @@ export class LoginPageView extends View {
         this.setLoginInputListener();
         this.setPasswordInputListener();
         this.buttonsEventListeners();
+        this.addLoginBtnEventListener();
     }
 
     private configure(): void {
@@ -52,7 +55,7 @@ export class LoginPageView extends View {
     }
 
     private createForm(): HTMLElement {
-        const form = new ElementCreator<HTMLFormElement>({
+        this.formElement = new ElementCreator<HTMLFormElement>({
             tagName: 'form',
             classes: ['form'],
             parent: this.getHTMLElement(),
@@ -61,42 +64,48 @@ export class LoginPageView extends View {
             tagName: 'h3',
             classes: ['title-auth'],
             textContent: 'FUN CHAT',
-            parent: form.getElement(),
+            parent: this.formElement.getElement(),
         });
         const labelLogin = new ElementCreator<HTMLLabelElement>({
             tagName: 'label',
             classes: ['label', 'label-login'],
-            parent: form.getElement(),
+            parent: this.formElement.getElement(),
             textContent: 'Enter your login',
         }).getElement();
         if (labelLogin instanceof HTMLLabelElement) {
             labelLogin.htmlFor = 'Login';
         }
-        this.loginInput = new InputElement(PLACEHOLDER.LOGIN, 'text', ['input-login'], form.getElement(), 'login');
+        this.loginInput = new InputElement(
+            PLACEHOLDER.LOGIN,
+            'text',
+            ['input-login'],
+            this.formElement.getElement(),
+            'login'
+        );
         this.loginErrorMessage = new ElementCreator({
             tagName: 'span',
             classes: ['error-message'],
-            parent: form.getElement(),
+            parent: this.formElement.getElement(),
         });
         const labelPassword = new ElementCreator<HTMLLabelElement>({
             tagName: 'label',
             classes: ['label', 'label-password'],
-            parent: form.getElement(),
+            parent: this.formElement.getElement(),
             textContent: 'Enter your password',
         });
         this.passwordInput = new InputElement(
             PLACEHOLDER.PASSWORD,
             'password',
             ['input-password'],
-            form.getElement(),
+            this.formElement.getElement(),
             'password'
         );
         this.passwordErrorMessage = new ElementCreator({
             tagName: 'span',
             classes: ['error-message'],
-            parent: form.getElement(),
+            parent: this.formElement.getElement(),
         });
-        return form.getElement();
+        return this.formElement.getElement();
     }
 
     private createButtons(parent: HTMLElement): HTMLElement {
@@ -172,6 +181,7 @@ export class LoginPageView extends View {
                         break;
                     }
                     case 'Login': {
+                        event.preventDefault();
                         const login = this.loginInput?.getValue();
                         const password = this.passwordInput?.getValue();
                         if (login && password)
@@ -186,6 +196,33 @@ export class LoginPageView extends View {
                         break;
                     }
                 }
+            }
+        });
+    }
+
+    private addLoginBtnEventListener(): void {
+        this.formElement?.getElement().addEventListener('keydown', (event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (this.loginButton && this.loginButton.getElement().classList.contains('disabled')) {
+                    return;
+                }
+                const login = this.loginInput?.getValue();
+                const password = this.passwordInput?.getValue();
+                if (
+                    login?.length !== 0 &&
+                    password?.length !== 0 &&
+                    !this.loginButton?.getElement().classList.contains('disabled')
+                )
+                    if (login && password)
+                        handlerBtnLogin(
+                            this.router,
+                            this.isValidLogin,
+                            this.isValidPassword,
+                            login,
+                            password,
+                            this.clientApi
+                        );
             }
         });
     }

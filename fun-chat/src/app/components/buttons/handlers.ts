@@ -1,7 +1,7 @@
 import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
-import { MESSAGE_ACTIONS, USER_STATUS } from '../../services/server-api/constants';
+import { USER_STATUS } from '../../services/server-api/constants';
 import type { Payload, User } from '../../services/server-api/types/user';
 import { isDialogToggler, isOpenChatToggler } from '../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../services/state/reducers/users/user-states-reducer';
