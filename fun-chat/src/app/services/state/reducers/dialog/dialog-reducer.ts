@@ -1,4 +1,4 @@
-import { msgSend, requestChatHistory, selectedUserChanged } from '../../../custom-events/custom-events';
+import { changeChatHistory, msgSend, selectedUserChanged } from '../../../custom-events/custom-events';
 import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
 import { selectedUser } from '../users/user-states-reducer';
@@ -29,7 +29,7 @@ export function getMessages(data: string): void {
                 targetDialog.messages.push(message);
             }
             dispatchEvent(msgSend);
-            dispatchEvent(requestChatHistory);
+            dispatchEvent(changeChatHistory);
             break;
         }
         case MESSAGE_ACTIONS.MSG_FROM_USER: {
@@ -45,7 +45,7 @@ export function getMessages(data: string): void {
             }
             targetDialog.login = recipient;
             targetDialog.messages = messages;
-            dispatchEvent(requestChatHistory);
+            dispatchEvent(changeChatHistory);
             dispatchEvent(selectedUserChanged);
             break;
         }

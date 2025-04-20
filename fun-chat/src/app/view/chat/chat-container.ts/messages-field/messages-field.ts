@@ -43,6 +43,8 @@ export class MessageField extends View {
             textContent: CHAT_INTRO_TEXT.SELECT,
         });
         this.messagesInputBox = new MessageInput(this.getHTMLElement(), this.clientApi);
+        if (this.dialogWrapper)
+            this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
     }
 
     private setEventListeners(): void {
@@ -53,6 +55,10 @@ export class MessageField extends View {
         });
 
         addEventListener('onSelectedUserChanged', () => {
+            this.renderDialogHistory();
+        });
+
+        addEventListener('onChangeChatHistory', () => {
             this.renderDialogHistory();
         });
     }
@@ -157,6 +163,8 @@ export class MessageField extends View {
                 this.createMessage(message, className);
             });
         }
+        if (this.dialogWrapper)
+            this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
     }
 
     private setActiveWrapper(): void {
