@@ -15,6 +15,13 @@ export class Router {
             this.redirectToMainPage();
             this.redirectToAuthPage();
         });
+
+        window.addEventListener('popstate', () => {
+            console.log('popstate');
+            console.log(isLogined());
+            this.redirectToMainPage();
+            this.redirectToAuthPage();
+        });
     }
 
     public navigate(url: string): void {
@@ -23,6 +30,7 @@ export class Router {
 
     public redirectToMainPage(): void {
         const isAuth = isLogined();
+
         const path = window.location.pathname;
         if (isAuth && path === `/${PAGES.AUTH}`) {
             this.navigate(PAGES.MAIN);
