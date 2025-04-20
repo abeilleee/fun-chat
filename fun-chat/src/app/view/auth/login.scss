@@ -1,11 +1,19 @@
+.section-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 .form {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding: 10px;
     gap: 10px;
-    width: 200px;
+    width: 250px;
     height: 400px;
-    border: 1px solid black;
+    border-radius: 10px;
+    background-color: var(--background-transparent);
     margin: 0 auto;
 }
 
