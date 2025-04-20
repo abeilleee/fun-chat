@@ -1,3 +1,11 @@
+.section-main {
+    display: flex;
+    height: 90%;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0 auto;
+}
+
 .chat-wrapper {
     display: flex;
     gap: 5px;

@@ -57,6 +57,12 @@ export class LoginPageView extends View {
             classes: ['form'],
             parent: this.getHTMLElement(),
         });
+        const header = new ElementCreator({
+            tagName: 'h3',
+            classes: ['title-auth'],
+            textContent: 'FUN CHAT',
+            parent: form.getElement(),
+        });
         const labelLogin = new ElementCreator<HTMLLabelElement>({
             tagName: 'label',
             classes: ['label', 'label-login'],
@@ -85,7 +91,9 @@ export class LoginPageView extends View {
             form.getElement(),
             'password'
         );
-        this.passwordErrorMessage = new ElementCreator({ tagName: 'span', classes: ['error-message'],
+        this.passwordErrorMessage = new ElementCreator({
+            tagName: 'span',
+            classes: ['error-message'],
             parent: form.getElement(),
         });
         return form.getElement();
@@ -127,8 +135,7 @@ export class LoginPageView extends View {
                     this.isValidLogin = true;
                 }
             }
-            if (this.loginButton)
-                this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
+            if (this.loginButton) this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
         });
     }
 
@@ -147,8 +154,7 @@ export class LoginPageView extends View {
                     this.isValidPassword = true;
                 }
             }
-            if (this.loginButton)
-                this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
+            if (this.loginButton) this.validator.checkValid(this.isValidLogin, this.isValidPassword, this.loginButton);
         });
     }
 

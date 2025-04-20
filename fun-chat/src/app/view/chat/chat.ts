@@ -16,8 +16,8 @@ export class ChatView extends View {
 
     constructor(router: Router, clientApi: ClientApi) {
         const options: Options = {
-            tagName: 'main',
-            classes: ['main'],
+            tagName: 'section',
+            classes: ['section-main'],
         };
         super(options);
         this.router = router;

@@ -6,6 +6,12 @@
     padding: 20px;
     background-color: var(--background-transparent);
     border-radius: 10px;
+
+    @media screen and (max-width: 590px) {
+        & {
+            padding: 10px;
+        }
+    }
 }
 
 .buttons-box {
