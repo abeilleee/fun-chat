@@ -49,7 +49,6 @@ export class MessageInput extends View {
         this.sendButton?.getElement().addEventListener('click', () => {
             this.addInputEventListener();
             const text = this.input?.getValue();
-            console.log('send click');
             if (text) handlerBtnSend(text, this.clientApi);
             this.input?.cleanInput();
             this.sendButton?.setDisabled(true);

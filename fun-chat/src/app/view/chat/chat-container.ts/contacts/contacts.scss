@@ -53,3 +53,15 @@
         background-color: var(--bg-color-offline-indicator);
     }
 }
+
+.messages-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    border: 1px solid rgb(255, 255, 255);
+    background-color: var(--background-transparent);
+    font-size: 12px;
+}

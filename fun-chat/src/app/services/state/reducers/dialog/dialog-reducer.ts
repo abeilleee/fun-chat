@@ -57,12 +57,17 @@ export function getMessages(data: string): void {
 }
 
 export let isOpenChat = false;
+export let isDialog = false;
 
 export function isOpenChatToggler(value: boolean): void {
     isOpenChat = value;
 }
 
-export function checkUnreadMessages(): void {
+export function isDialogToggler(value: boolean): void {
+    isDialog = value;
+}
+
+export function checkUnreadMessages(): UserUnreadMessages[] {
     const unreadMessagesNumber: UserUnreadMessages[] = [];
     const state = dialogState;
 
@@ -83,6 +88,7 @@ export function checkUnreadMessages(): void {
 
         unreadMessagesNumber.push(result);
     });
-
+    console.log(unreadMessagesNumber);
     dispatchEvent(getNewMessages);
+    return unreadMessagesNumber;
 }

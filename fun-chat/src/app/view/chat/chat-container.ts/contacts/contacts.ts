@@ -57,6 +57,13 @@ export class Contacts extends View {
             parent: this.userBox.getElement(),
             textContent: userName.login ? userName.login : '',
         });
+
+        const unreadMessagesIndicator = new ElementCreator({
+            tagName: 'div',
+            classes: ['messages-indicator'],
+            parent: this.userBox.getElement(),
+            textContent: '12',
+        });
     }
 
     public filterContacts(): AllUsers | undefined {
@@ -94,8 +101,10 @@ export class Contacts extends View {
             this.contactList.getElement().addEventListener('click', (event) => {
                 const targetElement = event.target;
 
+                console.log('click');
+
                 if (targetElement instanceof HTMLElement) {
-                    handleUserSelect(targetElement, this.contactList.getElement(), this.clientApi);
+                    handleUserSelect(targetElement, this.clientApi);
                     this.clientApi.requestChatHistory(selectedUser.username);
                 }
             });

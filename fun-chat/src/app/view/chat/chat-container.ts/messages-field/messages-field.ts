@@ -1,6 +1,12 @@
 import type { ClientApi } from '../../../../services/server-api/client-api';
 import type { Message } from '../../../../services/server-api/types/chat';
-import { dialogState, isOpenChat, isOpenChatToggler } from '../../../../services/state/reducers/dialog/dialog-reducer';
+import {
+    dialogState,
+    isDialog,
+    isDialogToggler,
+    isOpenChat,
+    isOpenChatToggler,
+} from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { formatTime } from '../../../../utils/format-time';
@@ -29,11 +35,11 @@ export class MessageField extends View {
         this.dialogWrapper = null;
         this.messagesHeader = null;
         this.messagesInputBox = null;
-        this.setEventListeners();
         this.handlerSendMsg();
         this.configure();
         this.renderDialogHistory();
         this.showHeaderAndInput();
+        this.setEventListeners();
     }
 
     public configure(): void {
@@ -55,6 +61,7 @@ export class MessageField extends View {
             this.messagesHeader?.getHTMLElement().classList.remove('hidden');
             this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
             this.changeTextContent();
+            this.setActiveWrapper();
         });
 
         addEventListener('onSelectedUserChanged', () => {
@@ -66,11 +73,17 @@ export class MessageField extends View {
         });
 
         this.dialogWrapper?.getElement().addEventListener('click', () => {
-            dialogWrapperHandler(this.clientApi);
+            if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+                console.log('click inside chat');
+                dialogWrapperHandler(this.clientApi);
+            }
         });
 
         this.dialogWrapper?.getElement().addEventListener('scroll', () => {
-            dialogWrapperHandler(this.clientApi);
+            if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+                console.log('scroll inside chat');
+                dialogWrapperHandler(this.clientApi);
+            }
         });
     }
 
@@ -163,16 +176,17 @@ export class MessageField extends View {
 
     private renderDialogHistory(): void {
         const targetUser = selectedUser.username;
-
-        this.setActiveWrapper();
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
 
-        console.log('dialogState: ', dialogState);
+        // console.log('dialogState: ', dialogState);
 
         if (targetDialog) {
             const messages: Message[] = targetDialog?.messages;
             if (messages.length > 0) {
                 this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
+                isDialogToggler(true);
+            } else if (messages.length === 0) {
+                isDialogToggler(false);
             }
             messages.forEach((message: Message) => {
                 const className = message.from === targetUser ? '' : 'message-wrapper--right';
@@ -191,6 +205,10 @@ export class MessageField extends View {
         if (isOpenChat) {
             this.messagesHeader?.getHTMLElement().classList.remove('hidden');
             this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
+            this.setActiveWrapper();
+            if (!isDialog) {
+                this.changeTextContent();
+            }
         }
     }
 }

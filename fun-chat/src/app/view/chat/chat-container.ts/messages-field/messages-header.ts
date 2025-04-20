@@ -1,5 +1,4 @@
-import { allUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
-import { getCurrentUsername, getStorageData } from '../../../../services/storage/storage';
+import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
