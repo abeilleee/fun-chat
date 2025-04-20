@@ -6,6 +6,7 @@ import { InputElement } from '../../../../components/input/input';
 import type { ClientApi } from '../../../../services/server-api/client-api';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
+import { dialogWrapperHandler } from './handlers';
 
 export class MessageInput extends View {
     private input: InputElement | null;
@@ -52,6 +53,7 @@ export class MessageInput extends View {
             if (text) handlerBtnSend(text, this.clientApi);
             this.input?.cleanInput();
             this.sendButton?.setDisabled(true);
+            dialogWrapperHandler(this.clientApi);
         });
     }
 }

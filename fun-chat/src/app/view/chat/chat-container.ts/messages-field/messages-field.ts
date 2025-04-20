@@ -8,6 +8,7 @@ import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { CHAT_INTRO_TEXT, SEND } from '../constants';
+import { dialogWrapperHandler } from './handlers';
 import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
 
@@ -62,6 +63,14 @@ export class MessageField extends View {
 
         addEventListener('onChangeChatHistory', () => {
             this.renderDialogHistory();
+        });
+
+        this.dialogWrapper?.getElement().addEventListener('click', () => {
+            dialogWrapperHandler(this.clientApi);
+        });
+
+        this.dialogWrapper?.getElement().addEventListener('scroll', () => {
+            dialogWrapperHandler(this.clientApi);
         });
     }
 
