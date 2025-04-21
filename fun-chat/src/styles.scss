@@ -5,6 +5,7 @@
 @use './app/view/container/container';
 @use './app/view/chat/header/header.scss';
 @use './app/components/buttons/buttons';
+@use './app/components/modal/modal.scss';
 @use './app/view/auth/login.scss';
 @use './app/view/chat/chat-container.ts/contacts/contacts.scss';
 @use './app/view/chat/chat-container.ts/messages-field/messages-field.scss';

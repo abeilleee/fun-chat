@@ -4,4 +4,5 @@ export enum BUTTON_NAME {
     LOGOUT = 'Logout',
     SEND = 'Send',
     BACK = 'Back',
+    CLOSE = 'CLOSE',
 }

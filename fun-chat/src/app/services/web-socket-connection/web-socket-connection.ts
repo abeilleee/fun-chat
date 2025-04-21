@@ -6,6 +6,7 @@ import { ConnectionWaiter } from '../../components/connection-waiter/connection-
 import { connectionClosed, connectionOpen } from '../custom-events/custom-events';
 import { closeHandler, openHandler } from './handlers';
 import type { Message } from '../server-api/types/chat';
+import { checkErrors } from '../state/reducers/auth/auth-reducer';
 
 export class WebSocketConnection {
     public isOpen: boolean = false;
@@ -43,7 +44,9 @@ export class WebSocketConnection {
             dispatchEvent(connectionOpen); //TODO: delete
         });
 
-        this.websocket.addEventListener(EVENT_TYPE.ERROR, () => {});
+        this.websocket.addEventListener(EVENT_TYPE.ERROR, (event) => {
+            console.log('WebSocket error: ', event);
+        });
         this.addEventListeners();
     }
 
@@ -53,8 +56,9 @@ export class WebSocketConnection {
                 const response = message.data;
                 getUsers(response);
                 getMessages(response);
+                checkErrors(response);
             });
-            this.websocket.addEventListener(EVENT_TYPE.CLOSE, () => {
+            this.websocket.addEventListener(EVENT_TYPE.CLOSE, (event) => {
                 this.isOpen = false;
                 dispatchEvent(connectionClosed);
 

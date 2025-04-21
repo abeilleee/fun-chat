@@ -3,6 +3,7 @@ import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
 import { USER_STATUS } from '../../services/server-api/constants';
 import type { Payload, User } from '../../services/server-api/types/user';
+import { isAccessDenied } from '../../services/state/reducers/auth/auth-reducer';
 import { isDialogToggler, isOpenChatToggler } from '../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../services/state/reducers/users/user-states-reducer';
 import { getStorageData, setData, toggleIsLogined } from '../../services/storage/storage';
@@ -51,7 +52,6 @@ export function handlerBtnLogin(
     clientApi: ClientApi
 ): void {
     if (isValidLogin && isValidPassword) {
-        router.navigate(PAGES.MAIN);
         const id = generateId();
 
         const payload: Payload = {
@@ -64,14 +64,23 @@ export function handlerBtnLogin(
         clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload, id);
         clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
         clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
+        console.log('isAccessDenied: ', isAccessDenied);
 
-        const userData: User = {
-            login: login,
-            password: password,
-            isLogined: true,
-        };
+        setTimeout(() => {
+            if (isAccessDenied) {
+                router.navigate(PAGES.MAIN);
+            } else {
+                console.log('access denied');
+            }
 
-        setData(userData);
+            const userData: User = {
+                login: login,
+                password: password,
+                isLogined: true,
+            };
+
+            if (!isAccessDenied) setData(userData);
+        }, 1000);
     }
 }
 

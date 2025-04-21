@@ -82,9 +82,7 @@ export class LoginPageView extends View {
             this.formElement.getElement(),
             'login'
         );
-        this.loginErrorMessage = new ElementCreator({
-            tagName: 'span',
-            classes: ['error-message'],
+        this.loginErrorMessage = new ElementCreator({tagName: 'span', classes: ['error-message'],
             parent: this.formElement.getElement(),
         });
         const labelPassword = new ElementCreator<HTMLLabelElement>({
@@ -100,8 +98,7 @@ export class LoginPageView extends View {
             this.formElement.getElement(),
             'password'
         );
-        this.passwordErrorMessage = new ElementCreator({
-            tagName: 'span',
+        this.passwordErrorMessage = new ElementCreator({ tagName: 'span',
             classes: ['error-message'],
             parent: this.formElement.getElement(),
         });

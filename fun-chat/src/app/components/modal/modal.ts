@@ -1,32 +1,31 @@
-import type { WebSocketConnection } from '../../services/web-socket-connection/web-socket-connection';
 import { ElementCreator } from '../../utils/element-creator';
 import { Button } from '../buttons/buttons';
 import { BUTTON_NAME } from '../buttons/constants';
-import { MODAL_TEXT } from './constants';
 
-export class ConnectionWaiter {
-    public isOpen: boolean = false;
+export class Modal {
     private modalWrapper: HTMLElement | null | HTMLDialogElement;
+    private closeBtn: Button | null;
 
     constructor() {
         this.modalWrapper = null;
+        this.closeBtn = null;
+        this.setCloseBtnEventListener();
     }
 
-    public showWaiter(): void {
-        this.isOpen = true;
-        this.createComponent();
+    public showModal(text: string): void {
+        this.createModal(text);
         document.body.style.overflow = 'hidden';
+        this.setCloseBtnEventListener();
     }
 
-    public hideWaiter(): void {
-        this.isOpen = false;
+    public closeModal(): void {
         if (this.modalWrapper) {
             this.modalWrapper.remove();
             document.body.style.overflow = '';
         }
     }
 
-    private createComponent(): void {
+    private createModal(text: string): void {
         this.modalWrapper = new ElementCreator({
             tagName: 'div',
             classes: ['modal-wrapper'],
@@ -36,7 +35,15 @@ export class ConnectionWaiter {
             tagName: 'div',
             classes: ['modal'],
             parent: this.modalWrapper,
-            textContent: MODAL_TEXT,
+            textContent: text,
+        });
+        this.closeBtn = new Button(BUTTON_NAME.CLOSE, ['button-close'], modal.getElement());
+    }
+
+    private setCloseBtnEventListener(): void {
+        this.closeBtn?.getElement().addEventListener('click', () => {
+            console.log('click');
+            this.closeModal();
         });
     }
 }

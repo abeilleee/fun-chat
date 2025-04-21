@@ -1,0 +1,13 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-close {
+    background-color: rgba(32, 25, 242, 0.215);
+}
+
+.button-close:hover {
+    background-color: rgba(95, 84, 249, 0.203);
+}
