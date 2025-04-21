@@ -67,4 +67,20 @@ export class ClientApi {
 
         this.webSocket.send(message);
     }
+
+    public deleteMsg(idMsg: string): void {
+        const id = generateId();
+
+        const message = {
+            id: id,
+            type: MESSAGE_ACTIONS.MSG_DELETE,
+            payload: {
+                message: {
+                    id: idMsg,
+                },
+            },
+        };
+
+        this.webSocket.send(message);
+    }
 }

@@ -19,7 +19,7 @@ export function changeMessagesStatus(clientApi: ClientApi): void {
     });
 }
 
-export function messageHandler(contextMenu: ContextMenu): void {
+export function messageHandler(contextMenu: ContextMenu, message: Message, clientApi: ClientApi): void {
     const elements = document.querySelectorAll('.message-box');
     console.log('query selector on message box');
     Array.from(elements).forEach((elem) => {
@@ -29,8 +29,8 @@ export function messageHandler(contextMenu: ContextMenu): void {
                 const { clientX, clientY } = event;
                 console.log(clientX);
                 if (!contextMenu.isOpen) {
-                    contextMenu.showMenu(clientX, clientY);
-                    contextMenu.setEventListeners();
+                    contextMenu.showMenu(clientX, clientY, message, clientApi);
+                    // contextMenu.setEventListeners();
                 }
                 return;
             });

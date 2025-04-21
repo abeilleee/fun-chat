@@ -127,6 +127,11 @@ export class MessageField extends View {
             parent: lowerBox.getElement(),
             textContent: msgStatus ? this.getMsgStatus(message) : '',
         });
+        this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
+            console.log('context menu event listener inside create msg elem');
+            event.preventDefault();
+            messageHandler(this.contextMenu, message, this.clientApi);
+        });
     }
 
     private setEventListeners(): void {
@@ -144,14 +149,13 @@ export class MessageField extends View {
         addEventListener('onChangeChatHistory', () => {
             this.renderDialogHistory();
         });
-        addEventListener('onRenderMessages', () => {
-            messageHandler(this.contextMenu);
-        });
-        console.log('запуск листенеров на message box');
-        this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
-            event.preventDefault();
-            messageHandler(this.contextMenu);
-        });
+        // addEventListener('onRenderMessages', () => {
+        //     messageHandler(this.contextMenu);
+        // });
+        // this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
+        //     event.preventDefault();
+        //     messageHandler(this.contextMenu);
+        // });
 
         // this.dialogWrapper?.getElement().addEventListener('click', () => {
         //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
@@ -194,6 +198,7 @@ export class MessageField extends View {
     }
 
     private renderDialogHistory(): void {
+        this.clearDialog();
         const targetUser = selectedUser.username;
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
 
@@ -212,7 +217,7 @@ export class MessageField extends View {
         }
         if (this.dialogWrapper)
             this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
-
+        console.log('rendering');
         dispatchEvent(renderMessages);
     }
 
@@ -228,6 +233,13 @@ export class MessageField extends View {
             if (!isDialog) {
                 this.changeTextContent();
             }
+        }
+    }
+
+    private clearDialog(): void {
+        while (this.dialogWrapper?.getElement().firstChild) {
+            const child = this.dialogWrapper?.getElement().firstChild;
+            if (child) this.dialogWrapper?.getElement().removeChild(child);
         }
     }
 }

@@ -6,7 +6,7 @@ import { getCurrentUsername } from '../../../storage/storage';
 import type { UserUnreadMessages } from '../../types';
 import { selectedUser } from '../users/user-states-reducer';
 
-export const dialogState = new Array<Dialog>();
+export let dialogState = new Array<Dialog>();
 
 export function getMessages(data: string): void {
     const { id, type, payload } = JSON.parse(data);
@@ -155,3 +155,18 @@ export function readMessages(clientApi: ClientApi): void {
 //         {} as Record<string, number>
 //     );
 // }
+
+export function checkDeletingMessage(data: string): void {
+    const { id, type, payload } = JSON.parse(data);
+    if (type === MESSAGE_ACTIONS.MSG_DELETE) {
+        console.log('msg deleted');
+        const newDialogState = dialogState.map((dialog) => ({
+            ...dialog,
+            messages: dialog.messages.filter((message) => message.id !== payload.message.id),
+        }));
+        dialogState = newDialogState;
+
+        console.log('dialog state: ', dialogState);
+        dispatchEvent(changeChatHistory);
+    }
+}
