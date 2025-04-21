@@ -43,6 +43,21 @@ export class MessageInput extends View {
             const inputValue = this.input?.getValue() || '';
             this.sendButton?.setDisabled(inputValue.length === 0);
         });
+
+        window.addEventListener('keydown', (event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+                console.log('enter');
+                const inputValue = this.input?.getValue() || '';
+                this.sendButton?.setDisabled(inputValue.length === 0);
+                const text = this.input?.getValue();
+                if (text && text.trim().length !== 0) {
+                    handlerBtnSend(text, this.clientApi);
+                    this.input?.cleanInput();
+                    this.sendButton?.setDisabled(true);
+                    dialogWrapperHandler(this.clientApi);
+                }
+            }
+        });
     }
 
     private addBtnEventListener(): void {
