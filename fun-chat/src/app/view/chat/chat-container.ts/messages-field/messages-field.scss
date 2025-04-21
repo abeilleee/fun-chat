@@ -74,6 +74,9 @@
     &--right {
         justify-content: right;
     }
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .message-box {
