@@ -5,4 +5,6 @@ export enum BUTTON_NAME {
     SEND = 'Send',
     BACK = 'Back',
     CLOSE = 'CLOSE',
+    DELETE = 'Delete',
+    EDIT = 'Edit',
 }

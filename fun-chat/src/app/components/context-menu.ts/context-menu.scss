@@ -1,0 +1,28 @@
+.context-menu {
+    position: absolute;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 120px;
+    height: 60px;
+    border-radius: 5px;
+    background-color: var(--background-modal);
+    gap: 7px;
+}
+
+.button-delete,
+.button-edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+    height: 30px;
+    font-size: 16px;
+}
+
+.button-delete:hover,
+.button-edit:hover {
+    background-color: rgba(136, 78, 245, 0.311);
+}

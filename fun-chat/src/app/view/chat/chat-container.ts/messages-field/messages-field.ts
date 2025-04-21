@@ -1,3 +1,5 @@
+import { ContextMenu } from '../../../../components/context-menu.ts/context-menu';
+import { renderMessages } from '../../../../services/custom-events/custom-events';
 import type { ClientApi } from '../../../../services/server-api/client-api';
 import type { Message } from '../../../../services/server-api/types/chat';
 import {
@@ -14,7 +16,7 @@ import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { CHAT_INTRO_TEXT, SEND } from '../constants';
-import { dialogWrapperHandler } from './handlers';
+import { dialogWrapperHandler, messageHandler } from './handlers';
 import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
 
@@ -23,6 +25,8 @@ export class MessageField extends View {
     private dialogWrapper: ElementCreator | null;
     private messagesHeader: MessagesHeader | null;
     private messagesInputBox: MessageInput | null;
+    private messageBox: ElementCreator | null;
+    private contextMenu: ContextMenu;
 
     constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
@@ -33,13 +37,20 @@ export class MessageField extends View {
         super(options);
         this.clientApi = clientApi;
         this.dialogWrapper = null;
+        this.messageBox = null;
         this.messagesHeader = null;
         this.messagesInputBox = null;
+        this.contextMenu = new ContextMenu();
+
         this.handlerSendMsg();
         this.configure();
         this.renderDialogHistory();
         this.showHeaderAndInput();
         this.setEventListeners();
+        window.addEventListener('popstate', () => {
+            console.log('load');
+        });
+        // messageHandler(this.contextMenu);
     }
 
     public configure(): void {
@@ -53,37 +64,6 @@ export class MessageField extends View {
         this.messagesInputBox = new MessageInput(this.getHTMLElement(), this.clientApi);
         if (this.dialogWrapper)
             this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
-    }
-
-    private setEventListeners(): void {
-        addEventListener('onSelectedUserChanged', () => {
-            isOpenChatToggler(true);
-            this.messagesHeader?.getHTMLElement().classList.remove('hidden');
-            this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
-            this.changeTextContent();
-            this.setActiveWrapper();
-        });
-
-        addEventListener('onSelectedUserChanged', () => {
-            this.renderDialogHistory();
-        });
-
-        addEventListener('onChangeChatHistory', () => {
-            this.renderDialogHistory();
-        });
-
-        // this.dialogWrapper?.getElement().addEventListener('click', () => {
-        //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-        //         dialogWrapperHandler(this.clientApi);
-        //     }
-        // });
-
-        // this.dialogWrapper?.getElement().addEventListener('scroll', () => {
-        //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-        //         // console.log('scroll inside chat');
-        //         dialogWrapperHandler(this.clientApi);
-        //     }
-        // });
     }
 
     private changeTextContent(content: CHAT_INTRO_TEXT = CHAT_INTRO_TEXT.WRITE): void {
@@ -108,7 +88,7 @@ export class MessageField extends View {
     }
 
     private createMessageElements(message: Message, parent: HTMLElement, msgStatus: boolean): void {
-        const messageBox = new ElementCreator({
+        this.messageBox = new ElementCreator({
             tagName: 'div',
             classes: ['message-box'],
             parent: parent,
@@ -116,7 +96,7 @@ export class MessageField extends View {
         const upperBox = new ElementCreator({
             tagName: 'div',
             classes: ['upper-box'],
-            parent: messageBox.getElement(),
+            parent: this.messageBox.getElement(),
         });
         const sender = new ElementCreator({
             tagName: 'div',
@@ -127,7 +107,7 @@ export class MessageField extends View {
         const messageField = new ElementCreator({
             tagName: 'div',
             classes: ['message'],
-            parent: messageBox.getElement(),
+            parent: this.messageBox.getElement(),
             textContent: message.text,
         });
         const date = new ElementCreator({
@@ -139,7 +119,7 @@ export class MessageField extends View {
         const lowerBox = new ElementCreator({
             tagName: 'div',
             classes: ['lower-box'],
-            parent: messageBox.getElement(),
+            parent: this.messageBox.getElement(),
         });
         const status = new ElementCreator({
             tagName: 'div',
@@ -147,6 +127,44 @@ export class MessageField extends View {
             parent: lowerBox.getElement(),
             textContent: msgStatus ? this.getMsgStatus(message) : '',
         });
+    }
+
+    private setEventListeners(): void {
+        addEventListener('onSelectedUserChanged', () => {
+            isOpenChatToggler(true);
+            this.messagesHeader?.getHTMLElement().classList.remove('hidden');
+            this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
+            this.changeTextContent();
+            this.setActiveWrapper();
+        });
+        addEventListener('onSelectedUserChanged', () => {
+            this.renderDialogHistory();
+            console.log('render dialog');
+        });
+        addEventListener('onChangeChatHistory', () => {
+            this.renderDialogHistory();
+        });
+        addEventListener('onRenderMessages', () => {
+            messageHandler(this.contextMenu);
+        });
+        console.log('запуск листенеров на message box');
+        this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
+            event.preventDefault();
+            messageHandler(this.contextMenu);
+        });
+
+        // this.dialogWrapper?.getElement().addEventListener('click', () => {
+        //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+        //         dialogWrapperHandler(this.clientApi);
+        //     }
+        // });
+
+        // this.dialogWrapper?.getElement().addEventListener('scroll', () => {
+        //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+        //         // console.log('scroll inside chat');
+        //         dialogWrapperHandler(this.clientApi);
+        //     }
+        // });
     }
 
     private getMsgStatus(message: Message): string | undefined {
@@ -194,6 +212,8 @@ export class MessageField extends View {
         }
         if (this.dialogWrapper)
             this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
+
+        dispatchEvent(renderMessages);
     }
 
     private setActiveWrapper(): void {

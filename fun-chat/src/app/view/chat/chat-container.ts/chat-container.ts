@@ -29,5 +29,6 @@ export class ChatContainerView extends View {
         });
         const contactsList = new Contacts(chatWrapper.getElement(), this.clientApi);
         const messageField = new MessageField(chatWrapper.getElement(), this.clientApi);
+        console.log('configure');
     }
 }

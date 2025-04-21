@@ -7,4 +7,5 @@ export const changeChatHistory = new CustomEvent('onChangeChatHistory');
 export const getNewMessages = new CustomEvent('getNewMessages');
 // export const getError = new CustomEvent('onError');
 export const onLogin = new CustomEvent('onLogin');
-export const selectUser = new CustomEvent('selectUser')
+export const selectUser = new CustomEvent('selectUser');
+export const renderMessages = new CustomEvent('onRenderMessages');

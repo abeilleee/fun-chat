@@ -1,6 +1,8 @@
 import { changeChatHistory, getNewMessages, msgSend, selectedUserChanged } from '../../../custom-events/custom-events';
+import type { ClientApi } from '../../../server-api/client-api';
 import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
+import { getCurrentUsername } from '../../../storage/storage';
 import type { UserUnreadMessages } from '../../types';
 import { selectedUser } from '../users/user-states-reducer';
 
@@ -16,7 +18,7 @@ export function getMessages(data: string): void {
 
             if (!idResp) {
                 console.log('get new message (unread) (inside dialog reducer). dispatch event here');
-                checkUnreadMessages();
+                // checkUnreadMessages();
                 dispatchEvent(getNewMessages);
             }
             const recipient = payload.message.to;
@@ -68,40 +70,88 @@ export function isDialogToggler(value: boolean): void {
     isDialog = value;
 }
 
-export let unreadMessagesNumber: UserUnreadMessages[] = [];
+export const unreadMessagesNumber: UserUnreadMessages[] = [];
 
-export function checkUnreadMessages(): void {
-    console.log('check');
-    console.log('dialogState: ', dialogState);
-    unreadMessagesNumber = [];
-    dialogState.forEach((userdialog) => {
-        const username = userdialog.login;
-        let unreadMessagesCount = 0;
-        userdialog.messages.forEach((message: Message) => {
-            if (message.status?.isReaded === false) {
-                unreadMessagesCount++;
-            }
-        });
+// export function checkUnreadMessages(): void {
+//     console.log('check');
+//     console.log('dialogState: ', dialogState);
+//     unreadMessagesNumber = [];
+//     dialogState.forEach((userdialog) => {
+//         const username = userdialog.login;
+//         let unreadMessagesCount = 0;
+//         userdialog.messages.forEach((message: Message) => {
+//             if (message.status?.isReaded === false) {
+//                 unreadMessagesCount++;
+//             }
+//         });
 
-        const result: UserUnreadMessages = {
-            username: username,
-            unreadMessages: unreadMessagesCount,
-        };
+//         const result: UserUnreadMessages = {
+//             username: username,
+//             unreadMessages: unreadMessagesCount,
+//         };
 
-        const hasUser = unreadMessagesNumber.some((user) => user.username === result.username);
-        if (hasUser) {
-            unreadMessagesNumber.forEach((user) => {
-                if (user.username === result.username) {
-                    user.unreadMessages += result.unreadMessages;
-                }
-            });
-        } else {
-            unreadMessagesNumber.push(result);
-        }
-    });
-}
+//         const hasUser = unreadMessagesNumber.some((user) => user.username === result.username);
+//         if (hasUser) {
+//             unreadMessagesNumber.forEach((user) => {
+//                 if (user.username === result.username) {
+//                     user.unreadMessages += result.unreadMessages;
+//                 }
+//             });
+//         } else {
+//             unreadMessagesNumber.push(result);
+//         }
+//     });
+// }
 
 addEventListener('getNewMessages', () => {
     // console.log('STATE: ', dialogState);
     console.log('unreadMessagesNumber: ', unreadMessagesNumber);
 });
+
+export function readMessages(clientApi: ClientApi): void {
+    const currentUser = getCurrentUsername();
+    const sender = selectedUser.username;
+
+    const targetDialog = dialogState.find((dialog) => dialog.login === sender);
+    const messages = targetDialog?.messages;
+
+    messages?.forEach((message) => {
+        if (message.status?.isReaded === false) {
+            message.status.isReaded = true;
+            const msgId = message.id;
+            if (msgId) {
+                clientApi.readMessage(msgId);
+            }
+        }
+    });
+}
+
+// export function checkMessages(clientApi: ClientApi): void {
+//     const currentUser = getCurrentUsername();
+//     const sender = selectedUser.username;
+
+//     const targetDialog = dialogState.find((dialog) => dialog.login === sender);
+//     const messages = targetDialog?.messages;
+//     if (targetDialog) {
+//         messages?.forEach((message) => {
+//             if (message.status?.isReaded === false) {
+//                 message.status.isReaded = true;
+//                 const msgId = message.id;
+//                 if (msgId) {
+//                     clientApi.readMessage(msgId);
+//                 }
+//             }
+//         });
+//     }
+// }
+
+// export function countUnreadMessages(username: string): Record<string, number> {
+//     return dialogState.reduce(
+//         (acc, user) => {
+//             const unreadCount = user.messages.filter((msg: Message) => msg.status?.isReaded === false).length;
+//             acc[user.username] = unreadCount;
+//             return acc;
+//         },
+//         {} as Record<string, number>
+//     );
+// }
