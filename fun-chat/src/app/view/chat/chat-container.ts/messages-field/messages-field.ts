@@ -85,8 +85,8 @@ export class MessageField extends View {
             this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
                 event.preventDefault();
                 const { clientX, clientY } = event;
-                if (!this.contextMenu.isOpen) {
-                    this.contextMenu.showMenu(clientX, clientY, message, this.clientApi);
+                if (!this.contextMenu.isOpen && this.messageBox) {
+                    this.contextMenu.showMenu(clientX, clientY, message, this.clientApi, this.messageBox.getElement());
                 }
                 messageHandler(this.contextMenu, message, this.clientApi);
             });

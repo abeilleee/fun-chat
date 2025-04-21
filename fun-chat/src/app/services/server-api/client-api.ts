@@ -83,4 +83,21 @@ export class ClientApi {
 
         this.webSocket.send(message);
     }
+
+    public editMessage(idMsg: string, text: string): void {
+        const id = generateId();
+
+        const message = {
+            id: id,
+            type: MESSAGE_ACTIONS.MSG_EDIT,
+            payload: {
+                message: {
+                    id: idMsg,
+                    text: text,
+                },
+            },
+        };
+
+        this.webSocket.send(message);
+    }
 }

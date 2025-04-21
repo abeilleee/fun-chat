@@ -19,7 +19,13 @@ export class ContextMenu {
         // this.setEventListeners();
     }
 
-    public showMenu(clientX: number, clientY: number, message: Message, clientApi: ClientApi): void {
+    public showMenu(
+        clientX: number,
+        clientY: number,
+        message: Message,
+        clientApi: ClientApi,
+        messageBox: HTMLElement
+    ): void {
         this.menu = new ElementCreator({ tagName: 'div', classes: ['context-menu'], parent: document.body });
         this.btnDelete = new Button(BUTTON_NAME.DELETE, ['button-delete'], this.menu.getElement());
         this.btnEdit = new Button(BUTTON_NAME.EDIT, ['button-edit'], this.menu.getElement());
@@ -29,7 +35,7 @@ export class ContextMenu {
         this.isOpen = true;
         const currentMsgId = message.id;
         if (currentMsgId) {
-            this.setEventListeners(clientApi, currentMsgId);
+            this.setEventListeners(clientApi, currentMsgId, messageBox);
         }
     }
 
@@ -40,11 +46,25 @@ export class ContextMenu {
         this.isOpen = false;
     }
 
-    private setEventListeners(clientApi: ClientApi, msgId: string): void {
+    private setEventListeners(clientApi: ClientApi, msgId: string, messageBox: HTMLElement): void {
         this.btnDelete?.getElement().addEventListener('click', () => {
             clientApi.deleteMsg(msgId);
         });
         this.btnEdit?.getElement().addEventListener('click', () => {
+            const messageField = messageBox.querySelector('.message');
+            const status = messageBox.querySelector('.status');
+            console.log(messageField);
+            messageField?.classList.remove('message--disabled');
+            if (messageField instanceof HTMLTextAreaElement) {
+                messageField.focus();
+
+                messageField.addEventListener('blur', () => {
+                    const newText = messageField.value;
+                    messageField.classList.add('message--disabled');
+                    if (status) status.textContent = 'Edited';
+                    clientApi.editMessage(msgId, newText);
+                });
+            }
             this.closeMenu();
         });
     }

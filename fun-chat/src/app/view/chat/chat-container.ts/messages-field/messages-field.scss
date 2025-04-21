@@ -110,6 +110,7 @@
     border-radius: 5px;
     background-color: #ffffffb4;
     word-wrap: break-word;
+    resize: none;
 
     &--disabled {
         pointer-events: none;
