@@ -2,6 +2,7 @@ import { allUsersChange, onLogin } from '../../../custom-events/custom-events';
 import { USER_STATUS } from '../../../server-api/constants';
 import type { User } from '../../../server-api/types/user';
 import { getCurrentUsername } from '../../../storage/storage';
+import { unreadMessages } from '../dialog/dialog-reducer';
 import type { AllUsers, SelectedUser } from './types';
 
 export const allUsers: AllUsers = {
@@ -61,9 +62,11 @@ export function handlerLoginLogout(data: string): void {
     switch (type) {
         case USER_STATUS.LOGIN: {
             dispatchEvent(onLogin);
+            unreadMessages();
             break;
         }
         case USER_STATUS.LOGOUT: {
+            unreadMessages();
             break;
         }
     }

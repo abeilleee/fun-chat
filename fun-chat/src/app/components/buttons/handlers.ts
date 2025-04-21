@@ -61,6 +61,7 @@ export function handlerBtnLogin(
         };
 
         clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload, id);
+
         clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
         clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
     }

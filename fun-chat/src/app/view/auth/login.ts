@@ -9,6 +9,8 @@ import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
 import type { User } from '../../services/server-api/types/user';
+import { dialogState, unreadMessages, unreadMessagesNumber } from '../../services/state/reducers/dialog/dialog-reducer';
+import { allUsers } from '../../services/state/reducers/users/user-states-reducer';
 import { setData } from '../../services/storage/storage';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
@@ -69,7 +71,9 @@ export class LoginPageView extends View {
             textContent: 'FUN CHAT',
             parent: this.formElement.getElement(),
         });
-        const labelLogin = new ElementCreator<HTMLLabelElement>({tagName: 'label', classes: ['label', 'label-login'],
+        const labelLogin = new ElementCreator<HTMLLabelElement>({
+            tagName: 'label',
+            classes: ['label', 'label-login'],
             parent: this.formElement.getElement(),
             textContent: 'Enter your login',
         }).getElement();
@@ -83,7 +87,8 @@ export class LoginPageView extends View {
             this.formElement.getElement(),
             'login'
         );
-        this.loginErrorMessage = new ElementCreator({    tagName: 'span',
+        this.loginErrorMessage = new ElementCreator({
+            tagName: 'span',
             classes: ['error-message'],
             parent: this.formElement.getElement(),
         });
@@ -228,6 +233,15 @@ export class LoginPageView extends View {
             addEventListener('onLogin', () => {
                 const login = this.loginInput?.getValue();
                 const password = this.passwordInput?.getValue();
+                unreadMessages();
+                console.log('unreadMessages in login: ', unreadMessagesNumber);
+                console.log('dialogState in login: ', dialogState);
+                console.log('all users: ', allUsers);
+                const users = [...allUsers.active, ...allUsers.inactive];
+                users.forEach((user: User) => {
+                    const name = user.login;
+                    this.clientApi.requestChatHistory(name);
+                });
 
                 if (login && password) {
                     const userData: User = {

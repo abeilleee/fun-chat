@@ -5,7 +5,6 @@ import {
     msgSend,
     selectedUserChanged,
 } from '../../../custom-events/custom-events';
-import type { ClientApi } from '../../../server-api/client-api';
 import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
 import { getCurrentUsername } from '../../../storage/storage';
@@ -33,7 +32,9 @@ export function getMessages(data: string): void {
             const message: Message = payload.message;
             let targetDialog: Dialog | undefined;
 
-            if (!idResp) {
+            if (idResp === null) {
+                console.log('getting new message');
+                unreadMessages();
                 dispatchEvent(getNewMessages);
             }
             const recipient = payload.message.to;
@@ -52,6 +53,7 @@ export function getMessages(data: string): void {
             }
             dispatchEvent(msgSend);
             dispatchEvent(changeChatHistory);
+            unreadMessages();
             break;
         }
         case MESSAGE_ACTIONS.MSG_FROM_USER: {
@@ -69,6 +71,7 @@ export function getMessages(data: string): void {
             targetDialog.messages = messages;
             dispatchEvent(changeChatHistory);
             dispatchEvent(selectedUserChanged);
+            unreadMessages();
             break;
         }
     }
@@ -81,7 +84,9 @@ export function unreadMessages(): void {
     const unreadMessagesMap: Map<string, number> = new Map();
     state.forEach((dialog) => {
         const user = dialog.login;
-        const unreadCount = dialog.messages.filter((message) => !message.status?.isReaded).length;
+        const unreadCount = dialog.messages.filter(
+            (message) => !message.status?.isReaded && message.to === getCurrentUsername()
+        ).length;
 
         if (unreadMessagesMap.has(user)) {
             const gettingUser = unreadMessagesMap.get(user);

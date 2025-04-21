@@ -4,11 +4,16 @@ import { USER_STATUS } from '../../../../services/server-api/constants';
 import { ElementCreator } from '../../../../utils/element-creator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { getAllUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
+import { allUsers, getAllUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import type { User } from '../../../../services/server-api/types/user';
 import { handleUserSelect } from './handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
 import type { AllUsers } from '../../../../services/state/reducers/users/types';
+import {
+    dialogState,
+    unreadMessages,
+    unreadMessagesNumber,
+} from '../../../../services/state/reducers/dialog/dialog-reducer';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
@@ -32,15 +37,12 @@ export class Contacts extends View {
             parent: this.getHTMLElement(),
         });
         this.userBox = null;
+        unreadMessages();
         this.renderContacts();
         this.setEventListeners();
     }
 
-    public addContact(
-        userName: User,
-        status: USER_STATUS.ACTIVE | USER_STATUS.INACTIVE,
-        unreadMessages?: string
-    ): void {
+    public addContact(userName: User, status: USER_STATUS.ACTIVE | USER_STATUS.INACTIVE, unreadCount?: number): void {
         this.userBox = new ElementCreator({
             tagName: 'li',
             classes: ['user-box'],
@@ -61,6 +63,9 @@ export class Contacts extends View {
             parent: this.userBox.getElement(),
             textContent: userName.login ? userName.login : '',
         });
+        if (unreadCount && unreadCount !== 0) {
+            this.setUnreadMessagesIndicator(this.userBox.getElement(), unreadCount);
+        }
     }
 
     public filterContacts(): AllUsers | undefined {
@@ -76,28 +81,33 @@ export class Contacts extends View {
     }
 
     public renderContacts(filter?: boolean): void {
+        unreadMessages();
+        console.log('render');
         this.cleanContacts();
         const users: AllUsers | undefined = filter ? this.filterContacts() : getAllUsers();
         if (users) {
             const activeUsers = users.active;
             const inactiveUsers = users.inactive;
+            const allUsers = [...activeUsers, ...inactiveUsers];
+            allUsers.forEach((user) => {
+                const unreadCount =
+                    unreadMessagesNumber.find((item) => item.username === user.login)?.unreadMessages || 0;
+                const userStatus = activeUsers.includes(user) ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE;
+                this.addContact(user, userStatus, unreadCount);
+            });
 
-            activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
-            inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
+            // activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
+            // inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
         }
     }
 
-    private setUnreadMessagesIndicator(parent: HTMLElement, user: User): void {
-        const username = user.login;
-
-        if (this.userBox) {
-            const unreadMessagesIndicator = new ElementCreator({
-                tagName: 'div',
-                classes: ['messages-indicator'],
-                parent: parent,
-                textContent: '',
-            });
-        }
+    private setUnreadMessagesIndicator(parent: HTMLElement, unreadCount: number): void {
+        const unreadMessagesIndicator = new ElementCreator({
+            tagName: 'div',
+            classes: ['messages-indicator'],
+            parent: parent,
+            textContent: String(unreadCount),
+        });
     }
 
     private cleanContacts(): void {
@@ -122,6 +132,12 @@ export class Contacts extends View {
         });
 
         addEventListener('onAllUsersChange', () => {
+            this.renderContacts();
+        });
+        addEventListener('onGetNewMessages', () => {
+            unreadMessages();
+
+            console.log('dialog state on get new msgs: ', dialogState);
             this.renderContacts();
         });
 
