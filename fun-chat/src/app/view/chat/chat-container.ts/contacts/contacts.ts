@@ -9,7 +9,6 @@ import type { User } from '../../../../services/server-api/types/user';
 import { handleUserSelect } from './handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
 import type { AllUsers } from '../../../../services/state/reducers/users/types';
-import { unreadMessagesNumber } from '../../../../services/state/reducers/dialog/dialog-reducer';
 
 export class Contacts extends View {
     public contactList: ElementCreator;

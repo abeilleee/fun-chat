@@ -12,6 +12,17 @@ import { getCurrentUsername } from '../../../storage/storage';
 import type { UserUnreadMessages } from '../../types';
 import { selectedUser } from '../users/user-states-reducer';
 
+export let isOpenChat = false;
+export let isDialog = false;
+
+export function isOpenChatToggler(value: boolean): void {
+    isOpenChat = value;
+}
+
+export function isDialogToggler(value: boolean): void {
+    isDialog = value;
+}
+
 export let dialogState = new Array<Dialog>();
 
 export function getMessages(data: string): void {
@@ -63,40 +74,40 @@ export function getMessages(data: string): void {
     }
 }
 
-export let isOpenChat = false;
-export let isDialog = false;
+export let unreadMessagesNumber: UserUnreadMessages[] = [];
 
-export function isOpenChatToggler(value: boolean): void {
-    isOpenChat = value;
-}
+export function unreadMessages(): void {
+    const state = dialogState;
+    const unreadMessagesMap: Map<string, number> = new Map();
+    state.forEach((dialog) => {
+        const user = dialog.login;
+        const unreadCount = dialog.messages.filter((message) => !message.status?.isReaded).length;
 
-export function isDialogToggler(value: boolean): void {
-    isDialog = value;
-}
-
-export const unreadMessagesNumber: UserUnreadMessages[] = [];
-
-// addEventListener('getNewMessages', () => {
-//     console.log('unreadMessagesNumber: ', unreadMessagesNumber);
-// });
-
-export function readMessages(clientApi: ClientApi): void {
-    const currentUser = getCurrentUsername();
-    const sender = selectedUser.username;
-
-    const targetDialog = dialogState.find((dialog) => dialog.login === sender);
-    const messages = targetDialog?.messages;
-
-    messages?.forEach((message) => {
-        if (message.status?.isReaded === false) {
-            message.status.isReaded = true;
-            const msgId = message.id;
-            if (msgId) {
-                clientApi.readMessage(msgId);
-            }
+        if (unreadMessagesMap.has(user)) {
+            const gettingUser = unreadMessagesMap.get(user);
+            if (gettingUser) unreadMessagesMap.set(user, gettingUser + unreadCount);
+        } else {
+            unreadMessagesMap.set(user, unreadCount);
         }
     });
+    unreadMessagesNumber = Array.from(unreadMessagesMap.entries()).map(([username, unreadMessages]) => ({
+        username,
+        unreadMessages,
+    }));
 }
+
+addEventListener('onMsgSend', () => {
+    unreadMessages();
+    console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+});
+addEventListener('onDeleteMsg', () => {
+    unreadMessages();
+    console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+});
+addEventListener('onChangeChatHistory', () => {
+    unreadMessages();
+    console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+});
 
 export function checkDeletingMessage(data: string): void {
     const { id, type, payload } = JSON.parse(data);
