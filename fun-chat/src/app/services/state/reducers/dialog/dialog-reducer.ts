@@ -111,7 +111,7 @@ addEventListener('onDeleteMsg', () => {
 });
 addEventListener('onChangeChatHistory', () => {
     unreadMessages();
-    // console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+    console.log('dialogState: ', dialogState);
 });
 
 export function checkDeletingMessage(data: string): void {
@@ -126,4 +126,29 @@ export function checkDeletingMessage(data: string): void {
         // console.log('dialog state: ', dialogState);
         dispatchEvent(deleteMsg);
     }
+}
+
+export function editMessage(data: string): void {
+    const { id, type, payload } = JSON.parse(data);
+    if (type === MESSAGE_ACTIONS.MSG_SEND) {
+        const msgId: string = payload.id;
+        const text: string = payload.text;
+
+        const state: Dialog[] = dialogState.map((dialog) => {
+            return {
+                ...dialog,
+
+                messages: dialog.messages.map((message: Message) => {
+                    if (message.id === msgId) {
+                        message.text = text;
+                        return { ...message };
+                    } else {
+                        return message;
+                    }
+                }),
+            };
+        });
+        dialogState = state;
+    }
+    dispatchEvent(changeChatHistory);
 }

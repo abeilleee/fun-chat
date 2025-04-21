@@ -53,7 +53,6 @@ export class ContextMenu {
         this.btnEdit?.getElement().addEventListener('click', () => {
             const messageField = messageBox.querySelector('.message');
             const status = messageBox.querySelector('.status');
-            console.log(messageField);
             messageField?.classList.remove('message--disabled');
             if (messageField instanceof HTMLTextAreaElement) {
                 messageField.focus();

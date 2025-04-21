@@ -1,5 +1,5 @@
 import { ClientApi } from '../server-api/client-api';
-import { checkDeletingMessage, getMessages } from '../state/reducers/dialog/dialog-reducer';
+import { checkDeletingMessage, editMessage, getMessages } from '../state/reducers/dialog/dialog-reducer';
 import { getUsers, handlerLoginLogout } from '../state/reducers/users/user-states-reducer';
 import { EVENT_TYPE, SERVER_URL } from './constants';
 import { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
@@ -60,6 +60,7 @@ export class WebSocketConnection {
                 getMessages(response);
                 checkErrors(response);
                 checkDeletingMessage(response);
+                editMessage(response);
             });
             this.websocket.addEventListener(EVENT_TYPE.CLOSE, (event) => {
                 this.isOpen = false;
