@@ -98,14 +98,16 @@ export class MessageField extends View {
             classes: ['message-wrapper'],
             parent: this.dialogWrapper?.getElement(),
         });
+        let msgStatus: boolean = false;
         if (className) {
             messageWrapper.getElement().classList.add(className);
+            msgStatus = true;
         }
 
-        this.createMessageElements(message, messageWrapper.getElement());
+        this.createMessageElements(message, messageWrapper.getElement(), msgStatus);
     }
 
-    private createMessageElements(message: Message, parent: HTMLElement): void {
+    private createMessageElements(message: Message, parent: HTMLElement, msgStatus: boolean): void {
         const messageBox = new ElementCreator({
             tagName: 'div',
             classes: ['message-box'],
@@ -143,7 +145,7 @@ export class MessageField extends View {
             tagName: 'div',
             classes: ['status'],
             parent: lowerBox.getElement(),
-            textContent: this.getMsgStatus(message) || '',
+            textContent: msgStatus ? this.getMsgStatus(message) : '',
         });
     }
 
