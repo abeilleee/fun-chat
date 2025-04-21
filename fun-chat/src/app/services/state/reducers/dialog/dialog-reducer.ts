@@ -1,4 +1,10 @@
-import { changeChatHistory, getNewMessages, msgSend, selectedUserChanged } from '../../../custom-events/custom-events';
+import {
+    changeChatHistory,
+    deleteMsg,
+    getNewMessages,
+    msgSend,
+    selectedUserChanged,
+} from '../../../custom-events/custom-events';
 import type { ClientApi } from '../../../server-api/client-api';
 import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
@@ -102,6 +108,6 @@ export function checkDeletingMessage(data: string): void {
         dialogState = newDialogState;
 
         console.log('dialog state: ', dialogState);
-        dispatchEvent(changeChatHistory);
+        dispatchEvent(deleteMsg);
     }
 }

@@ -152,7 +152,13 @@ export class MessageField extends View {
         addEventListener('onSelectedUserChanged', () => {
             this.renderDialogHistory();
         });
+
         addEventListener('onChangeChatHistory', () => {
+            this.renderDialogHistory();
+        });
+
+        addEventListener('onDeleteMsg', () => {
+            this.clearDialog();
             this.renderDialogHistory();
         });
     }
@@ -184,7 +190,11 @@ export class MessageField extends View {
     }
 
     private renderDialogHistory(): void {
-        this.clearDialog();
+        // if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+        //     console.log('active');
+        // }
+        // this.clearDialog();
+
         const targetUser = selectedUser.username;
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
 
