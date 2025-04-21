@@ -1,3 +1,4 @@
+import { changeChatHistory } from '../../services/custom-events/custom-events';
 import type { ClientApi } from '../../services/server-api/client-api';
 import type { Message } from '../../services/server-api/types/chat';
 import { ElementCreator } from '../../utils/element-creator';
@@ -50,9 +51,9 @@ export class ContextMenu {
         this.btnDelete?.getElement().addEventListener('click', () => {
             clientApi.deleteMsg(msgId);
         });
+
         this.btnEdit?.getElement().addEventListener('click', () => {
             const messageField = messageBox.querySelector('.message');
-            const status = messageBox.querySelector('.status');
 
             const textArea = new ElementCreator({
                 tagName: 'textarea',
@@ -71,10 +72,6 @@ export class ContextMenu {
                         classes: ['message'],
                         textContent: newText || '',
                     }).getElement();
-
-                    if (status) {
-                        status.textContent = 'Edited';
-                    }
                     if (newText) clientApi.editMessage(msgId, newText);
                     textArea.replaceWith(messageField);
                 }

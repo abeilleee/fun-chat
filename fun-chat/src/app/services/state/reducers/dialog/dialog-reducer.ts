@@ -111,7 +111,7 @@ addEventListener('onDeleteMsg', () => {
 });
 addEventListener('onChangeChatHistory', () => {
     unreadMessages();
-    console.log('dialogState: ', dialogState);
+    console.log('dialogState on change history: ', dialogState);
 });
 
 export function checkDeletingMessage(data: string): void {
@@ -150,5 +150,4 @@ export function editMessage(data: string): void {
         });
         dialogState = state;
     }
-    dispatchEvent(changeChatHistory);
 }

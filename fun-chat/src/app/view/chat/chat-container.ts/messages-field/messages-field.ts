@@ -82,11 +82,12 @@ export class MessageField extends View {
 
         this.createMessageElements(message, messageWrapper.getElement(), msgStatus);
         if (msgStatus) {
-            this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
+            messageWrapper.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
                 event.preventDefault();
+                const targetElement = event.target;
                 const { clientX, clientY } = event;
                 if (!this.contextMenu.isOpen && this.messageBox) {
-                    this.contextMenu.showMenu(clientX, clientY, message, this.clientApi, this.messageBox.getElement());
+                    this.contextMenu.showMenu(clientX, clientY, message, this.clientApi, messageWrapper.getElement());
                 }
                 messageHandler(this.contextMenu, message, this.clientApi);
             });
@@ -189,10 +190,7 @@ export class MessageField extends View {
     }
 
     private renderDialogHistory(): void {
-        // if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-        //     console.log('active');
-        // }
-        // this.clearDialog();
+        console.log('render');
 
         const targetUser = selectedUser.username;
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
