@@ -42,7 +42,6 @@ export class Modal {
 
     private setCloseBtnEventListener(): void {
         this.closeBtn?.getElement().addEventListener('click', () => {
-            console.log('click');
             this.closeModal();
         });
     }

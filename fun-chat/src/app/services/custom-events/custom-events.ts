@@ -6,3 +6,4 @@ export const connectionOpen = new CustomEvent('connectionOpen'); //TODO: delete
 export const changeChatHistory = new CustomEvent('onChangeChatHistory');
 export const getNewMessages = new CustomEvent('getNewMessages');
 // export const getError = new CustomEvent('onError');
+export const onLogin = new CustomEvent('onLogin');

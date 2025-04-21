@@ -2,11 +2,10 @@ import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
 import { USER_STATUS } from '../../services/server-api/constants';
-import type { Payload, User } from '../../services/server-api/types/user';
-import { isAccessDenied } from '../../services/state/reducers/auth/auth-reducer';
+import type { Payload } from '../../services/server-api/types/user';
 import { isDialogToggler, isOpenChatToggler } from '../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../services/state/reducers/users/user-states-reducer';
-import { getStorageData, setData, toggleIsLogined } from '../../services/storage/storage';
+import { getStorageData, isLogined, toggleIsLogined } from '../../services/storage/storage';
 import { generateId } from '../../utils/id-generator';
 
 export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
@@ -38,9 +37,9 @@ export function handlerBtnAbout(router: Router): void {
 }
 
 export function handlerBtnBack(router: Router): void {
-    // const isAuth = isLogined();
-    // isAuth ? router.navigate(PAGES.MAIN) : router.navigate(PAGES.AUTH);
-    history.back();
+    const isAuth = isLogined();
+    isAuth ? router.navigate(PAGES.MAIN) : router.navigate(PAGES.AUTH);
+    // history.back();
 }
 
 export function handlerBtnLogin(
@@ -64,23 +63,6 @@ export function handlerBtnLogin(
         clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload, id);
         clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
         clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
-        console.log('isAccessDenied: ', isAccessDenied);
-
-        setTimeout(() => {
-            if (isAccessDenied) {
-                router.navigate(PAGES.MAIN);
-            } else {
-                console.log('access denied');
-            }
-
-            const userData: User = {
-                login: login,
-                password: password,
-                isLogined: true,
-            };
-
-            if (!isAccessDenied) setData(userData);
-        }, 1000);
     }
 }
 

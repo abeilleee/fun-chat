@@ -1,8 +1,7 @@
-import { allUsersChange } from '../../../custom-events/custom-events';
+import { allUsersChange, onLogin } from '../../../custom-events/custom-events';
 import { USER_STATUS } from '../../../server-api/constants';
 import type { User } from '../../../server-api/types/user';
 import { getCurrentUsername } from '../../../storage/storage';
-import { isAccessDenied, isAccessDeniedToggler } from '../auth/auth-reducer';
 import type { AllUsers, SelectedUser } from './types';
 
 export const allUsers: AllUsers = {
@@ -49,14 +48,27 @@ export function getUsers(data: string): void {
             const inactive = allUsers.inactive.filter((elem: User) => elem.login !== loginUserLogin);
             allUsers.inactive = inactive;
             allUsers.active = [...allUsers.active, loginUser];
-            isAccessDeniedToggler(true);
             dispatchEvent(allUsersChange);
+            // dispatchEvent(onLogin);
             break;
         }
     }
     dispatchEvent(allUsersChange);
 }
 
+export function handlerLoginLogout(data: string): void {
+    const { id, type, payload } = JSON.parse(data);
+    switch (type) {
+        case USER_STATUS.LOGIN: {
+            dispatchEvent(onLogin);
+            break;
+        }
+        case USER_STATUS.LOGOUT: {
+            console.log('logout');
+            break;
+        }
+    }
+}
 export function getAllUsers(): AllUsers {
     return allUsers;
 }

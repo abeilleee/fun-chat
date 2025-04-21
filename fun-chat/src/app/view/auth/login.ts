@@ -6,7 +6,10 @@ import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Router } from '../../services/router/router';
+import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
+import type { User } from '../../services/server-api/types/user';
+import { setData } from '../../services/storage/storage';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
 import { View } from '../view';
@@ -66,9 +69,7 @@ export class LoginPageView extends View {
             textContent: 'FUN CHAT',
             parent: this.formElement.getElement(),
         });
-        const labelLogin = new ElementCreator<HTMLLabelElement>({
-            tagName: 'label',
-            classes: ['label', 'label-login'],
+        const labelLogin = new ElementCreator<HTMLLabelElement>({ tagName: 'label',classes: ['label', 'label-login'],
             parent: this.formElement.getElement(),
             textContent: 'Enter your login',
         }).getElement();
@@ -82,7 +83,7 @@ export class LoginPageView extends View {
             this.formElement.getElement(),
             'login'
         );
-        this.loginErrorMessage = new ElementCreator({tagName: 'span', classes: ['error-message'],
+        this.loginErrorMessage = new ElementCreator({ tagName: 'span',classes: ['error-message'],
             parent: this.formElement.getElement(),
         });
         const labelPassword = new ElementCreator<HTMLLabelElement>({
@@ -98,7 +99,7 @@ export class LoginPageView extends View {
             this.formElement.getElement(),
             'password'
         );
-        this.passwordErrorMessage = new ElementCreator({ tagName: 'span',
+        this.passwordErrorMessage = new ElementCreator({tagName: 'span',
             classes: ['error-message'],
             parent: this.formElement.getElement(),
         });
@@ -221,6 +222,21 @@ export class LoginPageView extends View {
                             this.clientApi
                         );
             }
+
+            addEventListener('onLogin', () => {
+                const login = this.loginInput?.getValue();
+                const password = this.passwordInput?.getValue();
+
+                if (login && password) {
+                    const userData: User = {
+                        login: login,
+                        password: password,
+                        isLogined: true,
+                    };
+                    setData(userData);
+                    this.router.navigate(PAGES.MAIN);
+                }
+            });
         });
     }
 

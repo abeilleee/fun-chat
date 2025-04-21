@@ -1,6 +1,6 @@
 import { ClientApi } from '../server-api/client-api';
 import { getMessages } from '../state/reducers/dialog/dialog-reducer';
-import { getUsers } from '../state/reducers/users/user-states-reducer';
+import { getUsers, handlerLoginLogout } from '../state/reducers/users/user-states-reducer';
 import { EVENT_TYPE, SERVER_URL } from './constants';
 import { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
 import { connectionClosed, connectionOpen } from '../custom-events/custom-events';
@@ -18,6 +18,7 @@ export class WebSocketConnection {
         this.clientApi = new ClientApi(this);
         this.openConnection();
         this.connectionWaiter = new ConnectionWaiter();
+
         closeHandler(this.connectionWaiter);
     }
 
@@ -55,6 +56,7 @@ export class WebSocketConnection {
             this.websocket.addEventListener(EVENT_TYPE.MESSAGE, (message: MessageEvent) => {
                 const response = message.data;
                 getUsers(response);
+                handlerLoginLogout(response);
                 getMessages(response);
                 checkErrors(response);
             });

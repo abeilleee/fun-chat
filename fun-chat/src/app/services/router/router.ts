@@ -1,5 +1,4 @@
-import { isAccessDenied } from '../state/reducers/auth/auth-reducer';
-import { getStorageData, isLogined } from '../storage/storage';
+import { isLogined } from '../storage/storage';
 import { HistoryRoutesHandler } from './history-routes-handler';
 import { PAGES, type UserRequest, type Route } from './types';
 
@@ -31,7 +30,7 @@ export class Router {
         const isAuth = isLogined();
 
         const path = window.location.pathname;
-        if (isAuth && path === `/${PAGES.AUTH}`) {
+        if (isAuth && path === `/auth`) {
             this.navigate(PAGES.MAIN);
         }
     }
@@ -39,7 +38,7 @@ export class Router {
     public redirectToAuthPage(): void {
         const isAuth = isLogined();
         const path = window.location.pathname;
-        if ((!isAuth && path === `/${PAGES.MAIN}`) || isAccessDenied) {
+        if (!isAuth && path === `/main`) {
             this.navigate(PAGES.AUTH);
         }
     }
