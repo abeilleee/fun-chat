@@ -126,11 +126,6 @@ export class Contacts extends View {
             this.renderContacts();
         });
 
-        addEventListener('getNewMessages', () => {
-            // console.log('unreadMessagesNumber: ', unreadMessagesNumber);
-            // this.renderContacts();
-        });
-
         this.inputSearch.getElement().addEventListener('input', () => {
             const value = this.inputSearch.getValue();
             if (value) {

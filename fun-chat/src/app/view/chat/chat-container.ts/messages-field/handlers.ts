@@ -21,16 +21,13 @@ export function changeMessagesStatus(clientApi: ClientApi): void {
 
 export function messageHandler(contextMenu: ContextMenu, message: Message, clientApi: ClientApi): void {
     const elements = document.querySelectorAll('.message-box');
-    console.log('query selector on message box');
     Array.from(elements).forEach((elem) => {
         if (elem instanceof HTMLElement) {
             elem.addEventListener('contextmenu', (event: MouseEvent) => {
                 event.preventDefault();
                 const { clientX, clientY } = event;
-                console.log(clientX);
                 if (!contextMenu.isOpen) {
                     contextMenu.showMenu(clientX, clientY, message, clientApi);
-                    // contextMenu.setEventListeners();
                 }
                 return;
             });

@@ -17,8 +17,6 @@ export function getMessages(data: string): void {
             let targetDialog: Dialog | undefined;
 
             if (!idResp) {
-                console.log('get new message (unread) (inside dialog reducer). dispatch event here');
-                // checkUnreadMessages();
                 dispatchEvent(getNewMessages);
             }
             const recipient = payload.message.to;
@@ -72,39 +70,7 @@ export function isDialogToggler(value: boolean): void {
 
 export const unreadMessagesNumber: UserUnreadMessages[] = [];
 
-// export function checkUnreadMessages(): void {
-//     console.log('check');
-//     console.log('dialogState: ', dialogState);
-//     unreadMessagesNumber = [];
-//     dialogState.forEach((userdialog) => {
-//         const username = userdialog.login;
-//         let unreadMessagesCount = 0;
-//         userdialog.messages.forEach((message: Message) => {
-//             if (message.status?.isReaded === false) {
-//                 unreadMessagesCount++;
-//             }
-//         });
-
-//         const result: UserUnreadMessages = {
-//             username: username,
-//             unreadMessages: unreadMessagesCount,
-//         };
-
-//         const hasUser = unreadMessagesNumber.some((user) => user.username === result.username);
-//         if (hasUser) {
-//             unreadMessagesNumber.forEach((user) => {
-//                 if (user.username === result.username) {
-//                     user.unreadMessages += result.unreadMessages;
-//                 }
-//             });
-//         } else {
-//             unreadMessagesNumber.push(result);
-//         }
-//     });
-// }
-
 addEventListener('getNewMessages', () => {
-    // console.log('STATE: ', dialogState);
     console.log('unreadMessagesNumber: ', unreadMessagesNumber);
 });
 
@@ -126,40 +92,9 @@ export function readMessages(clientApi: ClientApi): void {
     });
 }
 
-// export function checkMessages(clientApi: ClientApi): void {
-//     const currentUser = getCurrentUsername();
-//     const sender = selectedUser.username;
-
-//     const targetDialog = dialogState.find((dialog) => dialog.login === sender);
-//     const messages = targetDialog?.messages;
-//     if (targetDialog) {
-//         messages?.forEach((message) => {
-//             if (message.status?.isReaded === false) {
-//                 message.status.isReaded = true;
-//                 const msgId = message.id;
-//                 if (msgId) {
-//                     clientApi.readMessage(msgId);
-//                 }
-//             }
-//         });
-//     }
-// }
-
-// export function countUnreadMessages(username: string): Record<string, number> {
-//     return dialogState.reduce(
-//         (acc, user) => {
-//             const unreadCount = user.messages.filter((msg: Message) => msg.status?.isReaded === false).length;
-//             acc[user.username] = unreadCount;
-//             return acc;
-//         },
-//         {} as Record<string, number>
-//     );
-// }
-
 export function checkDeletingMessage(data: string): void {
     const { id, type, payload } = JSON.parse(data);
     if (type === MESSAGE_ACTIONS.MSG_DELETE) {
-        console.log('msg deleted');
         const newDialogState = dialogState.map((dialog) => ({
             ...dialog,
             messages: dialog.messages.filter((message) => message.id !== payload.message.id),

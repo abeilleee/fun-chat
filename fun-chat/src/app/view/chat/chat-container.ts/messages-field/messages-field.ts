@@ -47,10 +47,6 @@ export class MessageField extends View {
         this.renderDialogHistory();
         this.showHeaderAndInput();
         this.setEventListeners();
-        window.addEventListener('popstate', () => {
-            console.log('load');
-        });
-        // messageHandler(this.contextMenu);
     }
 
     public configure(): void {
@@ -144,31 +140,10 @@ export class MessageField extends View {
         });
         addEventListener('onSelectedUserChanged', () => {
             this.renderDialogHistory();
-            console.log('render dialog');
         });
         addEventListener('onChangeChatHistory', () => {
             this.renderDialogHistory();
         });
-        // addEventListener('onRenderMessages', () => {
-        //     messageHandler(this.contextMenu);
-        // });
-        // this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
-        //     event.preventDefault();
-        //     messageHandler(this.contextMenu);
-        // });
-
-        // this.dialogWrapper?.getElement().addEventListener('click', () => {
-        //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-        //         dialogWrapperHandler(this.clientApi);
-        //     }
-        // });
-
-        // this.dialogWrapper?.getElement().addEventListener('scroll', () => {
-        //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-        //         // console.log('scroll inside chat');
-        //         dialogWrapperHandler(this.clientApi);
-        //     }
-        // });
     }
 
     private getMsgStatus(message: Message): string | undefined {

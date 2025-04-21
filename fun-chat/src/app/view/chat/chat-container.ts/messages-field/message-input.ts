@@ -46,7 +46,6 @@ export class MessageInput extends View {
 
         window.addEventListener('keydown', (event: KeyboardEvent) => {
             if (event.key === 'Enter') {
-                console.log('enter');
                 const inputValue = this.input?.getValue() || '';
                 this.sendButton?.setDisabled(inputValue.length === 0);
                 const text = this.input?.getValue();
@@ -54,7 +53,6 @@ export class MessageInput extends View {
                     handlerBtnSend(text, this.clientApi);
                     this.input?.cleanInput();
                     this.sendButton?.setDisabled(true);
-                    // dialogWrapperHandler(this.clientApi);
                 }
             }
         });
