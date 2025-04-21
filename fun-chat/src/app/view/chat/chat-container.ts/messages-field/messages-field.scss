@@ -110,6 +110,11 @@
     border-radius: 5px;
     background-color: #ffffffb4;
     word-wrap: break-word;
+
+    &--disabled {
+        pointer-events: none;
+        resize: none;
+    }
 }
 
 .lower-box {

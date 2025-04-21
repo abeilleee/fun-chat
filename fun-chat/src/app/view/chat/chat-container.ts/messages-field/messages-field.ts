@@ -111,8 +111,8 @@ export class MessageField extends View {
             textContent: message.from,
         });
         const messageField = new ElementCreator({
-            tagName: 'div',
-            classes: ['message'],
+            tagName: 'textarea',
+            classes: ['message', 'message--disabled'],
             parent: this.messageBox.getElement(),
             textContent: message.text,
         });

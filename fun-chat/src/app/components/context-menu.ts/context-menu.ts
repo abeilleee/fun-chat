@@ -43,7 +43,6 @@ export class ContextMenu {
     private setEventListeners(clientApi: ClientApi, msgId: string): void {
         this.btnDelete?.getElement().addEventListener('click', () => {
             clientApi.deleteMsg(msgId);
-            this.closeMenu();
         });
         this.btnEdit?.getElement().addEventListener('click', () => {
             this.closeMenu();
