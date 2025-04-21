@@ -10,3 +10,4 @@ export const onLogin = new CustomEvent('onLogin');
 export const selectUser = new CustomEvent('selectUser');
 export const renderMessages = new CustomEvent('onRenderMessages');
 export const deleteMsg = new CustomEvent('onDeleteMsg');
+export const editMsg = new CustomEvent('onEditMsg');

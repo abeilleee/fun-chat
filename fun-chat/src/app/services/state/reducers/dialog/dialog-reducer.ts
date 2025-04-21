@@ -1,6 +1,7 @@
 import {
     changeChatHistory,
     deleteMsg,
+    editMsg,
     getNewMessages,
     msgSend,
     selectedUserChanged,
@@ -113,6 +114,10 @@ addEventListener('onChangeChatHistory', () => {
     unreadMessages();
     console.log('dialogState on change history: ', dialogState);
 });
+addEventListener('onEditMsg', () => {
+    unreadMessages();
+    console.log('onEditMsg: ');
+});
 
 export function checkDeletingMessage(data: string): void {
     const { id, type, payload } = JSON.parse(data);
@@ -122,22 +127,19 @@ export function checkDeletingMessage(data: string): void {
             messages: dialog.messages.filter((message) => message.id !== payload.message.id),
         }));
         dialogState = newDialogState;
-
-        // console.log('dialog state: ', dialogState);
         dispatchEvent(deleteMsg);
     }
 }
 
 export function editMessage(data: string): void {
     const { id, type, payload } = JSON.parse(data);
-    if (type === MESSAGE_ACTIONS.MSG_SEND) {
-        const msgId: string = payload.id;
-        const text: string = payload.text;
-
+    console.log('GET RESPONSE TO EDIT');
+    if (type === MESSAGE_ACTIONS.MSG_EDIT) {
+        const msgId: string = payload.message.id;
+        const text: string = payload.message.text;
         const state: Dialog[] = dialogState.map((dialog) => {
             return {
                 ...dialog,
-
                 messages: dialog.messages.map((message: Message) => {
                     if (message.id === msgId) {
                         message.text = text;
@@ -149,5 +151,6 @@ export function editMessage(data: string): void {
             };
         });
         dialogState = state;
+        dispatchEvent(editMsg);
     }
 }

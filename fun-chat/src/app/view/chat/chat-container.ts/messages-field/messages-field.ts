@@ -154,10 +154,17 @@ export class MessageField extends View {
         });
 
         addEventListener('onChangeChatHistory', () => {
+            console.log('on change history');
             this.renderDialogHistory();
         });
 
         addEventListener('onDeleteMsg', () => {
+            console.log('on delete msg');
+            this.clearDialog();
+            this.renderDialogHistory();
+        });
+        window.addEventListener('onEditMsg', () => {
+            console.log('on edit msg listener');
             this.clearDialog();
             this.renderDialogHistory();
         });
