@@ -1,4 +1,4 @@
-import type { InputElement } from '../../../../components/input/input';
+import { InputElement } from '../../../../components/input/input';
 import type { ClientApi } from '../../../../services/server-api/client-api';
 import { USER_STATUS } from '../../../../services/server-api/constants';
 import { ElementCreator } from '../../../../utils/element-creator';
@@ -115,10 +115,12 @@ export class Contacts extends View {
 
                 if (targetElement instanceof HTMLElement) {
                     handleUserSelect(targetElement, this.clientApi);
-                    this.clientApi.requestChatHistory(selectedUser.username);
                 }
             });
         }
+        addEventListener('selectUser', () => {
+            this.clientApi.requestChatHistory(selectedUser.username);
+        });
 
         addEventListener('onAllUsersChange', () => {
             this.renderContacts();
