@@ -69,7 +69,9 @@ export class LoginPageView extends View {
             textContent: 'FUN CHAT',
             parent: this.formElement.getElement(),
         });
-        const labelLogin = new ElementCreator<HTMLLabelElement>({ tagName: 'label',classes: ['label', 'label-login'],
+        const labelLogin = new ElementCreator<HTMLLabelElement>({
+            tagName: 'label',
+            classes: ['label', 'label-login'],
             parent: this.formElement.getElement(),
             textContent: 'Enter your login',
         }).getElement();
@@ -83,7 +85,9 @@ export class LoginPageView extends View {
             this.formElement.getElement(),
             'login'
         );
-        this.loginErrorMessage = new ElementCreator({ tagName: 'span',classes: ['error-message'],
+        this.loginErrorMessage = new ElementCreator({
+            tagName: 'span',
+            classes: ['error-message'],
             parent: this.formElement.getElement(),
         });
         const labelPassword = new ElementCreator<HTMLLabelElement>({
@@ -99,7 +103,8 @@ export class LoginPageView extends View {
             this.formElement.getElement(),
             'password'
         );
-        this.passwordErrorMessage = new ElementCreator({tagName: 'span',
+        this.passwordErrorMessage = new ElementCreator({
+            tagName: 'span',
             classes: ['error-message'],
             parent: this.formElement.getElement(),
         });

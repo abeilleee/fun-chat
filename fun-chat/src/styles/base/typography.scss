@@ -1,9 +1,9 @@
 * {
+    color: var(--font-color);
     font-family: 'Red Hat Display', sans-serif;
     letter-spacing: 0.07rem;
-    color: var(--font-color);
 
-    @media screen and (max-width: 590px) {
+    @media screen and (width <= 590px) {
         font-size: 12px;
     }
 }

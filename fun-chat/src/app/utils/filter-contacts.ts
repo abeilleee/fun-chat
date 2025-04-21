@@ -1,5 +1,5 @@
-import { User } from '../services/server-api/types/user';
-import { AllUsers } from '../services/state/reducers/users/types';
+import type { User } from '../services/server-api/types/user';
+import type { AllUsers } from '../services/state/reducers/users/types';
 import { getAllUsers } from '../services/state/reducers/users/user-states-reducer';
 
 function filterContacts(searchStr: string): AllUsers {

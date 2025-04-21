@@ -1,5 +1,5 @@
-import { APP_ERROR, MESSAGE_ACTIONS, USER_STATUS } from '../constants';
-import { Message } from './chat';
+import type { APP_ERROR, MESSAGE_ACTIONS, USER_STATUS } from '../constants';
+import type { Message } from './chat';
 
 export type UserRequest = {
     id: string;

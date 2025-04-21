@@ -1,12 +1,12 @@
 .contacts-box {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 30%;
-    background-color: var(--background-transparent);
-    border-radius: 10px;
     overflow: auto;
-    scrollbar-color: rgba(169, 144, 245, 0.354) transparent;
+    width: 30%;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: var(--background-transparent);
+    gap: 12px;
+    scrollbar-color: rgb(169 144 245 / 35.4%) transparent;
     scrollbar-width: thin;
 }
 
@@ -23,26 +23,26 @@
 
 .user-box {
     display: flex;
-    padding-left: 5px;
     align-items: center;
-    gap: 10px;
     padding: 5px;
+    padding-left: 5px;
+    gap: 10px;
 
     &:hover {
-        cursor: pointer;
         background-color: var(--bg-btn-disabled-color);
+        cursor: pointer;
     }
 }
 
 .user-selected {
-    background-color: rgb(133, 75, 240);
+    background-color: rgb(133 75 240);
 }
 
 .user-indicator {
-    border-radius: 100%;
     width: 8px;
     height: 8px;
     border: 1px solid black;
+    border-radius: 100%;
 
     &--online {
         background-color: var(--bg-color-online-indicator);
@@ -55,12 +55,12 @@
 
 .messages-indicator {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100%;
     width: 20px;
     height: 20px;
-    border: 1px solid rgb(255, 255, 255);
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(255 255 255);
+    border-radius: 100%;
     background-color: var(--background-transparent);
     font-size: 12px;
 }

@@ -13,13 +13,13 @@
 
 .modal {
     display: flex;
-    align-items: center;
-    border-radius: 5px;
-    justify-content: center;
     width: 260px;
     height: 140px;
-    background-color: var(--background-modal);
+    align-items: center;
+    justify-content: center;
     padding: 4px;
+    border-radius: 5px;
+    background-color: var(--background-modal);
     font-size: 18px;
     text-align: center;
 }

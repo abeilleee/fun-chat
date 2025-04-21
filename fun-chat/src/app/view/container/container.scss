@@ -7,7 +7,7 @@
     margin: 0 auto;
     gap: 10px;
 
-    @media screen and (max-width: 600px) {
+    @media screen and (width <= 600px) {
         padding: 0 30px;
     }
 }

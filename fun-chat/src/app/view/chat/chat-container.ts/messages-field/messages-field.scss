@@ -1,25 +1,26 @@
 .message-field {
     display: flex;
-    flex-direction: column;
+    overflow: auto;
+
     // border: 2px solid rgba(255, 255, 255, 0.341);
     width: 70%;
-    background-color: var(--background-transparent);
+    flex-direction: column;
     border-radius: 10px;
-    overflow: auto;
-    scrollbar-color: rgba(169, 144, 245, 0.354) transparent;
+    background-color: var(--background-transparent);
+    scrollbar-color: rgb(169 144 245 / 35.4%) transparent;
     scrollbar-width: thin;
 }
 
 .messages-header {
-    order: 1;
     display: flex;
-    justify-content: center;
-    padding-right: 10px;
-    align-items: center;
-    border-bottom: 3px solid var(--border-color);
     width: 100%;
     height: 41px;
+    align-items: center;
+    justify-content: center;
+    order: 1;
+    padding-right: 10px;
     border-radius: 5px;
+    border-bottom: 3px solid var(--border-color);
 }
 
 .hidden {
@@ -27,19 +28,19 @@
 }
 
 .dialog-wrapper {
-    order: 2;
     display: flex;
+    overflow: auto;
     width: 100%;
     height: 100%;
-    justify-content: center;
     align-items: center;
-    overflow: auto;
-    scrollbar-color: rgba(169, 144, 245, 0.354) transparent;
+    justify-content: center;
+    order: 2;
+    scrollbar-color: rgb(169 144 245 / 35.4%) transparent;
     scrollbar-width: thin;
 
     &--active {
-        overflow: auto;
         display: flex;
+        overflow: auto;
         height: 100%;
         flex-direction: column;
     }
@@ -47,12 +48,12 @@
 
 .message-input-box {
     display: flex;
-    justify-content: space-between;
-    order: 3;
     width: 100%;
     height: 41px;
-    border-top: 3px solid var(--border-color);
+    justify-content: space-between;
+    order: 3;
     border-radius: 5px;
+    border-top: 3px solid var(--border-color);
 }
 
 .message-input {
@@ -77,15 +78,15 @@
 
 .message-box {
     display: flex;
-    flex-direction: column;
     width: 50%;
     min-height: 120px;
-    background-color: var(--background-transparent);
+    flex-direction: column;
     padding: 5px;
-    gap: 5px;
     border-radius: 5px;
+    background-color: var(--background-transparent);
+    gap: 5px;
 
-    @media screen and (max-width: 850px) {
+    @media screen and (width <= 850px) {
         width: 80%;
     }
 }
@@ -93,29 +94,29 @@
 .upper-box {
     display: flex;
     width: 100%;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 }
 
 .message {
     display: flex;
-    flex-direction: column;
     width: 100%;
-    padding: 5px;
-    background-color: #ffffffb4;
-    border-radius: 5px;
-    word-wrap: break-word;
     min-height: 50px;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #ffffffb4;
+    word-wrap: break-word;
 }
 
 .lower-box {
     display: flex;
     width: 100%;
-    justify-content: end;
     align-items: center;
+    justify-content: end;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (width <= 450px) {
     .date {
         font-size: 7px;
     }

@@ -1,5 +1,5 @@
-import { User } from './user';
-import { APP_ERROR, MESSAGE_ACTIONS, USER_STATUS } from '../constants';
+import type { User } from './user';
+import type { APP_ERROR, MESSAGE_ACTIONS, USER_STATUS } from '../constants';
 
 export type ServerMessage = {
     id: string;
