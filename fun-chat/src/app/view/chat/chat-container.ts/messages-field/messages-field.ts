@@ -72,18 +72,18 @@ export class MessageField extends View {
             this.renderDialogHistory();
         });
 
-        this.dialogWrapper?.getElement().addEventListener('click', () => {
-            if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-                dialogWrapperHandler(this.clientApi);
-            }
-        });
+        // this.dialogWrapper?.getElement().addEventListener('click', () => {
+        //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+        //         dialogWrapperHandler(this.clientApi);
+        //     }
+        // });
 
-        this.dialogWrapper?.getElement().addEventListener('scroll', () => {
-            if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-                // console.log('scroll inside chat');
-                dialogWrapperHandler(this.clientApi);
-            }
-        });
+        // this.dialogWrapper?.getElement().addEventListener('scroll', () => {
+        //     if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+        //         // console.log('scroll inside chat');
+        //         dialogWrapperHandler(this.clientApi);
+        //     }
+        // });
     }
 
     private changeTextContent(content: CHAT_INTRO_TEXT = CHAT_INTRO_TEXT.WRITE): void {

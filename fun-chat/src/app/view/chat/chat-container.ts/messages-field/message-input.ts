@@ -54,7 +54,7 @@ export class MessageInput extends View {
                     handlerBtnSend(text, this.clientApi);
                     this.input?.cleanInput();
                     this.sendButton?.setDisabled(true);
-                    dialogWrapperHandler(this.clientApi);
+                    // dialogWrapperHandler(this.clientApi);
                 }
             }
         });
@@ -68,7 +68,7 @@ export class MessageInput extends View {
                 handlerBtnSend(text, this.clientApi);
                 this.input?.cleanInput();
                 this.sendButton?.setDisabled(true);
-                dialogWrapperHandler(this.clientApi);
+                // dialogWrapperHandler(this.clientApi);
             }
         });
     }
