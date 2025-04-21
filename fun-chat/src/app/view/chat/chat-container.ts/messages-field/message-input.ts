@@ -49,10 +49,12 @@ export class MessageInput extends View {
         this.sendButton?.getElement().addEventListener('click', () => {
             this.addInputEventListener();
             const text = this.input?.getValue();
-            if (text) handlerBtnSend(text, this.clientApi);
-            this.input?.cleanInput();
-            this.sendButton?.setDisabled(true);
-            dialogWrapperHandler(this.clientApi);
+            if (text && text.trim().length !== 0) {
+                handlerBtnSend(text, this.clientApi);
+                this.input?.cleanInput();
+                this.sendButton?.setDisabled(true);
+                dialogWrapperHandler(this.clientApi);
+            }
         });
     }
 }

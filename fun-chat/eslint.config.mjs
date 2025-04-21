@@ -116,6 +116,7 @@ export default defineConfig([
             'unicorn/prefer-at': 'off', //O_O
             'unicorn/no-new-array': 'off',
             'unicorn/no-lonely-if': 'off',
+            'unicorn/explicit-length-check': 'off',
         },
     },
 ]);
