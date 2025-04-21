@@ -46,7 +46,7 @@ export class WebSocketConnection {
         });
 
         this.websocket.addEventListener(EVENT_TYPE.ERROR, (event) => {
-            console.log('WebSocket error: ', event);
+            // console.log('WebSocket error: ', event);
         });
         this.addEventListeners();
     }

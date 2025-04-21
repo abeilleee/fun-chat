@@ -17,13 +17,11 @@ export class Router {
         });
 
         window.addEventListener('popstate', () => {
-            console.log('popstate');
             this.redirectToMainPage();
             this.redirectToAuthPage();
         });
 
         window.addEventListener('hashchange', () => {
-            console.log('hashchange');
             this.redirectToMainPage();
             this.redirectToAuthPage();
         });

@@ -64,7 +64,6 @@ export function handlerLoginLogout(data: string): void {
             break;
         }
         case USER_STATUS.LOGOUT: {
-            console.log('logout');
             break;
         }
     }

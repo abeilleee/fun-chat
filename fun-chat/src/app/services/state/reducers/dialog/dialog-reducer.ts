@@ -76,9 +76,9 @@ export function isDialogToggler(value: boolean): void {
 
 export const unreadMessagesNumber: UserUnreadMessages[] = [];
 
-addEventListener('getNewMessages', () => {
-    console.log('unreadMessagesNumber: ', unreadMessagesNumber);
-});
+// addEventListener('getNewMessages', () => {
+//     console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+// });
 
 export function readMessages(clientApi: ClientApi): void {
     const currentUser = getCurrentUsername();
@@ -107,7 +107,7 @@ export function checkDeletingMessage(data: string): void {
         }));
         dialogState = newDialogState;
 
-        console.log('dialog state: ', dialogState);
+        // console.log('dialog state: ', dialogState);
         dispatchEvent(deleteMsg);
     }
 }

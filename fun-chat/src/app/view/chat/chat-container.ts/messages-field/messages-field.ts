@@ -83,7 +83,6 @@ export class MessageField extends View {
         this.createMessageElements(message, messageWrapper.getElement(), msgStatus);
         if (msgStatus) {
             this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
-                console.log('context menu');
                 event.preventDefault();
                 const { clientX, clientY } = event;
                 if (!this.contextMenu.isOpen) {
@@ -213,7 +212,6 @@ export class MessageField extends View {
         }
         if (this.dialogWrapper)
             this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
-        console.log('rendering');
 
         dispatchEvent(renderMessages);
     }
