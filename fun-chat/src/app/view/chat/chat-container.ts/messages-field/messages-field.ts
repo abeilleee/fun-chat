@@ -16,7 +16,7 @@ import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { CHAT_INTRO_TEXT, SEND } from '../constants';
-import { dialogWrapperHandler, messageHandler } from './handlers';
+import { messageHandler } from './handlers';
 import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
 
@@ -81,6 +81,17 @@ export class MessageField extends View {
         }
 
         this.createMessageElements(message, messageWrapper.getElement(), msgStatus);
+        if (msgStatus) {
+            this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
+                console.log('context menu');
+                event.preventDefault();
+                const { clientX, clientY } = event;
+                if (!this.contextMenu.isOpen) {
+                    this.contextMenu.showMenu(clientX, clientY, message, this.clientApi);
+                }
+                messageHandler(this.contextMenu, message, this.clientApi);
+            });
+        }
     }
 
     private createMessageElements(message: Message, parent: HTMLElement, msgStatus: boolean): void {
@@ -123,11 +134,11 @@ export class MessageField extends View {
             parent: lowerBox.getElement(),
             textContent: msgStatus ? this.getMsgStatus(message) : '',
         });
-        this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
-            console.log('context menu event listener inside create msg elem');
-            event.preventDefault();
-            messageHandler(this.contextMenu, message, this.clientApi);
-        });
+        // this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
+        //     console.log('context menu event listener inside create msg elem');
+        //     event.preventDefault();
+        //     messageHandler(this.contextMenu, message, this.clientApi);
+        // });
     }
 
     private setEventListeners(): void {
@@ -193,6 +204,7 @@ export class MessageField extends View {
         if (this.dialogWrapper)
             this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
         console.log('rendering');
+
         dispatchEvent(renderMessages);
     }
 
