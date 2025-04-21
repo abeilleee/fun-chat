@@ -53,17 +53,33 @@ export class ContextMenu {
         this.btnEdit?.getElement().addEventListener('click', () => {
             const messageField = messageBox.querySelector('.message');
             const status = messageBox.querySelector('.status');
-            messageField?.classList.remove('message--disabled');
-            if (messageField instanceof HTMLTextAreaElement) {
-                messageField.focus();
 
-                messageField.addEventListener('blur', () => {
-                    const newText = messageField.value;
-                    messageField.classList.add('message--disabled');
-                    if (status) status.textContent = 'Edited';
-                    clientApi.editMessage(msgId, newText);
-                });
-            }
+            const textArea = new ElementCreator({
+                tagName: 'textarea',
+                classes: ['message-area'],
+                textContent: messageField?.textContent || '',
+            }).getElement();
+
+            if (textArea instanceof HTMLElement) messageField?.replaceWith(textArea);
+            textArea.focus();
+
+            textArea.addEventListener('blur', () => {
+                if (textArea instanceof HTMLTextAreaElement) {
+                    const newText = textArea.value;
+                    const messageField = new ElementCreator({
+                        tagName: 'div',
+                        classes: ['message'],
+                        textContent: newText || '',
+                    }).getElement();
+
+                    if (status) {
+                        status.textContent = 'Edited';
+                    }
+                    if (newText) clientApi.editMessage(msgId, newText);
+                    textArea.replaceWith(messageField);
+                }
+            });
+
             this.closeMenu();
         });
     }
