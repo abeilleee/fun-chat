@@ -25,6 +25,16 @@ export class App {
         this.websocket = new WebSocketConnection();
         this.clientApi = new ClientApi(this.websocket);
         this.createView();
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
+        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
     }
 
     private createView(): void {

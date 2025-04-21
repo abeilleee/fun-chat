@@ -82,7 +82,6 @@ export class Contacts extends View {
 
     public renderContacts(filter?: boolean): void {
         unreadMessages();
-        console.log('render');
         this.cleanContacts();
         const users: AllUsers | undefined = filter ? this.filterContacts() : getAllUsers();
         if (users) {
@@ -137,7 +136,6 @@ export class Contacts extends View {
         addEventListener('onGetNewMessages', () => {
             unreadMessages();
 
-            console.log('dialog state on get new msgs: ', dialogState);
             this.renderContacts();
         });
 

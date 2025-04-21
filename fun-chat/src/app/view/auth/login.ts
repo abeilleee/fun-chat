@@ -234,9 +234,9 @@ export class LoginPageView extends View {
                 const login = this.loginInput?.getValue();
                 const password = this.passwordInput?.getValue();
                 unreadMessages();
-                console.log('unreadMessages in login: ', unreadMessagesNumber);
-                console.log('dialogState in login: ', dialogState);
-                console.log('all users: ', allUsers);
+                // console.log('unreadMessages in login: ', unreadMessagesNumber);
+                // console.log('dialogState in login: ', dialogState);
+                // console.log('all users: ', allUsers);
                 const users = [...allUsers.active, ...allUsers.inactive];
                 users.forEach((user: User) => {
                     const name = user.login;

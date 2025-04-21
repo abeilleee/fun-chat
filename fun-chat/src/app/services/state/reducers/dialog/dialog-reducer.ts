@@ -33,7 +33,7 @@ export function getMessages(data: string): void {
             let targetDialog: Dialog | undefined;
 
             if (idResp === null) {
-                console.log('getting new message');
+                // console.log('getting new message');
                 unreadMessages();
                 dispatchEvent(getNewMessages);
             }
@@ -103,15 +103,15 @@ export function unreadMessages(): void {
 
 addEventListener('onMsgSend', () => {
     unreadMessages();
-    console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+    // console.log('unreadMessagesNumber: ', unreadMessagesNumber);
 });
 addEventListener('onDeleteMsg', () => {
     unreadMessages();
-    console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+    // console.log('unreadMessagesNumber: ', unreadMessagesNumber);
 });
 addEventListener('onChangeChatHistory', () => {
     unreadMessages();
-    console.log('unreadMessagesNumber: ', unreadMessagesNumber);
+    // console.log('unreadMessagesNumber: ', unreadMessagesNumber);
 });
 
 export function checkDeletingMessage(data: string): void {
