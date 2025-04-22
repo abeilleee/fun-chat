@@ -1,7 +1,8 @@
 import type { ContextMenu } from '../../../../components/context-menu.ts/context-menu';
+import { changeChatHistory } from '../../../../services/custom-events/custom-events';
 import type { ClientApi } from '../../../../services/server-api/client-api';
-import type { Message } from '../../../../services/server-api/types/chat';
-import { dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
+import type { Dialog, Message } from '../../../../services/server-api/types/chat';
+import { changeDialogState, dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 
 export function dialogWrapperHandler(clientApi: ClientApi): void {
@@ -23,4 +24,14 @@ export function messageHandler(contextMenu: ContextMenu, message: Message, clien
     document.addEventListener('click', () => {
         contextMenu.closeMenu();
     });
+}
+
+export function handlerReadingMessages(): void {
+    const state = dialogState;
+    const targetDialog = state.find((dialog: Dialog) => dialog.login === selectedUser.username);
+    targetDialog?.messages.forEach((message: Message) => {
+        if (message.status) message.status.isReaded = true;
+    });
+    changeDialogState(state);
+    dispatchEvent(changeChatHistory);
 }

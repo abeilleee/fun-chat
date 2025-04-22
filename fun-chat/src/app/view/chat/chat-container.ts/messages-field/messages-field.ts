@@ -18,7 +18,7 @@ import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { CHAT_INTRO_TEXT, SEND } from '../constants';
-import { messageHandler } from './handlers';
+import { handlerReadingMessages, messageHandler } from './handlers';
 import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
 
@@ -161,10 +161,6 @@ export class MessageField extends View {
                 this.renderDialogHistory();
             }
         });
-        // addEventListener('onSelectedUserChanged', () => {
-        //     this.renderDialogHistory();
-        // });
-
         addEventListener('onChangeChatHistory', () => {
             unreadMessages();
             this.renderDialogHistory();
@@ -177,6 +173,12 @@ export class MessageField extends View {
         addEventListener('onEditMsg', () => {
             this.clearDialog();
             this.renderDialogHistory();
+        });
+        this.dialogWrapper?.getElement().addEventListener('click', () => {
+            if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+                console.log('YES');
+                handlerReadingMessages();
+            }
         });
     }
 
