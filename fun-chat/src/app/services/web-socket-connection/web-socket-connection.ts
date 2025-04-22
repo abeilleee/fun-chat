@@ -2,6 +2,7 @@ import { ClientApi } from '../server-api/client-api';
 import {
     changeReadStatus,
     checkDeletingMessage,
+    deliverNotification,
     editMessage,
     getMessages,
 } from '../state/reducers/dialog/dialog-reducer';
@@ -67,6 +68,7 @@ export class WebSocketConnection {
                 checkDeletingMessage(response);
                 editMessage(response);
                 changeReadStatus(response);
+                deliverNotification(response);
             });
             this.websocket.addEventListener(EVENT_TYPE.CLOSE, (event) => {
                 this.isOpen = false;

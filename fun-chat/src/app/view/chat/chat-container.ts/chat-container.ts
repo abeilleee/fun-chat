@@ -1,4 +1,5 @@
 import type { ClientApi } from '../../../services/server-api/client-api';
+import { USER_STATUS } from '../../../services/server-api/constants';
 import { ElementCreator } from '../../../utils/element-creator';
 import type { Options } from '../../../utils/types';
 import { ContainerView } from '../../container/container';
@@ -18,6 +19,7 @@ export class ChatContainerView extends View {
         super(options);
         this.clientApi = clientApi;
         this.configureView();
+        this.setEventListeners();
     }
 
     private configureView(): void {
@@ -29,5 +31,12 @@ export class ChatContainerView extends View {
         });
         const contactsList = new Contacts(chatWrapper.getElement(), this.clientApi);
         const messageField = new MessageField(chatWrapper.getElement(), this.clientApi);
+    }
+
+    private setEventListeners(): void {
+        addEventListener('onLogin', () => {
+            this.clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
+            this.clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
+        });
     }
 }

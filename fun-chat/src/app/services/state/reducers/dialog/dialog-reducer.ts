@@ -122,6 +122,27 @@ export function changeReadStatus(data: string): void {
     dispatchEvent(changeChatHistory);
 }
 
+export function deliverNotification(data: string): void {
+    const { id, type, payload } = JSON.parse(data);
+    if (type === MESSAGE_ACTIONS.MSG_DELIVER) {
+        const message: Message = payload.message;
+        const msgId = message.id;
+        const state = dialogState;
+        if (message.status) {
+            const status = message.status?.isDelivered;
+            const targetDialog = state.forEach((dialog) => {
+                dialog.messages.forEach((message) => {
+                    if (message.id === msgId && message.status) {
+                        message.status.isDelivered = status;
+                    }
+                });
+            });
+        }
+        dialogState = state;
+    }
+    dispatchEvent(changeChatHistory);
+}
+
 export let unreadMessagesNumber: UserUnreadMessages[] = [];
 
 export function unreadMessages(): void {

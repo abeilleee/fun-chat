@@ -1,4 +1,4 @@
-import { allUsersChange, onLogin } from '../../../custom-events/custom-events';
+import { allUsersChange, changeChatHistory, onLogin } from '../../../custom-events/custom-events';
 import { USER_STATUS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
 import type { User } from '../../../server-api/types/user';
@@ -42,20 +42,30 @@ export function getUsers(data: string): void {
             allUsers.active = active;
             allUsers.inactive = [...allUsers.inactive, logoutUser];
             dispatchEvent(allUsersChange);
+            dispatchEvent(changeChatHistory);
             break;
         }
         case USER_STATUS.EXTERNAL_LOGIN: {
-            const loginUser = payload.user;
-            const loginUserLogin = payload.user.login;
-            const inactive = allUsers.inactive.filter((elem: User) => elem.login !== loginUserLogin);
+            const user = payload.user;
+            const loginUser = payload.user.login;
+            const inactive = allUsers.inactive.filter((elem: User) => elem.login !== loginUser);
             allUsers.inactive = inactive;
-            allUsers.active = [...allUsers.active, loginUser];
+            allUsers.active = [...allUsers.active, user];
 
-            const state = dialogState;
-            const targetDialog = state.find((dialog: Dialog) => dialog.login === loginUser);
-            targetDialog?.messages.forEach((message: Message) => message.status?.isDelivered === true);
-            changeDialogState(state);
+            // const state = dialogState;
+            // const targetDialog = state.find((dialog: Dialog) => dialog.login === loginUser);
+
+            // targetDialog?.messages.forEach((message: Message) => {
+            //     if (message.status && message.status.isDelivered === false) {
+            //         message.status.isDelivered = true;
+            //         console.log('message.status.isDelivered: ', message.status.isDelivered);
+            //     }
+            // });
+            // console.log('TARGET DIALOG: ', targetDialog);
+
+            // changeDialogState(state);
             dispatchEvent(allUsersChange);
+            dispatchEvent(changeChatHistory);
             break;
         }
     }

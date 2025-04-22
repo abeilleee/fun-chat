@@ -161,7 +161,6 @@ export class MessageField extends View {
             }
         });
         addEventListener('onChangeChatHistory', () => {
-            console.log('dialogState on change chat history: ', dialogState);
             unreadMessages();
             this.renderDialogHistory();
         });
