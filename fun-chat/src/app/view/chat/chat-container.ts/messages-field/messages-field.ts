@@ -46,8 +46,8 @@ export class MessageField extends View {
 
         this.handlerSendMsg();
         this.configure();
-        this.renderDialogHistory();
         this.showHeaderAndInput();
+        this.renderDialogHistory();
         this.setEventListeners();
     }
 
@@ -65,7 +65,7 @@ export class MessageField extends View {
     }
 
     private changeTextContent(content: CHAT_INTRO_TEXT = CHAT_INTRO_TEXT.WRITE): void {
-        if (this.dialogWrapper) {
+        if (this.dialogWrapper && selectedUser.username.length > 0) {
             this.dialogWrapper.getElement().textContent = content;
         }
     }
@@ -153,10 +153,12 @@ export class MessageField extends View {
     private setEventListeners(): void {
         addEventListener('onSelectedUserChanged', () => {
             isOpenChatToggler(true);
-            this.messagesHeader?.getHTMLElement().classList.remove('hidden');
-            this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
-            this.changeTextContent();
-            this.setActiveWrapper();
+            if (selectedUser.username.length > 0) {
+                this.messagesHeader?.getHTMLElement().classList.remove('hidden');
+                this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
+                this.changeTextContent();
+                this.setActiveWrapper();
+            }
         });
         addEventListener('onSelectedUserChanged', () => {
             this.renderDialogHistory();
@@ -164,19 +166,14 @@ export class MessageField extends View {
 
         addEventListener('onChangeChatHistory', () => {
             unreadMessages();
-            // console.log('on change chat history unread msgs: ', unreadMessagesNumber);
-            // console.log('on change chat history dialog state: ', dialogState);
             this.renderDialogHistory();
         });
 
         addEventListener('onDeleteMsg', () => {
-            // console.log('on delete msg');
             this.clearDialog();
             this.renderDialogHistory();
         });
         addEventListener('onEditMsg', () => {
-            // console.log('on edit msg listener');
-            // console.log('edit dialogState: ', dialogState);
             this.clearDialog();
             this.renderDialogHistory();
         });
@@ -209,46 +206,50 @@ export class MessageField extends View {
     }
 
     private renderDialogHistory(): void {
-        // console.log('render');
+        if (selectedUser.username.length > 0) {
+            const targetUser = selectedUser.username;
+            const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
 
-        const targetUser = selectedUser.username;
-        const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
-
-        if (targetDialog) {
-            const messages: Message[] = targetDialog?.messages;
-            if (messages.length > 0) {
-                this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
-                isDialogToggler(true);
-            } else if (messages.length === 0) {
-                isDialogToggler(false);
-            }
-            messages.forEach((message: Message) => {
-                const className = message.from === targetUser ? '' : 'message-wrapper--right';
-                let edited: boolean = false;
-                if (message.status?.isEdited) {
-                    edited = true;
+            if (targetDialog) {
+                const messages: Message[] = targetDialog?.messages;
+                if (messages.length > 0) {
+                    this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
+                    isDialogToggler(true);
+                } else if (messages.length === 0) {
+                    isDialogToggler(false);
                 }
-                this.createMessage(message, edited, className);
-            });
-        }
-        if (this.dialogWrapper)
-            this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
+                messages.forEach((message: Message) => {
+                    const className = message.from === targetUser ? '' : 'message-wrapper--right';
+                    let edited: boolean = false;
+                    if (message.status?.isEdited) {
+                        edited = true;
+                    }
+                    this.createMessage(message, edited, className);
+                });
+            }
+            if (this.dialogWrapper)
+                this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
 
-        dispatchEvent(renderMessages);
+            dispatchEvent(renderMessages);
+        }
     }
 
     private setActiveWrapper(): void {
-        this.dialogWrapper?.getElement().classList.add('dialog-wrapper--active');
+        if (selectedUser.username.length > 0) {
+            this.dialogWrapper?.getElement().classList.add('dialog-wrapper--active');
+        } else {
+            this.dialogWrapper?.getElement().classList.remove('dialog-wrapper--active');
+        }
     }
 
     private showHeaderAndInput(): void {
-        if (isOpenChat) {
+        if (selectedUser.username.length > 0) {
             this.messagesHeader?.getHTMLElement().classList.remove('hidden');
             this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
             this.setActiveWrapper();
-            if (!isDialog) {
-                this.changeTextContent();
-            }
+        }
+        if (!isDialog) {
+            this.changeTextContent();
         }
     }
 

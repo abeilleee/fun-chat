@@ -11,6 +11,7 @@ import { PLACEHOLDER } from '../../../../components/input/constants';
 import type { AllUsers } from '../../../../services/state/reducers/users/types';
 import {
     dialogState,
+    pendingRequests,
     unreadMessages,
     unreadMessagesNumber,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
@@ -40,7 +41,7 @@ export class Contacts extends View {
         });
         this.userBox = null;
         unreadMessages();
-        // this.renderContacts();
+        this.renderContacts();
         this.setEventListeners();
     }
 
@@ -154,6 +155,8 @@ export class Contacts extends View {
         });
         addEventListener('onChangeChatHistory', () => {
             this.renderContacts();
+            console.log('dialogState in onChangeChatHistory in contacts: ', dialogState);
+            console.log('pendingRequests in onChangeChatHistory in contacts: ', pendingRequests);
         });
 
         this.inputSearch.getElement().addEventListener('input', () => {

@@ -10,7 +10,7 @@ import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
 import { getCurrentUsername } from '../../../storage/storage';
 import type { UserUnreadMessages } from '../../types';
-import { PendingRequest } from '../users/types';
+import type { PendingRequest } from '../users/types';
 import { selectedUser } from '../users/user-states-reducer';
 
 export let isOpenChat = false;
@@ -68,9 +68,9 @@ export function getMessages(data: string): void {
             const requestId = id;
             const messages: Message[] = payload.messages;
 
-            const targetUserRequest = pendingRequests.find(
-                (request: PendingRequest) => request.requestId === requestId
-            );
+            const pendingState = pendingRequests;
+
+            const targetUserRequest = pendingState.find((request: PendingRequest) => request.requestId === requestId);
 
             const recipient: string = selectedUser.username;
             let targetDialog = state.find((dialog) => dialog.login === recipient);
@@ -90,6 +90,7 @@ export function getMessages(data: string): void {
             if (targetUserRequest) targetUserRequest.unreadMessagesNumber = unreadMessagesNumber;
 
             dialogState = state;
+            pendingRequests = pendingState;
             changeDialogState(state);
             dispatchEvent(changeChatHistory);
             dispatchEvent(selectedUserChanged);
