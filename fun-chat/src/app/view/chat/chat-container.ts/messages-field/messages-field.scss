@@ -118,12 +118,25 @@
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: end;
+    justify-content: space-between;
     gap: 30%;
+}
+
+.status {
+    order: 2;
 }
 
 .status-edit {
     order: 1;
+}
+
+.delimeter {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3px;
+    background-color: black;
 }
 
 @media screen and (width <= 450px) {

@@ -9,7 +9,6 @@ import {
     isOpenChat,
     isOpenChatToggler,
     unreadMessages,
-    unreadMessagesNumber,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { allUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
@@ -17,7 +16,7 @@ import { formatTime } from '../../../../utils/format-time';
 import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { CHAT_INTRO_TEXT, SEND } from '../constants';
+import { CHAT_INTRO_TEXT, SEND, STATUS } from '../constants';
 import { handlerReadingMessages, messageHandler } from './handlers';
 import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
@@ -141,7 +140,7 @@ export class MessageField extends View {
         }
     }
 
-    private setEditedStatus(parent: HTMLElement, statusText = 'edited'): void {
+    private setEditedStatus(parent: HTMLElement, statusText = STATUS.EDITED): void {
         const status = new ElementCreator({
             tagName: 'div',
             classes: ['status-edit'],
@@ -162,6 +161,7 @@ export class MessageField extends View {
             }
         });
         addEventListener('onChangeChatHistory', () => {
+            console.log('dialogState on change chat history: ', dialogState);
             unreadMessages();
             this.renderDialogHistory();
         });
@@ -181,15 +181,20 @@ export class MessageField extends View {
         });
     }
 
-    private getMsgStatus(message: Message): string | undefined {
-        if (message.status) {
-            for (const [key, value] of Object.entries(message.status)) {
-                if (value === true) {
-                    return key;
-                }
-            }
-            return SEND;
+    private getMsgStatus(message: Message): string {
+        if (!message.status) {
+            return STATUS.SEND;
         }
+
+        if (message.status.isDelivered) {
+            return STATUS.IS_DELIVERED;
+        }
+
+        if (message.status.isReaded) {
+            return STATUS.IS_READED;
+        }
+
+        return STATUS.SEND;
     }
 
     private handlerSendMsg(): void {
@@ -260,5 +265,13 @@ export class MessageField extends View {
             const child = this.dialogWrapper?.getElement().firstChild;
             if (child) this.dialogWrapper?.getElement().removeChild(child);
         }
+    }
+
+    private setDelimeter(parent: HTMLElement): void {
+        const deleimeter = new ElementCreator({
+            tagName: 'div',
+            classes: ['delimeter'],
+            parent: parent,
+        });
     }
 }

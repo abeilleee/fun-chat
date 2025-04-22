@@ -210,7 +210,6 @@ export class LoginPageView extends View {
 
     private setEventListener(): void {
         addEventListener('onLogin', () => {
-            console.log('LOGIN');
             const login = this.loginInput?.getValue();
             const password = this.passwordInput?.getValue();
             if (login && password) {

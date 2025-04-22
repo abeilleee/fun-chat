@@ -33,5 +33,4 @@ export function handlerReadingMessages(clientApi: ClientApi): void {
         if (message.status && !message.status.isReaded) clientApi.msgReadStatusChange(message);
     });
     changeDialogState(state);
-    dispatchEvent(changeChatHistory);
 }

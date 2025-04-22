@@ -130,8 +130,6 @@ export class Contacts extends View {
             });
         }
         addEventListener('selectUser', () => {
-            console.log('select');
-            console.log('dialogState on select: ', dialogState);
             const id = generateId();
             this.clientApi.requestChatHistory(selectedUser.username, id);
         });
@@ -144,22 +142,16 @@ export class Contacts extends View {
                 pendingRequests.push({ requestId: id, username: username });
                 this.clientApi.requestChatHistory(username, id);
             });
-            console.log('all users on all users change: ', users);
 
             // this.renderContacts();
         });
 
         addEventListener('onGetNewMessages', () => {
-            console.log('get new message');
             unreadMessages();
             this.renderContacts();
-            console.log('dialog state on get new msg: ', dialogState);
-            console.log('unreadMessagesNumber on new msg: ', unreadMessagesNumber);
         });
         addEventListener('onChangeChatHistory', () => {
             this.renderContacts();
-            console.log('dialogState in onChangeChatHistory in contacts: ', dialogState);
-            console.log('pendingRequests in onChangeChatHistory in contacts: ', pendingRequests);
         });
 
         this.inputSearch.getElement().addEventListener('input', () => {

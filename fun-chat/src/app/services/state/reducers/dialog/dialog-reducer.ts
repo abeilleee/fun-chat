@@ -71,7 +71,6 @@ export function getMessages(data: string): void {
             const messages: Message[] = payload.messages;
 
             const pendingState = pendingRequests;
-            console.log('PENDDIN REQUESTS: ', pendingRequests);
 
             const targetUserRequest = pendingState.find((request: PendingRequest) => request.requestId === requestId);
             if (targetUserRequest?.username) {
@@ -96,9 +95,6 @@ export function getMessages(data: string): void {
 
             dialogState = state;
             pendingRequests = pendingState;
-            setTimeout(() => {
-                console.log('dialogState on msg-from-user: ', dialogState);
-            }, 2000);
 
             changeDialogState(state);
             dispatchEvent(changeChatHistory);
@@ -108,14 +104,12 @@ export function getMessages(data: string): void {
     }
 }
 
-export function changeReadStatus(data: string) {
+export function changeReadStatus(data: string): void {
     const { id, type, payload } = JSON.parse(data);
 
     if (type === MESSAGE_ACTIONS.MSG_READ) {
         const status: boolean = payload.message.status.isReaded;
         const msgId: string = payload.message.id;
-
-        console.log('STATUS: ', status);
 
         const state = dialogState;
         const targetDialog = state.find((dialog) => dialog.login === selectedUser.username);
