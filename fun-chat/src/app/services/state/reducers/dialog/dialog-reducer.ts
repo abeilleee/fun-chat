@@ -34,7 +34,6 @@ export function getMessages(data: string): void {
             let targetDialog: Dialog | undefined;
 
             if (idResp === null) {
-                // console.log('getting new message');
                 unreadMessages();
                 dispatchEvent(getNewMessages);
             }
@@ -104,19 +103,16 @@ export function unreadMessages(): void {
 
 addEventListener('onMsgSend', () => {
     unreadMessages();
-    // console.log('unreadMessagesNumber: ', unreadMessagesNumber);
 });
 addEventListener('onDeleteMsg', () => {
     unreadMessages();
-    // console.log('unreadMessagesNumber: ', unreadMessagesNumber);
 });
 addEventListener('onChangeChatHistory', () => {
     unreadMessages();
-    console.log('dialogState on change history: ', dialogState);
+    // console.log('dialogState on change history: ', dialogState);
 });
 addEventListener('onEditMsg', () => {
     unreadMessages();
-    console.log('onEditMsg: ');
 });
 
 export function checkDeletingMessage(data: string): void {
@@ -133,7 +129,6 @@ export function checkDeletingMessage(data: string): void {
 
 export function editMessage(data: string): void {
     const { id, type, payload } = JSON.parse(data);
-    console.log('GET RESPONSE TO EDIT');
     if (type === MESSAGE_ACTIONS.MSG_EDIT) {
         const msgId: string = payload.message.id;
         const text: string = payload.message.text;
@@ -141,8 +136,9 @@ export function editMessage(data: string): void {
             return {
                 ...dialog,
                 messages: dialog.messages.map((message: Message) => {
-                    if (message.id === msgId) {
+                    if (message.id === msgId && message.status) {
                         message.text = text;
+                        message.status.isEdited = true;
                         return { ...message };
                     } else {
                         return message;

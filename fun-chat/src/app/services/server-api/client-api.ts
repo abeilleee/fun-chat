@@ -86,7 +86,6 @@ export class ClientApi {
 
     public editMessage(idMsg: string, text: string): void {
         const id = generateId();
-        console.log('SEND REQUEST TO EDIT');
 
         const message = {
             id: id,

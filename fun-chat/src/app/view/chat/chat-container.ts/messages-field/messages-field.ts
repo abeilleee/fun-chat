@@ -9,7 +9,7 @@ import {
     isOpenChat,
     isOpenChatToggler,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
-import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
+import { allUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { formatTime } from '../../../../utils/format-time';
 import { generateId } from '../../../../utils/id-generator';
@@ -68,7 +68,7 @@ export class MessageField extends View {
         }
     }
 
-    private createMessage(message: Message, className?: string): void {
+    private createMessage(message: Message, edited: boolean, className?: string): void {
         const messageWrapper = new ElementCreator({
             tagName: 'div',
             classes: ['message-wrapper'],
@@ -80,7 +80,7 @@ export class MessageField extends View {
             msgStatus = true;
         }
 
-        this.createMessageElements(message, messageWrapper.getElement(), msgStatus);
+        this.createMessageElements(message, messageWrapper.getElement(), msgStatus, edited);
         if (msgStatus) {
             messageWrapper.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
                 event.preventDefault();
@@ -94,7 +94,7 @@ export class MessageField extends View {
         }
     }
 
-    private createMessageElements(message: Message, parent: HTMLElement, msgStatus: boolean): void {
+    private createMessageElements(message: Message, parent: HTMLElement, msgStatus: boolean, edited: boolean): void {
         this.messageBox = new ElementCreator({
             tagName: 'div',
             classes: ['message-box'],
@@ -134,11 +134,18 @@ export class MessageField extends View {
             parent: lowerBox.getElement(),
             textContent: msgStatus ? this.getMsgStatus(message) : '',
         });
-        // this.messageBox?.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
-        //     console.log('context menu event listener inside create msg elem');
-        //     event.preventDefault();
-        //     messageHandler(this.contextMenu, message, this.clientApi);
-        // });
+        if (edited) {
+            this.setEditedStatus(lowerBox.getElement());
+        }
+    }
+
+    private setEditedStatus(parent: HTMLElement, statusText = 'edited'): void {
+        const status = new ElementCreator({
+            tagName: 'div',
+            classes: ['status-edit'],
+            parent: parent,
+            textContent: statusText,
+        });
     }
 
     private setEventListeners(): void {
@@ -154,17 +161,18 @@ export class MessageField extends View {
         });
 
         addEventListener('onChangeChatHistory', () => {
-            console.log('on change history');
+            // console.log('on change history');
             this.renderDialogHistory();
         });
 
         addEventListener('onDeleteMsg', () => {
-            console.log('on delete msg');
+            // console.log('on delete msg');
             this.clearDialog();
             this.renderDialogHistory();
         });
-        window.addEventListener('onEditMsg', () => {
-            console.log('on edit msg listener');
+        addEventListener('onEditMsg', () => {
+            // console.log('on edit msg listener');
+            // console.log('edit dialogState: ', dialogState);
             this.clearDialog();
             this.renderDialogHistory();
         });
@@ -191,13 +199,13 @@ export class MessageField extends View {
             const foundDialog = dialogs.find((dialog) => dialog.login === selectedUser.username);
             if (foundDialog && 'messages' in foundDialog) {
                 const message: Message = foundDialog.messages[foundDialog.messages.length - 1];
-                this.createMessage(message);
+                this.createMessage(message, false);
             }
         });
     }
 
     private renderDialogHistory(): void {
-        console.log('render');
+        // console.log('render');
 
         const targetUser = selectedUser.username;
         const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
@@ -212,7 +220,11 @@ export class MessageField extends View {
             }
             messages.forEach((message: Message) => {
                 const className = message.from === targetUser ? '' : 'message-wrapper--right';
-                this.createMessage(message, className);
+                let edited: boolean = false;
+                if (message.status?.isEdited) {
+                    edited = true;
+                }
+                this.createMessage(message, edited, className);
             });
         }
         if (this.dialogWrapper)

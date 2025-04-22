@@ -119,6 +119,11 @@
     width: 100%;
     align-items: center;
     justify-content: end;
+    gap: 30%;
+}
+
+.status-edit {
+    order: 1;
 }
 
 @media screen and (width <= 450px) {
