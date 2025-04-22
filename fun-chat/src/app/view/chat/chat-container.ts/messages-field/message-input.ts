@@ -66,7 +66,7 @@ export class MessageInput extends View {
                 handlerBtnSend(text, this.clientApi);
                 this.input?.cleanInput();
                 this.sendButton?.setDisabled(true);
-                handlerReadingMessages();
+                handlerReadingMessages(this.clientApi);
             }
         });
     }

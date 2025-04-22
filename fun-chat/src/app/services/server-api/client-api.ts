@@ -1,7 +1,7 @@
 import { generateId } from '../../utils/id-generator';
 import type { WebSocketConnection } from '../web-socket-connection/web-socket-connection';
 import { MESSAGE_ACTIONS, type USER_STATUS } from './constants';
-import { Message } from './types/chat';
+import type { Message } from './types/chat';
 import type { Payload } from './types/user';
 
 export class ClientApi {

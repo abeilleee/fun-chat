@@ -30,8 +30,7 @@ export function handlerReadingMessages(clientApi: ClientApi): void {
     const state = dialogState;
     const targetDialog = state.find((dialog: Dialog) => dialog.login === selectedUser.username);
     targetDialog?.messages.forEach((message: Message) => {
-        if (message.status) message.status.isReaded = true;
-        clientApi.msgReadStatusChange(message);
+        if (message.status && !message.status.isReaded) clientApi.msgReadStatusChange(message);
     });
     changeDialogState(state);
     dispatchEvent(changeChatHistory);

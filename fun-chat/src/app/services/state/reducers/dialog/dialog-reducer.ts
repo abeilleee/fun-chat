@@ -8,6 +8,8 @@ import {
 } from '../../../custom-events/custom-events';
 import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
+import { ServerMessage } from '../../../server-api/types/server';
+import { Payload } from '../../../server-api/types/user';
 import { getCurrentUsername } from '../../../storage/storage';
 import type { UserUnreadMessages } from '../../types';
 import type { PendingRequest } from '../users/types';
@@ -104,6 +106,26 @@ export function getMessages(data: string): void {
             break;
         }
     }
+}
+
+export function changeReadStatus(data: string) {
+    const { id, type, payload } = JSON.parse(data);
+
+    if (type === MESSAGE_ACTIONS.MSG_READ) {
+        const status: boolean = payload.message.status.isReaded;
+        const msgId: string = payload.message.id;
+
+        console.log('STATUS: ', status);
+
+        const state = dialogState;
+        const targetDialog = state.find((dialog) => dialog.login === selectedUser.username);
+        targetDialog?.messages.forEach((message) => {
+            if (message.id === msgId && message.status) {
+                message.status.isReaded = status;
+            }
+        });
+    }
+    dispatchEvent(changeChatHistory);
 }
 
 export let unreadMessagesNumber: UserUnreadMessages[] = [];

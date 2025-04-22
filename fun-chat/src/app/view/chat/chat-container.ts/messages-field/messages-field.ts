@@ -176,8 +176,7 @@ export class MessageField extends View {
         });
         this.dialogWrapper?.getElement().addEventListener('click', () => {
             if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-                console.log('YES');
-                handlerReadingMessages();
+                handlerReadingMessages(this.clientApi);
             }
         });
     }
