@@ -26,11 +26,12 @@ export function messageHandler(contextMenu: ContextMenu, message: Message, clien
     });
 }
 
-export function handlerReadingMessages(): void {
+export function handlerReadingMessages(clientApi: ClientApi): void {
     const state = dialogState;
     const targetDialog = state.find((dialog: Dialog) => dialog.login === selectedUser.username);
     targetDialog?.messages.forEach((message: Message) => {
         if (message.status) message.status.isReaded = true;
+        clientApi.msgReadStatusChange(message);
     });
     changeDialogState(state);
     dispatchEvent(changeChatHistory);
