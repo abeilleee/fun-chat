@@ -158,11 +158,12 @@ export class MessageField extends View {
                 this.messagesInputBox?.getHTMLElement().classList.remove('hidden');
                 this.changeTextContent();
                 this.setActiveWrapper();
+                this.renderDialogHistory();
             }
         });
-        addEventListener('onSelectedUserChanged', () => {
-            this.renderDialogHistory();
-        });
+        // addEventListener('onSelectedUserChanged', () => {
+        //     this.renderDialogHistory();
+        // });
 
         addEventListener('onChangeChatHistory', () => {
             unreadMessages();
@@ -206,7 +207,7 @@ export class MessageField extends View {
     }
 
     private renderDialogHistory(): void {
-        if (selectedUser.username.length > 0) {
+        if (selectedUser.username.length > 0 && isOpenChat) {
             const targetUser = selectedUser.username;
             const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
 

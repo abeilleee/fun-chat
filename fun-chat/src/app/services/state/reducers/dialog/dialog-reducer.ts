@@ -32,8 +32,8 @@ export function getMessages(data: string): void {
     const { id, type, payload } = JSON.parse(data);
     switch (type) {
         case MESSAGE_ACTIONS.MSG_SEND: {
-            const state = dialogState;
-            // const idResp = id;
+            const state: Dialog[] = dialogState;
+            // const idResp: string = id;
             const isMymessage = id !== null;
             const message: Message = payload.message;
             let targetDialog: Dialog | undefined;
@@ -69,19 +69,22 @@ export function getMessages(data: string): void {
             const messages: Message[] = payload.messages;
 
             const pendingState = pendingRequests;
+            console.log('PENDDIN REQUESTS: ', pendingRequests);
 
             const targetUserRequest = pendingState.find((request: PendingRequest) => request.requestId === requestId);
+            if (targetUserRequest?.username) {
+                const recipient: string = targetUserRequest?.username;
 
-            const recipient: string = selectedUser.username;
-            let targetDialog = state.find((dialog) => dialog.login === recipient);
-            if (!targetDialog) {
-                targetDialog = {
-                    login: recipient,
-                    messages: messages,
-                };
-                state.push(targetDialog);
-            } else {
-                targetDialog.messages = messages;
+                let targetDialog = state.find((dialog) => dialog.login === recipient);
+                if (!targetDialog) {
+                    targetDialog = {
+                        login: recipient,
+                        messages: messages,
+                    };
+                    state.push(targetDialog);
+                } else {
+                    targetDialog.messages = messages;
+                }
             }
 
             const unreadMessagesNumber = messages.filter(
@@ -91,6 +94,10 @@ export function getMessages(data: string): void {
 
             dialogState = state;
             pendingRequests = pendingState;
+            setTimeout(() => {
+                console.log('dialogState on msg-from-user: ', dialogState);
+            }, 2000);
+
             changeDialogState(state);
             dispatchEvent(changeChatHistory);
             dispatchEvent(selectedUserChanged);

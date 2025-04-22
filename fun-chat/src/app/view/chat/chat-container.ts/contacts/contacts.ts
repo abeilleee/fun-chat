@@ -130,6 +130,8 @@ export class Contacts extends View {
             });
         }
         addEventListener('selectUser', () => {
+            console.log('select');
+            console.log('dialogState on select: ', dialogState);
             const id = generateId();
             this.clientApi.requestChatHistory(selectedUser.username, id);
         });
@@ -139,9 +141,10 @@ export class Contacts extends View {
             users.forEach((user) => {
                 const id = generateId();
                 const username = user.login;
+                pendingRequests.push({ requestId: id, username: username });
                 this.clientApi.requestChatHistory(username, id);
             });
-            console.log('dialog all users on all users change: ', users);
+            console.log('all users on all users change: ', users);
 
             // this.renderContacts();
         });

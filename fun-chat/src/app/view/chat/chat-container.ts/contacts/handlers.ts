@@ -6,6 +6,7 @@ export function handleUserSelect(targetElement: HTMLElement, clientApi: ClientAp
     const userBox = targetElement.classList.contains('user-box') ? targetElement : targetElement.closest('.user-box');
     const username = userBox?.querySelector('.user-element')?.textContent;
     if (username) {
+        console.log(username);
         selectedUser.username = username;
         const status = allUsers.inactive.some((elem) => elem.login === username) ? 'offline' : 'online';
         selectedUser.status = status;
