@@ -61,6 +61,8 @@ export function getMessages(data: string): void {
             break;
         }
         case MESSAGE_ACTIONS.MSG_FROM_USER: {
+            const state = dialogState;
+
             const messages: Message[] = payload.messages;
             const recipient: string = selectedUser.username;
             let targetDialog = dialogState.find((dialog) => dialog.login === recipient);
@@ -69,12 +71,14 @@ export function getMessages(data: string): void {
                     login: recipient,
                     messages: messages,
                 };
-                dialogState.push(targetDialog);
+                state.push(targetDialog);
             }
             targetDialog.login = recipient;
             targetDialog.messages = messages;
+            changeDialogState(state);
             dispatchEvent(changeChatHistory);
             dispatchEvent(selectedUserChanged);
+            dispatchEvent(getNewMessages);
             unreadMessages();
             break;
         }
@@ -153,4 +157,8 @@ export function editMessage(data: string): void {
         dialogState = state;
         dispatchEvent(editMsg);
     }
+}
+
+export function changeDialogState(state: Dialog[]): void {
+    dialogState = state;
 }

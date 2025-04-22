@@ -3,7 +3,7 @@ import { USER_STATUS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
 import type { User } from '../../../server-api/types/user';
 import { getCurrentUsername } from '../../../storage/storage';
-import { dialogState, unreadMessages } from '../dialog/dialog-reducer';
+import { changeDialogState, dialogState, unreadMessages } from '../dialog/dialog-reducer';
 import type { AllUsers, SelectedUser } from './types';
 
 export const allUsers: AllUsers = {
@@ -52,8 +52,9 @@ export function getUsers(data: string): void {
             allUsers.active = [...allUsers.active, loginUser];
 
             const state = dialogState;
-            const targetDialog = dialogState.find((dialog: Dialog) => dialog.login === loginUser);
+            const targetDialog = state.find((dialog: Dialog) => dialog.login === loginUser);
             targetDialog?.messages.forEach((message: Message) => message.status?.isDelivered === true);
+            changeDialogState(state);
             dispatchEvent(allUsersChange);
             break;
         }

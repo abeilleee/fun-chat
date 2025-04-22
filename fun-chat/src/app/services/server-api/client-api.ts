@@ -10,7 +10,8 @@ export class ClientApi {
         this.webSocket = websocket;
     }
 
-    public sendRequestToServer(type: USER_STATUS | MESSAGE_ACTIONS, payload: Payload, id: string): void {
+    public sendRequestToServer(type: USER_STATUS | MESSAGE_ACTIONS, payload: Payload): void {
+        const id = generateId();
         const message = {
             id: id,
             type: type,

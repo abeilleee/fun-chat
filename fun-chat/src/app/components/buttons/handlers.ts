@@ -21,7 +21,7 @@ export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
                     password: password,
                 },
             };
-            clientApi.sendRequestToServer(USER_STATUS.LOGOUT, payload, id);
+            clientApi.sendRequestToServer(USER_STATUS.LOGOUT, payload);
             router.navigate(PAGES.AUTH);
             toggleIsLogined();
         }
@@ -51,7 +51,7 @@ export function handlerBtnLogin(
     clientApi: ClientApi
 ): void {
     if (isValidLogin && isValidPassword) {
-        const id = generateId();
+        // const id = generateId();
 
         const payload: Payload = {
             user: {
@@ -60,10 +60,10 @@ export function handlerBtnLogin(
             },
         };
 
-        clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload, id);
+        clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload);
 
-        clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
-        clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
+        clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
+        clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
     }
 }
 

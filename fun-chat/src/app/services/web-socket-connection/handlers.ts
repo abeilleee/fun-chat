@@ -8,28 +8,25 @@ import { allUsers } from '../state/reducers/users/user-states-reducer';
 import { getCurrentUsername, getPassword, isLogined } from '../storage/storage';
 
 export function openHandler(clientApi: ClientApi): void {
-    const id = generateId();
-    if (id) {
-        const currentUserLogin = getCurrentUsername();
-        const currentUserPassword = getPassword();
-        const isAuth = isLogined();
+    const currentUserLogin = getCurrentUsername();
+    const currentUserPassword = getPassword();
+    const isAuth = isLogined();
 
-        if (currentUserLogin && currentUserPassword && isAuth) {
-            const payload: Payload = {
-                user: {
-                    login: currentUserLogin,
-                    password: currentUserPassword,
-                },
-            };
+    if (currentUserLogin && currentUserPassword && isAuth) {
+        const payload: Payload = {
+            user: {
+                login: currentUserLogin,
+                password: currentUserPassword,
+            },
+        };
 
-            clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload, String(id));
-            clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
-            clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
+        clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload);
+        clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
+        clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
 
-            setTimeout(() => {
-                allUsers.active;
-            });
-        }
+        setTimeout(() => {
+            allUsers.active;
+        });
     }
 }
 

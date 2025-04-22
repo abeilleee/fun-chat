@@ -14,6 +14,7 @@ import {
     unreadMessages,
     unreadMessagesNumber,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
+import { allUsersChange } from '../../../../services/custom-events/custom-events';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
@@ -133,10 +134,29 @@ export class Contacts extends View {
         addEventListener('onAllUsersChange', () => {
             unreadMessages();
             console.log('dialog state on all userch change: ', dialogState);
-            console.log('on all userch change unread msgs: ', unreadMessagesNumber);
+            // console.log('on all userch change unread msgs: ', unreadMessagesNumber);
 
             this.renderContacts();
         });
+        addEventListener('onLogin', () => {
+            console.log('LOGIN');
+            this.clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
+            this.clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
+            // const users = [...allUsers.active, ...allUsers.inactive];
+            // users.forEach((user: User) => {
+            //     const name = user.login;
+            //     selectedUser.username = name;
+            //     this.clientApi.requestChatHistory(name);
+            // });
+
+            console.log('all users: ', allUsers);
+            console.log('dialogState in login: ', dialogState);
+            dispatchEvent(allUsersChange);
+            unreadMessages();
+            console.log('unreadMessages in login: ', unreadMessagesNumber);
+            this.renderContacts();
+        });
+
         addEventListener('onGetNewMessages', () => {
             console.log('get new message');
             unreadMessages();

@@ -8,9 +8,10 @@ import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
+import { USER_STATUS } from '../../services/server-api/constants';
 import type { User } from '../../services/server-api/types/user';
 import { dialogState, unreadMessages, unreadMessagesNumber } from '../../services/state/reducers/dialog/dialog-reducer';
-import { allUsers } from '../../services/state/reducers/users/user-states-reducer';
+import { allUsers, selectedUser } from '../../services/state/reducers/users/user-states-reducer';
 import { setData } from '../../services/storage/storage';
 import { ElementCreator } from '../../utils/element-creator';
 import type { Options } from '../../utils/types';
@@ -208,6 +209,7 @@ export class LoginPageView extends View {
 
     private setEventListener(): void {
         addEventListener('onLogin', () => {
+            console.log('LOGIN');
             const login = this.loginInput?.getValue();
             const password = this.passwordInput?.getValue();
             if (login && password) {
@@ -220,13 +222,16 @@ export class LoginPageView extends View {
                 this.router.navigate(PAGES.MAIN);
             }
 
-            console.log('LOGIN');
+            this.clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
+            this.clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
 
             console.log('dialogState in login: ', dialogState);
             console.log('all users: ', allUsers);
             const users = [...allUsers.active, ...allUsers.inactive];
             users.forEach((user: User) => {
                 const name = user.login;
+                selectedUser.username = name;
+                console.log('selected user: ', selectedUser.username);
                 this.clientApi.requestChatHistory(name);
             });
 
