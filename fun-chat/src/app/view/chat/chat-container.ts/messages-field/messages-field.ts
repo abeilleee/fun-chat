@@ -186,12 +186,12 @@ export class MessageField extends View {
             return STATUS.SEND;
         }
 
-        if (message.status.isDelivered) {
-            return STATUS.IS_DELIVERED;
+        if (message.status.isDelivered && message.status.isReaded) {
+            return STATUS.IS_READED;
         }
 
-        if (message.status.isReaded) {
-            return STATUS.IS_READED;
+        if (message.status.isDelivered) {
+            return STATUS.IS_DELIVERED;
         }
 
         return STATUS.SEND;
