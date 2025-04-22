@@ -10,6 +10,7 @@ import { MESSAGE_ACTIONS } from '../../../server-api/constants';
 import type { Dialog, Message } from '../../../server-api/types/chat';
 import { getCurrentUsername } from '../../../storage/storage';
 import type { UserUnreadMessages } from '../../types';
+import { PendingRequest } from '../users/types';
 import { selectedUser } from '../users/user-states-reducer';
 
 export let isOpenChat = false;
@@ -22,6 +23,8 @@ export function isOpenChatToggler(value: boolean): void {
 export function isDialogToggler(value: boolean): void {
     isDialog = value;
 }
+
+export let pendingRequests: PendingRequest[] = [];
 
 export let dialogState = new Array<Dialog>();
 
@@ -62,24 +65,34 @@ export function getMessages(data: string): void {
         }
         case MESSAGE_ACTIONS.MSG_FROM_USER: {
             const state = dialogState;
-
+            const requestId = id;
             const messages: Message[] = payload.messages;
+
+            const targetUserRequest = pendingRequests.find(
+                (request: PendingRequest) => request.requestId === requestId
+            );
+
             const recipient: string = selectedUser.username;
-            let targetDialog = dialogState.find((dialog) => dialog.login === recipient);
+            let targetDialog = state.find((dialog) => dialog.login === recipient);
             if (!targetDialog) {
                 targetDialog = {
                     login: recipient,
                     messages: messages,
                 };
                 state.push(targetDialog);
+            } else {
+                targetDialog.messages = messages;
             }
-            targetDialog.login = recipient;
-            targetDialog.messages = messages;
+
+            const unreadMessagesNumber = messages.filter(
+                (message) => !message.status?.isReaded && message.from === targetUserRequest?.username
+            ).length;
+            if (targetUserRequest) targetUserRequest.unreadMessagesNumber = unreadMessagesNumber;
+
+            dialogState = state;
             changeDialogState(state);
             dispatchEvent(changeChatHistory);
             dispatchEvent(selectedUserChanged);
-            dispatchEvent(getNewMessages);
-            unreadMessages();
             break;
         }
     }
@@ -108,20 +121,6 @@ export function unreadMessages(): void {
         unreadMessages,
     }));
 }
-
-addEventListener('onMsgSend', () => {
-    unreadMessages();
-});
-addEventListener('onDeleteMsg', () => {
-    unreadMessages();
-});
-// addEventListener('onChangeChatHistory', () => {
-//     unreadMessages();
-//     // console.log('dialogState on change history: ', dialogState);
-// });
-addEventListener('onEditMsg', () => {
-    unreadMessages();
-});
 
 export function checkDeletingMessage(data: string): void {
     const { id, type, payload } = JSON.parse(data);

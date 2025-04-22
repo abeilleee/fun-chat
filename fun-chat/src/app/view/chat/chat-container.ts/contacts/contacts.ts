@@ -15,6 +15,7 @@ import {
     unreadMessagesNumber,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { allUsersChange } from '../../../../services/custom-events/custom-events';
+import { generateId } from '../../../../utils/id-generator';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
@@ -39,7 +40,7 @@ export class Contacts extends View {
         });
         this.userBox = null;
         unreadMessages();
-        this.renderContacts();
+        // this.renderContacts();
         this.setEventListeners();
     }
 
@@ -128,33 +129,20 @@ export class Contacts extends View {
             });
         }
         addEventListener('selectUser', () => {
-            this.clientApi.requestChatHistory(selectedUser.username);
+            const id = generateId();
+            this.clientApi.requestChatHistory(selectedUser.username, id);
         });
 
         addEventListener('onAllUsersChange', () => {
-            unreadMessages();
-            console.log('dialog state on all userch change: ', dialogState);
-            // console.log('on all userch change unread msgs: ', unreadMessagesNumber);
+            const users = [...allUsers.active, ...allUsers.inactive];
+            users.forEach((user) => {
+                const id = generateId();
+                const username = user.login;
+                this.clientApi.requestChatHistory(username, id);
+            });
+            console.log('dialog all users on all users change: ', users);
 
-            this.renderContacts();
-        });
-        addEventListener('onLogin', () => {
-            console.log('LOGIN');
-            this.clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
-            this.clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
-            // const users = [...allUsers.active, ...allUsers.inactive];
-            // users.forEach((user: User) => {
-            //     const name = user.login;
-            //     selectedUser.username = name;
-            //     this.clientApi.requestChatHistory(name);
-            // });
-
-            console.log('all users: ', allUsers);
-            console.log('dialogState in login: ', dialogState);
-            dispatchEvent(allUsersChange);
-            unreadMessages();
-            console.log('unreadMessages in login: ', unreadMessagesNumber);
-            this.renderContacts();
+            // this.renderContacts();
         });
 
         addEventListener('onGetNewMessages', () => {

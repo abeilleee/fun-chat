@@ -164,8 +164,8 @@ export class MessageField extends View {
 
         addEventListener('onChangeChatHistory', () => {
             unreadMessages();
-            console.log('on change chat history unread msgs: ', unreadMessagesNumber);
-            console.log('on change chat history dialog state: ', dialogState);
+            // console.log('on change chat history unread msgs: ', unreadMessagesNumber);
+            // console.log('on change chat history dialog state: ', dialogState);
             this.renderDialogHistory();
         });
 

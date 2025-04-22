@@ -59,7 +59,7 @@ export function getUsers(data: string): void {
             break;
         }
     }
-    dispatchEvent(allUsersChange);
+    // dispatchEvent(allUsersChange);
 }
 
 export function handlerLoginLogout(data: string): void {

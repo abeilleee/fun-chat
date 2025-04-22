@@ -5,6 +5,7 @@ import { PLACEHOLDER } from '../../components/input/constants';
 import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
+import { allUsersChange } from '../../services/custom-events/custom-events';
 import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
 import type { ClientApi } from '../../services/server-api/client-api';
@@ -221,22 +222,8 @@ export class LoginPageView extends View {
                 setData(userData);
                 this.router.navigate(PAGES.MAIN);
             }
-
             this.clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
             this.clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
-
-            console.log('dialogState in login: ', dialogState);
-            console.log('all users: ', allUsers);
-            const users = [...allUsers.active, ...allUsers.inactive];
-            users.forEach((user: User) => {
-                const name = user.login;
-                selectedUser.username = name;
-                console.log('selected user: ', selectedUser.username);
-                this.clientApi.requestChatHistory(name);
-            });
-
-            unreadMessages();
-            console.log('unreadMessages in login: ', unreadMessagesNumber);
         });
     }
 
