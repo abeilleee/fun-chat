@@ -15,7 +15,7 @@ export class InputElement extends ElementCreator<HTMLInputElement> {
         };
 
         super(options);
-
+        this.setAutocomplete();
         this.placeholder = placeholder;
         this.type = type;
         this.setPlaceholder();
@@ -51,6 +51,13 @@ export class InputElement extends ElementCreator<HTMLInputElement> {
         const inputElement = this.getElement();
         if (inputElement instanceof HTMLInputElement) {
             inputElement.type = this.type;
+        }
+    }
+
+    private setAutocomplete(): void {
+        const inputElement = this.getElement();
+        if (inputElement instanceof HTMLInputElement) {
+            inputElement.autocomplete = 'on';
         }
     }
 }

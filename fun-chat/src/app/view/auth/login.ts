@@ -52,6 +52,7 @@ export class LoginPageView extends View {
         this.setPasswordInputListener();
         this.buttonsEventListeners();
         this.addLoginBtnEventListener();
+        this.setEventListener();
     }
 
     private configure(): void {
@@ -205,6 +206,35 @@ export class LoginPageView extends View {
         });
     }
 
+    private setEventListener(): void {
+        addEventListener('onLogin', () => {
+            const login = this.loginInput?.getValue();
+            const password = this.passwordInput?.getValue();
+            if (login && password) {
+                const userData: User = {
+                    login: login,
+                    password: password,
+                    isLogined: true,
+                };
+                setData(userData);
+                this.router.navigate(PAGES.MAIN);
+            }
+
+            console.log('LOGIN');
+
+            console.log('dialogState in login: ', dialogState);
+            console.log('all users: ', allUsers);
+            const users = [...allUsers.active, ...allUsers.inactive];
+            users.forEach((user: User) => {
+                const name = user.login;
+                this.clientApi.requestChatHistory(name);
+            });
+
+            unreadMessages();
+            console.log('unreadMessages in login: ', unreadMessagesNumber);
+        });
+    }
+
     private addLoginBtnEventListener(): void {
         this.formElement?.getElement().addEventListener('keydown', (event: KeyboardEvent) => {
             if (event.key === 'Enter') {
@@ -229,30 +259,6 @@ export class LoginPageView extends View {
                             this.clientApi
                         );
             }
-
-            addEventListener('onLogin', () => {
-                const login = this.loginInput?.getValue();
-                const password = this.passwordInput?.getValue();
-                unreadMessages();
-                // console.log('unreadMessages in login: ', unreadMessagesNumber);
-                // console.log('dialogState in login: ', dialogState);
-                // console.log('all users: ', allUsers);
-                const users = [...allUsers.active, ...allUsers.inactive];
-                users.forEach((user: User) => {
-                    const name = user.login;
-                    this.clientApi.requestChatHistory(name);
-                });
-
-                if (login && password) {
-                    const userData: User = {
-                        login: login,
-                        password: password,
-                        isLogined: true,
-                    };
-                    setData(userData);
-                    this.router.navigate(PAGES.MAIN);
-                }
-            });
         });
     }
 

@@ -131,11 +131,20 @@ export class Contacts extends View {
         });
 
         addEventListener('onAllUsersChange', () => {
+            unreadMessages();
+            console.log('dialog state on all userch change: ', dialogState);
+            console.log('on all userch change unread msgs: ', unreadMessagesNumber);
+
             this.renderContacts();
         });
         addEventListener('onGetNewMessages', () => {
+            console.log('get new message');
             unreadMessages();
-
+            this.renderContacts();
+            console.log('dialog state on get new msg: ', dialogState);
+            console.log('unreadMessagesNumber on new msg: ', unreadMessagesNumber);
+        });
+        addEventListener('onChangeChatHistory', () => {
             this.renderContacts();
         });
 

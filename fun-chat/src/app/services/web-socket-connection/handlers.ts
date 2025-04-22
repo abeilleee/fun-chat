@@ -3,6 +3,7 @@ import { generateId } from '../../utils/id-generator';
 import type { ClientApi } from '../server-api/client-api';
 import { USER_STATUS } from '../server-api/constants';
 import type { Payload } from '../server-api/types/user';
+import { dialogState } from '../state/reducers/dialog/dialog-reducer';
 import { allUsers } from '../state/reducers/users/user-states-reducer';
 import { getCurrentUsername, getPassword, isLogined } from '../storage/storage';
 
@@ -24,6 +25,10 @@ export function openHandler(clientApi: ClientApi): void {
             clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload, String(id));
             clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null, id);
             clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null, id);
+
+            setTimeout(() => {
+                allUsers.active;
+            });
         }
     }
 }

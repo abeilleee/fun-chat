@@ -29,31 +29,35 @@ export function getMessages(data: string): void {
     const { id, type, payload } = JSON.parse(data);
     switch (type) {
         case MESSAGE_ACTIONS.MSG_SEND: {
-            const idResp = id;
+            const state = dialogState;
+            // const idResp = id;
+            const isMymessage = id !== null;
             const message: Message = payload.message;
             let targetDialog: Dialog | undefined;
 
-            if (idResp === null) {
-                unreadMessages();
-                dispatchEvent(getNewMessages);
-            }
+            // if (idResp === null) {
+            //     dispatchEvent(getNewMessages);
+            // }
             const recipient = payload.message.to;
             const sender = payload.message.from;
-            targetDialog = idResp
-                ? dialogState.find((dialog) => dialog.login === recipient)
-                : dialogState.find((dialog) => dialog.login === sender);
+            targetDialog = isMymessage
+                ? state.find((dialog) => dialog.login === recipient)
+                : state.find((dialog) => dialog.login === sender);
             if (!targetDialog) {
-                const newDialog = { login: recipient, messages: [] };
-                dialogState.push(newDialog);
+                const newDialog = { login: isMymessage ? recipient : sender, messages: [] };
+                state.push(newDialog);
                 targetDialog = newDialog;
             }
             //bcz of eslint error '@typescript-eslint/no-unsafe-call'
             if (targetDialog && Array.isArray(targetDialog.messages)) {
                 targetDialog.messages.push(message);
             }
+
+            dialogState = state;
             dispatchEvent(msgSend);
             dispatchEvent(changeChatHistory);
-            unreadMessages();
+            dispatchEvent(getNewMessages);
+
             break;
         }
         case MESSAGE_ACTIONS.MSG_FROM_USER: {
@@ -85,12 +89,12 @@ export function unreadMessages(): void {
     state.forEach((dialog) => {
         const user = dialog.login;
         const unreadCount = dialog.messages.filter(
-            (message) => !message.status?.isReaded && message.to === getCurrentUsername()
+            (message: Message) => !message.status?.isReaded && message.to === getCurrentUsername()
         ).length;
 
         if (unreadMessagesMap.has(user)) {
-            const gettingUser = unreadMessagesMap.get(user);
-            if (gettingUser) unreadMessagesMap.set(user, gettingUser + unreadCount);
+            const targetUser = unreadMessagesMap.get(user);
+            if (targetUser) unreadMessagesMap.set(user, targetUser + unreadCount);
         } else {
             unreadMessagesMap.set(user, unreadCount);
         }
@@ -107,10 +111,10 @@ addEventListener('onMsgSend', () => {
 addEventListener('onDeleteMsg', () => {
     unreadMessages();
 });
-addEventListener('onChangeChatHistory', () => {
-    unreadMessages();
-    // console.log('dialogState on change history: ', dialogState);
-});
+// addEventListener('onChangeChatHistory', () => {
+//     unreadMessages();
+//     // console.log('dialogState on change history: ', dialogState);
+// });
 addEventListener('onEditMsg', () => {
     unreadMessages();
 });

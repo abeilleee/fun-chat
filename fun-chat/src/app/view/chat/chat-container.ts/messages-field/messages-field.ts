@@ -8,6 +8,8 @@ import {
     isDialogToggler,
     isOpenChat,
     isOpenChatToggler,
+    unreadMessages,
+    unreadMessagesNumber,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { allUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { ElementCreator } from '../../../../utils/element-creator';
@@ -161,7 +163,9 @@ export class MessageField extends View {
         });
 
         addEventListener('onChangeChatHistory', () => {
-            // console.log('on change history');
+            unreadMessages();
+            console.log('on change chat history unread msgs: ', unreadMessagesNumber);
+            console.log('on change chat history dialog state: ', dialogState);
             this.renderDialogHistory();
         });
 

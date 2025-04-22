@@ -1,8 +1,9 @@
 import { allUsersChange, onLogin } from '../../../custom-events/custom-events';
 import { USER_STATUS } from '../../../server-api/constants';
+import type { Dialog, Message } from '../../../server-api/types/chat';
 import type { User } from '../../../server-api/types/user';
 import { getCurrentUsername } from '../../../storage/storage';
-import { unreadMessages } from '../dialog/dialog-reducer';
+import { dialogState, unreadMessages } from '../dialog/dialog-reducer';
 import type { AllUsers, SelectedUser } from './types';
 
 export const allUsers: AllUsers = {
@@ -49,8 +50,11 @@ export function getUsers(data: string): void {
             const inactive = allUsers.inactive.filter((elem: User) => elem.login !== loginUserLogin);
             allUsers.inactive = inactive;
             allUsers.active = [...allUsers.active, loginUser];
+
+            const state = dialogState;
+            const targetDialog = dialogState.find((dialog: Dialog) => dialog.login === loginUser);
+            targetDialog?.messages.forEach((message: Message) => message.status?.isDelivered === true);
             dispatchEvent(allUsersChange);
-            // dispatchEvent(onLogin);
             break;
         }
     }
