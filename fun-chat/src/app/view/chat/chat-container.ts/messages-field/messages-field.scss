@@ -26,6 +26,7 @@
     display: flex;
     width: 100%;
     align-items: center;
+    gap: 10px;
     justify-content: center;
     order: 2;
     scrollbar-color: rgb(169 144 245 / 35.4%) transparent;
@@ -34,7 +35,6 @@
     max-height: calc(100% - 37px - 37px);
 
     &--active {
-        display: flex;
         overflow-y: auto;
         overflow-x: hidden;
         flex-direction: column;
@@ -125,7 +125,7 @@
     order: 1;
 }
 
-.delimeter {
+.delimiter {
     width: 90%;
     display: flex;
     align-items: center;

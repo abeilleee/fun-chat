@@ -6,6 +6,7 @@
 @use './app/view/chat/header/header';
 @use './app/components/buttons/buttons';
 @use './app/components/modal/modal';
+@use './app/components/delimeter/delimeter.scss';
 @use './app/components/context-menu.ts/context-menu.scss';
 @use './app/view/auth/login';
 @use './app/view/chat/chat-container.ts/contacts/contacts';

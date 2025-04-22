@@ -10,13 +10,14 @@ import {
     isOpenChatToggler,
     unreadMessages,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
-import { allUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
+import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
+import { getCurrentUsername } from '../../../../services/storage/storage';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { formatTime } from '../../../../utils/format-time';
 import { generateId } from '../../../../utils/id-generator';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { CHAT_INTRO_TEXT, SEND, STATUS } from '../constants';
+import { CHAT_INTRO_TEXT, STATUS } from '../constants';
 import { handlerReadingMessages, messageHandler } from './handlers';
 import { MessageInput } from './message-input';
 import { MessagesHeader } from './messages-header';
@@ -24,10 +25,12 @@ import { MessagesHeader } from './messages-header';
 export class MessageField extends View {
     private clientApi: ClientApi;
     private dialogWrapper: ElementCreator | null;
+    private delimiterElement: HTMLElement | null = null;
     private messagesHeader: MessagesHeader | null;
     private messagesInputBox: MessageInput | null;
     private messageBox: ElementCreator | null;
     private contextMenu: ContextMenu;
+    private isDelimiterInserted = false;
 
     constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
@@ -59,14 +62,26 @@ export class MessageField extends View {
             textContent: CHAT_INTRO_TEXT.SELECT,
         });
         this.messagesInputBox = new MessageInput(this.getHTMLElement(), this.clientApi);
-        if (this.dialogWrapper)
-            this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
+        // if (this.dialogWrapper)
+        //     this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
     }
 
     private changeTextContent(content: CHAT_INTRO_TEXT = CHAT_INTRO_TEXT.WRITE): void {
         if (this.dialogWrapper && selectedUser.username.length > 0) {
             this.dialogWrapper.getElement().textContent = content;
         }
+    }
+    // private insertDelimiter(parent: HTMLElement): void {
+    //     this.delimiterElement = document.createElement('div');
+    //     this.delimiterElement.className = 'delimiter';
+    //     this.delimiterElement.textContent = 'New messages';
+    //     parent.append(this.delimiterElement);
+    //     this.isDelimiterInserted = true;
+    //     // this.delimiterElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // }
+
+    private isDelimiterExist(): boolean {
+        return document.querySelector('.delimiter') !== null;
     }
 
     private createMessage(message: Message, edited: boolean, className?: string): void {
@@ -101,6 +116,7 @@ export class MessageField extends View {
             classes: ['message-box'],
             parent: parent,
         });
+
         const upperBox = new ElementCreator({
             tagName: 'div',
             classes: ['upper-box'],
@@ -178,6 +194,11 @@ export class MessageField extends View {
                 handlerReadingMessages(this.clientApi);
             }
         });
+        this.dialogWrapper?.getElement().addEventListener('scroll', () => {
+            if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
+                handlerReadingMessages(this.clientApi);
+            }
+        });
     }
 
     private getMsgStatus(message: Message): string {
@@ -230,6 +251,18 @@ export class MessageField extends View {
                     if (message.status?.isEdited) {
                         edited = true;
                     }
+
+                    // const currentUser = getCurrentUsername();
+                    // if (
+                    //     !message.status?.isReaded &&
+                    //     message.to === currentUser &&
+                    //     !this.isDelimiterExist() &&
+                    //     !this.isDelimiterInserted
+                    // ) {
+                    //     console.log('INSERT DELIMETR');
+                    //     if (this.dialogWrapper) this.insertDelimiter(this.dialogWrapper?.getElement());
+                    // }
+
                     this.createMessage(message, edited, className);
                 });
             }
@@ -266,11 +299,12 @@ export class MessageField extends View {
         }
     }
 
-    private setDelimeter(parent: HTMLElement): void {
-        const deleimeter = new ElementCreator({
-            tagName: 'div',
-            classes: ['delimeter'],
-            parent: parent,
-        });
-    }
+    // private setDelimeter(parent: HTMLElement): void {
+    //     const delimeter = new ElementCreator({
+    //         tagName: 'div',
+    //         classes: ['delimeter'],
+    //         parent: parent,
+    //     });
+    //     parent.append(delimeter.getElement());
+    // }
 }
