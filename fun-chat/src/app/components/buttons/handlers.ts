@@ -7,6 +7,8 @@ import { isDialogToggler, isOpenChatToggler } from '../../services/state/reducer
 import { selectedUser } from '../../services/state/reducers/users/user-states-reducer';
 import { getStorageData, isLogined, toggleIsLogined } from '../../services/storage/storage';
 import { generateId } from '../../utils/id-generator';
+import { scrollToBottom } from '../../utils/message-filled-utils';
+import { handlerReadingMessages } from '../../view/chat/chat-container.ts/messages-field/handlers';
 
 export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
     const id = generateId();
@@ -61,7 +63,6 @@ export function handlerBtnLogin(
         };
 
         clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload);
-
         clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
         clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
     }
@@ -70,4 +71,7 @@ export function handlerBtnLogin(
 export function handlerBtnSend(text: string, clientApi: ClientApi): void {
     const recipientName = selectedUser.username;
     clientApi.sendMessage(recipientName, text);
+    handlerReadingMessages(clientApi);
+    const dialog = document.querySelector('.dialog-wrapper--active');
+    if (dialog instanceof HTMLElement) scrollToBottom(dialog);
 }

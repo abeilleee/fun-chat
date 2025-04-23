@@ -25,18 +25,19 @@
 .dialog-wrapper {
     display: flex;
     width: 100%;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
-    order: 2;
-    scrollbar-color: rgb(169 144 245 / 35.4%) transparent;
-    scrollbar-width: thin;
     height: calc(100% - 37px - 37px);
     max-height: calc(100% - 37px - 37px);
+    align-items: center;
+    justify-content: center;
+    order: 2;
+    gap: 10px;
+    scrollbar-color: rgb(169 144 245 / 35.4%) transparent;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
 
     &--active {
-        overflow-y: auto;
-        overflow-x: hidden;
+        display: block;
+        overflow: hidden auto;
         flex-direction: column;
     }
 }
@@ -69,6 +70,7 @@
     &--right {
         justify-content: right;
     }
+
     &:hover {
         cursor: pointer;
     }
@@ -105,8 +107,8 @@
     padding: 5px;
     border-radius: 5px;
     background-color: #ffffffb4;
-    word-wrap: break-word;
     resize: vertical;
+    word-wrap: break-word;
 }
 
 .lower-box {
@@ -126,12 +128,14 @@
 }
 
 .delimiter {
-    width: 90%;
+    position: relative;
+    left: 5%;
     display: flex;
+    width: 90%;
+    height: 2px;
     align-items: center;
     justify-content: center;
-    height: 3px;
-    background-color: black;
+    background-color: var(--delimiter-color);
 }
 
 @media screen and (width <= 450px) {

@@ -15,6 +15,7 @@ import { getCurrentUsername } from '../../../../services/storage/storage';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { formatTime } from '../../../../utils/format-time';
 import { generateId } from '../../../../utils/id-generator';
+import { scrollToBottom } from '../../../../utils/message-filled-utils';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { CHAT_INTRO_TEXT, STATUS } from '../constants';
@@ -25,12 +26,12 @@ import { MessagesHeader } from './messages-header';
 export class MessageField extends View {
     private clientApi: ClientApi;
     private dialogWrapper: ElementCreator | null;
-    private delimiterElement: HTMLElement | null = null;
     private messagesHeader: MessagesHeader | null;
     private messagesInputBox: MessageInput | null;
     private messageBox: ElementCreator | null;
     private contextMenu: ContextMenu;
-    private isDelimiterInserted = false;
+    private delimeter: ElementCreator | null;
+    private isDelimiter: boolean = false;
 
     constructor(parent: HTMLElement, clientApi: ClientApi) {
         const options: Options = {
@@ -45,6 +46,7 @@ export class MessageField extends View {
         this.messagesHeader = null;
         this.messagesInputBox = null;
         this.contextMenu = new ContextMenu();
+        this.delimeter = null;
 
         this.handlerSendMsg();
         this.configure();
@@ -62,8 +64,7 @@ export class MessageField extends View {
             textContent: CHAT_INTRO_TEXT.SELECT,
         });
         this.messagesInputBox = new MessageInput(this.getHTMLElement(), this.clientApi);
-        // if (this.dialogWrapper)
-        //     this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
+        scrollToBottom(this.dialogWrapper.getElement());
     }
 
     private changeTextContent(content: CHAT_INTRO_TEXT = CHAT_INTRO_TEXT.WRITE): void {
@@ -71,25 +72,30 @@ export class MessageField extends View {
             this.dialogWrapper.getElement().textContent = content;
         }
     }
-    // private insertDelimiter(parent: HTMLElement): void {
-    //     this.delimiterElement = document.createElement('div');
-    //     this.delimiterElement.className = 'delimiter';
-    //     this.delimiterElement.textContent = 'New messages';
-    //     parent.append(this.delimiterElement);
-    //     this.isDelimiterInserted = true;
-    //     // this.delimiterElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // }
 
-    private isDelimiterExist(): boolean {
-        return document.querySelector('.delimiter') !== null;
-    }
-
-    private createMessage(message: Message, edited: boolean, className?: string): void {
+    private createMessage(
+        message: Message,
+        edited: boolean,
+        className?: string,
+        idx?: number,
+        firstUnread?: number
+    ): void {
+        //delimiter
+        const currentUser = getCurrentUsername();
+        if (message.status?.isReaded === false && message.from !== currentUser && idx === firstUnread) {
+            this.delimeter = new ElementCreator({
+                tagName: 'div',
+                classes: ['delimiter'],
+                parent: this.dialogWrapper?.getElement(),
+            });
+            this.isDelimiter = true;
+        }
         const messageWrapper = new ElementCreator({
             tagName: 'div',
             classes: ['message-wrapper'],
             parent: this.dialogWrapper?.getElement(),
         });
+
         let msgStatus: boolean = false;
         if (className) {
             messageWrapper.getElement().classList.add(className);
@@ -190,14 +196,22 @@ export class MessageField extends View {
             this.renderDialogHistory();
         });
         this.dialogWrapper?.getElement().addEventListener('click', () => {
+            this.isDelimiter = false;
             if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
                 handlerReadingMessages(this.clientApi);
             }
+
+            addEventListener('onChangeChatHistory', () => {
+                this.isDelimiter = false;
+            });
         });
-        this.dialogWrapper?.getElement().addEventListener('scroll', () => {
-            if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
-                handlerReadingMessages(this.clientApi);
-            }
+        addEventListener('connectionClosed', () => {
+            isDialogToggler(false);
+            isOpenChatToggler(false);
+        });
+
+        addEventListener('onRenderMessages', () => {
+            // this.scrollToCorrectPosition();
         });
     }
 
@@ -221,8 +235,8 @@ export class MessageField extends View {
         addEventListener('onMsgSend', () => {
             const id = generateId();
             const dialogs = dialogState;
-            if (this.dialogWrapper) {
-                this.dialogWrapper.getElement().textContent = '';
+            if (this.dialogWrapper && isDialog && selectedUser.username.length > 0) {
+                this.dialogWrapper.getElement().textContent = CHAT_INTRO_TEXT.SELECT;
             }
             const foundDialog = dialogs.find((dialog) => dialog.login === selectedUser.username);
             if (foundDialog && 'messages' in foundDialog) {
@@ -237,37 +251,38 @@ export class MessageField extends View {
             const targetUser = selectedUser.username;
             const targetDialog = dialogState.find((dialog) => dialog.login === targetUser);
 
-            if (targetDialog) {
+            if (targetDialog && selectedUser.username.length > 0) {
                 const messages: Message[] = targetDialog?.messages;
-                if (messages.length > 0) {
+                if (messages.length > 0 && selectedUser.username.length > 0) {
                     this.changeTextContent(CHAT_INTRO_TEXT.EMPTY);
                     isDialogToggler(true);
                 } else if (messages.length === 0) {
                     isDialogToggler(false);
                 }
-                messages.forEach((message: Message) => {
+                const firstUnread = messages.findIndex(
+                    (message) => message.status?.isReaded === false && message.from !== getCurrentUsername()
+                );
+                //
+                messages.forEach((message: Message, idx: number) => {
                     const className = message.from === targetUser ? '' : 'message-wrapper--right';
                     let edited: boolean = false;
                     if (message.status?.isEdited) {
                         edited = true;
                     }
 
-                    // const currentUser = getCurrentUsername();
-                    // if (
-                    //     !message.status?.isReaded &&
-                    //     message.to === currentUser &&
-                    //     !this.isDelimiterExist() &&
-                    //     !this.isDelimiterInserted
-                    // ) {
-                    //     console.log('INSERT DELIMETR');
-                    //     if (this.dialogWrapper) this.insertDelimiter(this.dialogWrapper?.getElement());
-                    // }
-
-                    this.createMessage(message, edited, className);
+                    this.createMessage(message, edited, className, idx, firstUnread);
                 });
             }
-            if (this.dialogWrapper)
-                this.dialogWrapper.getElement().scrollTop = this.dialogWrapper?.getElement().scrollHeight;
+            if (this.dialogWrapper) scrollToBottom(this.dialogWrapper.getElement());
+            if (this.isDelimiter && this.delimeter && this.dialogWrapper?.getElement()) {
+                this.dialogWrapper
+                    .getElement()
+                    .scrollBy(
+                        0,
+                        this.delimeter.getElement().getBoundingClientRect().top -
+                            this.dialogWrapper?.getElement().clientHeight
+                    );
+            }
 
             dispatchEvent(renderMessages);
         }
@@ -298,13 +313,4 @@ export class MessageField extends View {
             if (child) this.dialogWrapper?.getElement().removeChild(child);
         }
     }
-
-    // private setDelimeter(parent: HTMLElement): void {
-    //     const delimeter = new ElementCreator({
-    //         tagName: 'div',
-    //         classes: ['delimeter'],
-    //         parent: parent,
-    //     });
-    //     parent.append(delimeter.getElement());
-    // }
 }

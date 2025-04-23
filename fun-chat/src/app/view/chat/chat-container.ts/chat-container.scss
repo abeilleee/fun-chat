@@ -1,7 +1,8 @@
 .section-main {
     display: flex;
-    height: 90%;
+    height: 100%;
     flex-direction: column;
+    justify-content: center;
     margin: 0 auto;
     gap: 5px;
 }

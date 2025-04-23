@@ -61,8 +61,8 @@ export class WebSocketConnection {
         if (this.websocket) {
             this.websocket.addEventListener(EVENT_TYPE.MESSAGE, (message: MessageEvent) => {
                 const response = message.data;
-                getUsers(response);
                 handlerLoginLogout(response);
+                getUsers(response);
                 getMessages(response);
                 checkErrors(response);
                 checkDeletingMessage(response);

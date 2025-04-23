@@ -24,9 +24,9 @@ export function openHandler(clientApi: ClientApi): void {
         clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
         clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
 
-        setTimeout(() => {
-            allUsers.active;
-        });
+        // setTimeout(() => {
+        //     allUsers.active;
+        // });
     }
 }
 

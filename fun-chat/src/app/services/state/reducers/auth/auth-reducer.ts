@@ -8,7 +8,11 @@ export function checkErrors(data: string): void {
     if (type === APP_ERROR.ERROR) {
         const error: string = payload.error;
 
-        if (error === ERRORS.DOUBLE_LOGIN || error === ERRORS.DOUBLE_USER) {
+        if (
+            error === String(ERRORS.DOUBLE_LOGIN) ||
+            error === String(ERRORS.DOUBLE_USER) ||
+            error === String(ERRORS.INCORRECT_PASSWORD)
+        ) {
             const modal = new Modal();
             modal.showModal(error);
         } else {
