@@ -1,6 +1,10 @@
 import { selectUser } from '../../../../services/custom-events/custom-events';
 import type { ClientApi } from '../../../../services/server-api/client-api';
-import { allUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
+import {
+    allUsers,
+    isChatChangeToggler,
+    selectedUser,
+} from '../../../../services/state/reducers/users/user-states-reducer';
 
 export function handleUserSelect(targetElement: HTMLElement, clientApi: ClientApi): void {
     const userBox = targetElement.classList.contains('user-box') ? targetElement : targetElement.closest('.user-box');
@@ -11,4 +15,5 @@ export function handleUserSelect(targetElement: HTMLElement, clientApi: ClientAp
         selectedUser.status = status;
         dispatchEvent(selectUser);
     }
+    isChatChangeToggler(true);
 }

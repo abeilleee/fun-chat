@@ -10,7 +10,11 @@ import {
     isOpenChatToggler,
     unreadMessages,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
-import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
+import {
+    isChatChange,
+    isChatChangeToggler,
+    selectedUser,
+} from '../../../../services/state/reducers/users/user-states-reducer';
 import { getCurrentUsername } from '../../../../services/storage/storage';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { formatTime } from '../../../../utils/format-time';
@@ -82,7 +86,7 @@ export class MessageField extends View {
     ): void {
         //delimiter
         const currentUser = getCurrentUsername();
-        if (message.status?.isReaded === false && message.from !== currentUser && idx === firstUnread) {
+        if (message.status?.isReaded === false && message.from !== currentUser && idx === firstUnread && isChatChange) {
             this.delimeter = new ElementCreator({
                 tagName: 'div',
                 classes: ['delimiter'],
@@ -200,6 +204,7 @@ export class MessageField extends View {
             if (this.dialogWrapper?.getElement().classList.contains('dialog-wrapper--active')) {
                 handlerReadingMessages(this.clientApi);
             }
+            isChatChangeToggler(false);
 
             addEventListener('onChangeChatHistory', () => {
                 this.isDelimiter = false;

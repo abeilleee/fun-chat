@@ -14,6 +14,13 @@ export const selectedUser: SelectedUser = {
     username: '',
     status: '',
 };
+
+export let isChatChange = false;
+
+export function isChatChangeToggler(value: boolean): void {
+    isChatChange = value;
+}
+
 export function getUsers(data: string): void {
     const { id, type, payload } = JSON.parse(data);
     switch (type) {

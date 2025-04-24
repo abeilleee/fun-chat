@@ -4,7 +4,7 @@ import type { ClientApi } from '../../services/server-api/client-api';
 import { USER_STATUS } from '../../services/server-api/constants';
 import type { Payload } from '../../services/server-api/types/user';
 import { isDialogToggler, isOpenChatToggler } from '../../services/state/reducers/dialog/dialog-reducer';
-import { selectedUser } from '../../services/state/reducers/users/user-states-reducer';
+import { isChatChangeToggler, selectedUser } from '../../services/state/reducers/users/user-states-reducer';
 import { getStorageData, isLogined, toggleIsLogined } from '../../services/storage/storage';
 import { generateId } from '../../utils/id-generator';
 import { scrollToBottom } from '../../utils/message-filled-utils';
@@ -41,7 +41,6 @@ export function handlerBtnAbout(router: Router): void {
 export function handlerBtnBack(router: Router): void {
     const isAuth = isLogined();
     isAuth ? router.navigate(PAGES.MAIN) : router.navigate(PAGES.AUTH);
-    // history.back();
 }
 
 export function handlerBtnLogin(
@@ -53,8 +52,6 @@ export function handlerBtnLogin(
     clientApi: ClientApi
 ): void {
     if (isValidLogin && isValidPassword) {
-        // const id = generateId();
-
         const payload: Payload = {
             user: {
                 login: login,
@@ -74,4 +71,5 @@ export function handlerBtnSend(text: string, clientApi: ClientApi): void {
     handlerReadingMessages(clientApi);
     const dialog = document.querySelector('.dialog-wrapper--active');
     if (dialog instanceof HTMLElement) scrollToBottom(dialog);
+    isChatChangeToggler(false);
 }

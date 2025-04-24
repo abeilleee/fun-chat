@@ -1,5 +1,4 @@
 import type { ContextMenu } from '../../../../components/context-menu.ts/context-menu';
-import { changeChatHistory } from '../../../../services/custom-events/custom-events';
 import type { ClientApi } from '../../../../services/server-api/client-api';
 import type { Dialog, Message } from '../../../../services/server-api/types/chat';
 import { changeDialogState, dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
