@@ -1,11 +1,11 @@
 import { Router } from './services/router/router';
 import { PAGES, type Route } from './services/router/types';
 import { Background } from './settings/background/background';
-import type { ChatView } from './view/chat/chat';
 import { MainView } from './view/main-view';
-import type { View } from './view/view';
 import { WebSocketConnection } from './services/web-socket-connection/web-socket-connection';
 import { ClientApi } from './services/server-api/client-api';
+import type { View } from './view/view';
+import type { ChatView } from './view/chat/chat';
 
 export class App {
     public router: Router;
@@ -25,20 +25,9 @@ export class App {
         this.websocket = new WebSocketConnection();
         this.clientApi = new ClientApi(this.websocket);
         this.createView();
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
-        console.log('ПРОВЕРЬТЕ ПОЖАЛУЙСТА ПОЗЖЕ!!!!!!!!!!!!');
     }
 
     private createView(): void {
-        // this.chatPage = new ChatView(this.router, this.clientApi);
         this.mainView = new MainView();
         if (this.mainView) document.body.append(this.mainView.getHTMLElement(), this.background.getHTMLElement());
     }

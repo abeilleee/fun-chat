@@ -120,7 +120,7 @@ export class Contacts extends View {
                 const targetElement = event.target;
 
                 if (targetElement instanceof HTMLElement) {
-                    handleUserSelect(targetElement, this.clientApi);
+                    handleUserSelect(targetElement);
                 }
             });
         }

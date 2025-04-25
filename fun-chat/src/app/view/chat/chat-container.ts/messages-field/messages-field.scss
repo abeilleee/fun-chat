@@ -31,9 +31,9 @@
     justify-content: center;
     order: 2;
     gap: 10px;
+    scroll-behavior: smooth;
     scrollbar-color: rgb(169 144 245 / 35.4%) transparent;
     scrollbar-width: thin;
-    scroll-behavior: smooth;
 
     &--active {
         display: block;

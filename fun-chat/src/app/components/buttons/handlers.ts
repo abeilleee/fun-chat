@@ -1,17 +1,16 @@
-import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
-import type { ClientApi } from '../../services/server-api/client-api';
 import { USER_STATUS } from '../../services/server-api/constants';
-import type { Payload } from '../../services/server-api/types/user';
 import { isDialogToggler, isOpenChatToggler } from '../../services/state/reducers/dialog/dialog-reducer';
 import { isChatChangeToggler, selectedUser } from '../../services/state/reducers/users/user-states-reducer';
 import { getStorageData, isLogined, toggleIsLogined } from '../../services/storage/storage';
 import { generateId } from '../../utils/id-generator';
 import { scrollToBottom } from '../../utils/message-filled-utils';
 import { handlerReadingMessages } from '../../view/chat/chat-container.ts/messages-field/handlers';
+import type { Payload } from '../../services/server-api/types/user';
+import type { ClientApi } from '../../services/server-api/client-api';
+import type { Router } from '../../services/router/router';
 
 export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
-    const id = generateId();
     const data = getStorageData();
     if (data && 'login' in data && 'password' in data) {
         const login = data.login;
@@ -44,7 +43,6 @@ export function handlerBtnBack(router: Router): void {
 }
 
 export function handlerBtnLogin(
-    router: Router,
     isValidLogin: boolean,
     isValidPassword: boolean,
     login: string,

@@ -1,13 +1,13 @@
 import { Button } from '../../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../../components/buttons/constants';
 import { handlerBtnAbout, handlerBtnLogout } from '../../../components/buttons/handlers';
-import type { Router } from '../../../services/router/router';
-import type { ClientApi } from '../../../services/server-api/client-api';
 import { getCurrentUsername } from '../../../services/storage/storage';
 import { ElementCreator } from '../../../utils/element-creator';
-import type { Options } from '../../../utils/types';
 import { ContainerView } from '../../container/container';
 import { View } from '../../view';
+import type { Router } from '../../../services/router/router';
+import type { ClientApi } from '../../../services/server-api/client-api';
+import type { Options } from '../../../utils/types';
 
 export class HeaderView extends View {
     private headerWrapper: ElementCreator | null;

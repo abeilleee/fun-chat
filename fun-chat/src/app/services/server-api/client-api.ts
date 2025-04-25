@@ -1,8 +1,8 @@
 import { generateId } from '../../utils/id-generator';
-import type { WebSocketConnection } from '../web-socket-connection/web-socket-connection';
 import { MESSAGE_ACTIONS, type USER_STATUS } from './constants';
 import type { Message } from './types/chat';
 import type { Payload } from './types/user';
+import type { WebSocketConnection } from '../web-socket-connection/web-socket-connection';
 
 export class ClientApi {
     private webSocket: WebSocketConnection;

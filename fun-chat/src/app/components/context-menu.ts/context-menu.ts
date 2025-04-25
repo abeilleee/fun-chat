@@ -1,4 +1,3 @@
-import { changeChatHistory } from '../../services/custom-events/custom-events';
 import type { ClientApi } from '../../services/server-api/client-api';
 import type { Message } from '../../services/server-api/types/chat';
 import { ElementCreator } from '../../utils/element-creator';
@@ -11,13 +10,11 @@ export class ContextMenu {
     private menu: ElementCreator | null;
     private btnDelete: ElementCreator | null;
     private btnEdit: ElementCreator | null;
-    // private currentMsgId: string | undefined = '';
 
     constructor() {
         this.menu = null;
         this.btnDelete = null;
         this.btnEdit = null;
-        // this.setEventListeners();
     }
 
     public showMenu(

@@ -1,7 +1,4 @@
-import type { WebSocketConnection } from '../../services/web-socket-connection/web-socket-connection';
 import { ElementCreator } from '../../utils/element-creator';
-import { Button } from '../buttons/buttons';
-import { BUTTON_NAME } from '../buttons/constants';
 import { MODAL_TEXT } from './constants';
 
 export class ConnectionWaiter {

@@ -39,14 +39,6 @@ export class AuthValidator {
     }
 
     public checkRequiredLetters(password: string): string | boolean {
-        // if (this.checkMinLength(password, INPUT_TYPE.PASSWORD)
-        //  && this.checkMaxLength(password, INPUT_TYPE.PASSWORD)) {
-        //     const uppercaseRegex = /A-Z/;
-        //     if (!uppercaseRegex.test(password)) {
-        //         return ERROR_MESSAGES.LETTERS;
-        //     }
-        //     return true;
-        // }
         if (password.toUpperCase() === password && password.toLowerCase() === password) {
             const errorMessage = ERROR_MESSAGES.LETTERS;
             return errorMessage;

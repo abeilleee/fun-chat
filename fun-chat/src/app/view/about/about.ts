@@ -1,11 +1,11 @@
 import { Button } from '../../components/buttons/buttons';
 import { BUTTON_NAME } from '../../components/buttons/constants';
 import { handlerBtnBack } from '../../components/buttons/handlers';
-import type { Router } from '../../services/router/router';
 import { ElementCreator } from '../../utils/element-creator';
-import type { Options } from '../../utils/types';
 import { View } from '../view';
 import { ABOUT_INFORMATION } from './constants';
+import type { Options } from '../../utils/types';
+import type { Router } from '../../services/router/router';
 
 export class AboutView extends View {
     public router: Router;

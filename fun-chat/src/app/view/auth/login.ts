@@ -135,7 +135,7 @@ export class LoginPageView extends View {
         this.loginInput?.getElement().addEventListener('input', () => {
             if (this.loginInput && this.loginButton) {
                 this.cleanErrorMessage(INPUT_TYPE.LOGIN);
-                const result = loginHandler(this.loginInput, this.validator, this.loginButton);
+                const result = loginHandler(this.loginInput, this.validator);
 
                 if (typeof result === 'string' && result !== EMPTY) {
                     this.setErrorMessage(result, INPUT_TYPE.LOGIN);
@@ -187,14 +187,7 @@ export class LoginPageView extends View {
                         const login = this.loginInput?.getValue();
                         const password = this.passwordInput?.getValue();
                         if (login && password)
-                            handlerBtnLogin(
-                                this.router,
-                                this.isValidLogin,
-                                this.isValidPassword,
-                                login,
-                                password,
-                                this.clientApi
-                            );
+                            handlerBtnLogin(this.isValidLogin, this.isValidPassword, login, password, this.clientApi);
                         break;
                     }
                 }
@@ -235,14 +228,7 @@ export class LoginPageView extends View {
                     !this.loginButton?.getElement().classList.contains('disabled')
                 )
                     if (login && password)
-                        handlerBtnLogin(
-                            this.router,
-                            this.isValidLogin,
-                            this.isValidPassword,
-                            login,
-                            password,
-                            this.clientApi
-                        );
+                        handlerBtnLogin(this.isValidLogin, this.isValidPassword, login, password, this.clientApi);
             }
         });
     }

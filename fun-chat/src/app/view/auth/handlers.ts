@@ -3,11 +3,7 @@ import type { InputElement } from '../../components/input/input';
 import type { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 
-export function loginHandler(
-    loginElement: InputElement,
-    validator: AuthValidator,
-    btn: Button
-): string | null | undefined {
+export function loginHandler(loginElement: InputElement, validator: AuthValidator): string | null | undefined {
     const value = loginElement.getValue();
 
     if (!value) {

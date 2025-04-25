@@ -1,7 +1,7 @@
 import { ElementCreator } from '../../../utils/element-creator';
-import type { Options } from '../../../utils/types';
 import { ContainerView } from '../../container/container';
 import { View } from '../../view';
+import type { Options } from '../../../utils/types';
 
 export class FooterView extends View {
     constructor(parent: HTMLElement) {
@@ -111,7 +111,7 @@ export class FooterView extends View {
             tagName: 'h3',
             classes: ['logo-title'],
             parent: authorBox.getElement(),
-            textContent: 'MayyaRagimova',
+            textContent: 'abeilleee',
         });
 
         return authorBox.getElement();

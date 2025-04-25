@@ -8,7 +8,7 @@ import {
     getMessages,
 } from '../state/reducers/dialog/dialog-reducer';
 import { checkExternalUsers, getUsers, handlerLoginLogout } from '../state/reducers/users/user-states-reducer';
-import { EVENT_TYPE, SERVER_URL } from './constants';
+import { DELAY, EVENT_TYPE, SERVER_URL } from './constants';
 import { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
 import { connectionClosed, connectionOpen } from '../custom-events/custom-events';
 import { closeHandler, openHandler } from './handlers';
@@ -53,7 +53,7 @@ export class WebSocketConnection {
         });
 
         this.websocket.addEventListener(EVENT_TYPE.ERROR, (event) => {
-            // console.log('WebSocket error: ', event);
+            console.log('WebSocket error: ', event);
         });
         this.addEventListeners();
     }
@@ -73,13 +73,13 @@ export class WebSocketConnection {
                 changeReadStatus(response);
                 deliverNotification(response);
             });
-            this.websocket.addEventListener(EVENT_TYPE.CLOSE, (event) => {
+            this.websocket.addEventListener(EVENT_TYPE.CLOSE, () => {
                 this.isOpen = false;
                 dispatchEvent(connectionClosed);
 
                 setTimeout(() => {
                     this.openConnection();
-                }, 1000);
+                }, DELAY);
             });
         }
     }

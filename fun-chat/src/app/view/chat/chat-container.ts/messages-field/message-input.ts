@@ -3,11 +3,11 @@ import { BUTTON_NAME } from '../../../../components/buttons/constants';
 import { handlerBtnSend } from '../../../../components/buttons/handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
 import { InputElement } from '../../../../components/input/input';
-import type { ClientApi } from '../../../../services/server-api/client-api';
 import { isChatChangeToggler } from '../../../../services/state/reducers/users/user-states-reducer';
-import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
-import { dialogWrapperHandler, handlerReadingMessages } from './handlers';
+import { handlerReadingMessages } from './handlers';
+import type { Options } from '../../../../utils/types';
+import type { ClientApi } from '../../../../services/server-api/client-api';
 
 export class MessageInput extends View {
     private input: InputElement | null;

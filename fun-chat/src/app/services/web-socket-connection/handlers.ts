@@ -1,11 +1,8 @@
-import type { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
-import { generateId } from '../../utils/id-generator';
-import type { ClientApi } from '../server-api/client-api';
 import { USER_STATUS } from '../server-api/constants';
-import type { Payload } from '../server-api/types/user';
-import { dialogState } from '../state/reducers/dialog/dialog-reducer';
-import { allUsers } from '../state/reducers/users/user-states-reducer';
 import { getCurrentUsername, getPassword, isLogined } from '../storage/storage';
+import type { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
+import type { ClientApi } from '../server-api/client-api';
+import type { Payload } from '../server-api/types/user';
 
 export function openHandler(clientApi: ClientApi): void {
     const currentUserLogin = getCurrentUsername();
@@ -23,10 +20,6 @@ export function openHandler(clientApi: ClientApi): void {
         clientApi.sendRequestToServer(USER_STATUS.LOGIN, payload);
         clientApi.sendRequestToServer(USER_STATUS.INACTIVE, null);
         clientApi.sendRequestToServer(USER_STATUS.ACTIVE, null);
-
-        // setTimeout(() => {
-        //     allUsers.active;
-        // });
     }
 }
 
