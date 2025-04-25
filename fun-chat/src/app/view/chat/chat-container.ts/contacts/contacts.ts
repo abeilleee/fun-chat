@@ -1,22 +1,20 @@
 import { InputElement } from '../../../../components/input/input';
-import type { ClientApi } from '../../../../services/server-api/client-api';
 import { USER_STATUS } from '../../../../services/server-api/constants';
 import { ElementCreator } from '../../../../utils/element-creator';
-import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
 import { allUsers, getAllUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
-import type { User } from '../../../../services/server-api/types/user';
 import { handleUserSelect } from './handlers';
 import { PLACEHOLDER } from '../../../../components/input/constants';
-import type { AllUsers } from '../../../../services/state/reducers/users/types';
 import {
-    dialogState,
     pendingRequests,
     unreadMessages,
     unreadMessagesNumber,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
-import { allUsersChange } from '../../../../services/custom-events/custom-events';
 import { generateId } from '../../../../utils/id-generator';
+import type { ClientApi } from '../../../../services/server-api/client-api';
+import type { Options } from '../../../../utils/types';
+import type { User } from '../../../../services/server-api/types/user';
+import type { AllUsers } from '../../../../services/state/reducers/users/types';
 
 export class Contacts extends View {
     public contactList: ElementCreator;
@@ -97,9 +95,6 @@ export class Contacts extends View {
                 const userStatus = activeUsers.includes(user) ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE;
                 this.addContact(user, userStatus, unreadCount);
             });
-
-            // activeUsers.forEach((user) => this.addContact(user, USER_STATUS.ACTIVE));
-            // inactiveUsers.forEach((user) => this.addContact(user, USER_STATUS.INACTIVE));
         }
     }
 
@@ -142,10 +137,7 @@ export class Contacts extends View {
                 pendingRequests.push({ requestId: id, username: username });
                 this.clientApi.requestChatHistory(username, id);
             });
-
-            // this.renderContacts();
         });
-
         addEventListener('onGetNewMessages', () => {
             unreadMessages();
             this.renderContacts();
