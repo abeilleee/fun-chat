@@ -4,9 +4,10 @@ import {
     checkDeletingMessage,
     deliverNotification,
     editMessage,
+    getChatHistory,
     getMessages,
 } from '../state/reducers/dialog/dialog-reducer';
-import { getUsers, handlerLoginLogout } from '../state/reducers/users/user-states-reducer';
+import { checkExternalUsers, getUsers, handlerLoginLogout } from '../state/reducers/users/user-states-reducer';
 import { EVENT_TYPE, SERVER_URL } from './constants';
 import { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
 import { connectionClosed, connectionOpen } from '../custom-events/custom-events';
@@ -60,10 +61,12 @@ export class WebSocketConnection {
     private addEventListeners(): void {
         if (this.websocket) {
             this.websocket.addEventListener(EVENT_TYPE.MESSAGE, (message: MessageEvent) => {
-                const response = message.data;
+                const response: string = message.data;
                 handlerLoginLogout(response);
                 getUsers(response);
+                checkExternalUsers(response);
                 getMessages(response);
+                getChatHistory(response);
                 checkErrors(response);
                 checkDeletingMessage(response);
                 editMessage(response);

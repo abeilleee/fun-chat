@@ -7,13 +7,15 @@ import {
     selectedUserChanged,
 } from '../../../custom-events/custom-events';
 import { MESSAGE_ACTIONS } from '../../../server-api/constants';
-import type { Dialog, Message } from '../../../server-api/types/chat';
-import { ServerMessage } from '../../../server-api/types/server';
-import { Payload } from '../../../server-api/types/user';
 import { getCurrentUsername } from '../../../storage/storage';
+import { selectedUser } from '../users/user-states-reducer';
 import type { UserUnreadMessages } from '../../types';
 import type { PendingRequest } from '../users/types';
-import { selectedUser } from '../users/user-states-reducer';
+import type { Dialog, Message } from '../../../server-api/types/chat';
+import type { ServerMessage } from '../../../server-api/types/server';
+
+export let pendingRequests: PendingRequest[] = [];
+export let dialogState = new Array<Dialog>();
 
 export let isOpenChat = false;
 export let isDialog = false;
@@ -26,52 +28,45 @@ export function isDialogToggler(value: boolean): void {
     isDialog = value;
 }
 
-export let pendingRequests: PendingRequest[] = [];
-
-export let dialogState = new Array<Dialog>();
-
 export function getMessages(data: string): void {
-    const { id, type, payload } = JSON.parse(data);
-    switch (type) {
-        case MESSAGE_ACTIONS.MSG_SEND: {
-            const state: Dialog[] = dialogState;
-            // const idResp: string = id;
-            const isMymessage = id !== null;
-            const message: Message = payload.message;
-            let targetDialog: Dialog | undefined;
-
-            // if (idResp === null) {
-            //     dispatchEvent(getNewMessages);
-            // }
-            const recipient = payload.message.to;
-            const sender = payload.message.from;
-            targetDialog = isMymessage
-                ? state.find((dialog) => dialog.login === recipient)
-                : state.find((dialog) => dialog.login === sender);
-            if (!targetDialog) {
-                const newDialog = { login: isMymessage ? recipient : sender, messages: [] };
-                state.push(newDialog);
-                targetDialog = newDialog;
-            }
-            //bcz of eslint error '@typescript-eslint/no-unsafe-call'
-            if (targetDialog && Array.isArray(targetDialog.messages)) {
-                targetDialog.messages.push(message);
-            }
-
-            dialogState = state;
-            dispatchEvent(msgSend);
-            dispatchEvent(changeChatHistory);
-            dispatchEvent(getNewMessages);
-
-            break;
+    const parsedData: ServerMessage = JSON.parse(data);
+    const { id, type, payload } = parsedData;
+    if (payload.message && type === MESSAGE_ACTIONS.MSG_SEND) {
+        const state: Dialog[] = dialogState;
+        const isMymessage = id !== null;
+        const message: Message = payload.message;
+        let targetDialog: Dialog | undefined;
+        const recipient = payload.message.to;
+        const sender = payload.message.from;
+        targetDialog = isMymessage
+            ? state.find((dialog) => dialog.login === recipient)
+            : state.find((dialog) => dialog.login === sender);
+        if (!targetDialog && recipient && sender) {
+            const newDialog: Dialog = { login: isMymessage ? recipient : sender, messages: [] };
+            state.push(newDialog);
+            targetDialog = newDialog;
         }
-        case MESSAGE_ACTIONS.MSG_FROM_USER: {
-            const state = dialogState;
-            const requestId = id;
+        if (targetDialog && Array.isArray(targetDialog.messages)) {
+            targetDialog.messages.push(message);
+        }
+
+        dialogState = state;
+        dispatchEvent(msgSend);
+        dispatchEvent(changeChatHistory);
+        dispatchEvent(getNewMessages);
+    }
+}
+
+export function getChatHistory(data: string): void {
+    const parsedData: ServerMessage = JSON.parse(data);
+    const { id, type, payload } = parsedData;
+
+    if (type === MESSAGE_ACTIONS.MSG_FROM_USER) {
+        const state = dialogState;
+        const requestId: string = id;
+        if (payload.messages) {
             const messages: Message[] = payload.messages;
-
-            const pendingState = pendingRequests;
-
+            const pendingState: PendingRequest[] = pendingRequests;
             const targetUserRequest = pendingState.find((request: PendingRequest) => request.requestId === requestId);
             if (targetUserRequest?.username) {
                 const recipient: string = targetUserRequest?.username;
@@ -95,12 +90,11 @@ export function getMessages(data: string): void {
 
             dialogState = state;
             pendingRequests = pendingState;
-
-            changeDialogState(state);
-            dispatchEvent(changeChatHistory);
-            dispatchEvent(selectedUserChanged);
-            break;
         }
+
+        changeDialogState(state);
+        dispatchEvent(changeChatHistory);
+        dispatchEvent(selectedUserChanged);
     }
 }
 

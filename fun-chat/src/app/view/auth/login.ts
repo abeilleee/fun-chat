@@ -252,9 +252,11 @@ export class LoginPageView extends View {
             switch (type) {
                 case INPUT_TYPE.LOGIN: {
                     this.loginErrorMessage.getElement().textContent = value;
+                    break;
                 }
                 case INPUT_TYPE.PASSWORD: {
                     if (this.passwordErrorMessage) this.passwordErrorMessage.getElement().textContent = value;
+                    break;
                 }
             }
         }
@@ -263,10 +265,15 @@ export class LoginPageView extends View {
     private cleanErrorMessage(type: INPUT_TYPE): void {
         switch (type) {
             case INPUT_TYPE.LOGIN: {
-                if (this.loginErrorMessage) this.loginErrorMessage.getElement().textContent = '';
+                if (this.loginErrorMessage) {
+                    this.loginErrorMessage.getElement().textContent = '';
+                }
+                break;
             }
+
             case INPUT_TYPE.PASSWORD: {
                 if (this.passwordErrorMessage) this.passwordErrorMessage.getElement().textContent = '';
+                break;
             }
         }
     }

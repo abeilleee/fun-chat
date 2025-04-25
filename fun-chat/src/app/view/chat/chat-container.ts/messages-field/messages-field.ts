@@ -84,7 +84,6 @@ export class MessageField extends View {
         idx?: number,
         firstUnread?: number
     ): void {
-        //delimiter
         const currentUser = getCurrentUsername();
         if (message.status?.isReaded === false && message.from !== currentUser && idx === firstUnread && isChatChange) {
             this.delimeter = new ElementCreator({
@@ -99,18 +98,15 @@ export class MessageField extends View {
             classes: ['message-wrapper'],
             parent: this.dialogWrapper?.getElement(),
         });
-
         let msgStatus: boolean = false;
         if (className) {
             messageWrapper.getElement().classList.add(className);
             msgStatus = true;
         }
-
         this.createMessageElements(message, messageWrapper.getElement(), msgStatus, edited);
         if (msgStatus) {
             messageWrapper.getElement().addEventListener('contextmenu', (event: MouseEvent) => {
                 event.preventDefault();
-                const targetElement = event.target;
                 const { clientX, clientY } = event;
                 if (!this.contextMenu.isOpen && this.messageBox) {
                     this.contextMenu.showMenu(clientX, clientY, message, this.clientApi, messageWrapper.getElement());
@@ -127,29 +123,15 @@ export class MessageField extends View {
             parent: parent,
         });
 
-        const upperBox = new ElementCreator({
-            tagName: 'div',
-            classes: ['upper-box'],
-            parent: this.messageBox.getElement(),
-        });
-        const sender = new ElementCreator({
-            tagName: 'div',
-            classes: ['sender'],
-            parent: upperBox.getElement(),
-            textContent: message.from,
-        });
+        const upperBox = this.createUpperBox(this.messageBox.getElement(), message);
+
         const messageField = new ElementCreator({
             tagName: 'div',
             classes: ['message'],
             parent: this.messageBox.getElement(),
             textContent: message.text,
         });
-        const date = new ElementCreator({
-            tagName: 'div',
-            classes: ['date'],
-            parent: upperBox.getElement(),
-            textContent: formatTime(Number(message.datetime)),
-        });
+
         const lowerBox = new ElementCreator({
             tagName: 'div',
             classes: ['lower-box'],
@@ -164,6 +146,26 @@ export class MessageField extends View {
         if (edited) {
             this.setEditedStatus(lowerBox.getElement());
         }
+    }
+
+    private createUpperBox(parent: HTMLElement, message: Message): void {
+        const upperBox = new ElementCreator({
+            tagName: 'div',
+            classes: ['upper-box'],
+            parent: parent,
+        });
+        const sender = new ElementCreator({
+            tagName: 'div',
+            classes: ['sender'],
+            parent: upperBox.getElement(),
+            textContent: message.from,
+        });
+        const date = new ElementCreator({
+            tagName: 'div',
+            classes: ['date'],
+            parent: upperBox.getElement(),
+            textContent: formatTime(Number(message.datetime)),
+        });
     }
 
     private setEditedStatus(parent: HTMLElement, statusText = STATUS.EDITED): void {
@@ -190,7 +192,6 @@ export class MessageField extends View {
             unreadMessages();
             this.renderDialogHistory();
         });
-
         addEventListener('onDeleteMsg', () => {
             this.clearDialog();
             this.renderDialogHistory();
@@ -213,10 +214,6 @@ export class MessageField extends View {
         addEventListener('connectionClosed', () => {
             isDialogToggler(false);
             isOpenChatToggler(false);
-        });
-
-        addEventListener('onRenderMessages', () => {
-            // this.scrollToCorrectPosition();
         });
     }
 
@@ -267,7 +264,6 @@ export class MessageField extends View {
                 const firstUnread = messages.findIndex(
                     (message) => message.status?.isReaded === false && message.from !== getCurrentUsername()
                 );
-                //
                 messages.forEach((message: Message, idx: number) => {
                     const className = message.from === targetUser ? '' : 'message-wrapper--right';
                     let edited: boolean = false;
@@ -288,7 +284,6 @@ export class MessageField extends View {
                             this.dialogWrapper?.getElement().clientHeight
                     );
             }
-
             dispatchEvent(renderMessages);
         }
     }

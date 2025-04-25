@@ -128,7 +128,6 @@ export class Contacts extends View {
             const id = generateId();
             this.clientApi.requestChatHistory(selectedUser.username, id);
         });
-
         addEventListener('onAllUsersChange', () => {
             const users = [...allUsers.active, ...allUsers.inactive];
             users.forEach((user) => {
