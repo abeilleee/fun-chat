@@ -5,19 +5,16 @@ import { PLACEHOLDER } from '../../components/input/constants';
 import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
-import { allUsersChange } from '../../services/custom-events/custom-events';
-import type { Router } from '../../services/router/router';
 import { PAGES } from '../../services/router/types';
-import type { ClientApi } from '../../services/server-api/client-api';
 import { USER_STATUS } from '../../services/server-api/constants';
-import type { User } from '../../services/server-api/types/user';
-import { dialogState, unreadMessages, unreadMessagesNumber } from '../../services/state/reducers/dialog/dialog-reducer';
-import { allUsers, selectedUser } from '../../services/state/reducers/users/user-states-reducer';
 import { setData } from '../../services/storage/storage';
 import { ElementCreator } from '../../utils/element-creator';
-import type { Options } from '../../utils/types';
 import { View } from '../view';
 import { loginHandler, passwordHandler } from './handlers';
+import type { Options } from '../../utils/types';
+import type { User } from '../../services/server-api/types/user';
+import type { ClientApi } from '../../services/server-api/client-api';
+import type { Router } from '../../services/router/router';
 
 export class LoginPageView extends View {
     public router: Router;
@@ -68,52 +65,49 @@ export class LoginPageView extends View {
             classes: ['form'],
             parent: this.getHTMLElement(),
         });
+
+        this.createLoginElements(this.formElement.getElement());
+        this.createPasswordElements(this.formElement.getElement());
+        return this.formElement.getElement();
+    }
+
+    private createLoginElements(parent: HTMLElement): void {
         const header = new ElementCreator({
             tagName: 'h3',
             classes: ['title-auth'],
             textContent: 'FUN CHAT',
-            parent: this.formElement.getElement(),
+            parent: parent,
         });
         const labelLogin = new ElementCreator<HTMLLabelElement>({
             tagName: 'label',
             classes: ['label', 'label-login'],
-            parent: this.formElement.getElement(),
+            parent: parent,
             textContent: 'Enter your login',
         }).getElement();
         if (labelLogin instanceof HTMLLabelElement) {
             labelLogin.htmlFor = 'Login';
         }
-        this.loginInput = new InputElement(
-            PLACEHOLDER.LOGIN,
-            'text',
-            ['input-login'],
-            this.formElement.getElement(),
-            'login'
-        );
+        this.loginInput = new InputElement(PLACEHOLDER.LOGIN, 'text', ['input-login'], parent, 'login');
         this.loginErrorMessage = new ElementCreator({
             tagName: 'span',
             classes: ['error-message'],
-            parent: this.formElement.getElement(),
+            parent: parent,
         });
+    }
+
+    private createPasswordElements(parent: HTMLElement): void {
         const labelPassword = new ElementCreator<HTMLLabelElement>({
             tagName: 'label',
             classes: ['label', 'label-password'],
-            parent: this.formElement.getElement(),
+            parent: parent,
             textContent: 'Enter your password',
         });
-        this.passwordInput = new InputElement(
-            PLACEHOLDER.PASSWORD,
-            'password',
-            ['input-password'],
-            this.formElement.getElement(),
-            'password'
-        );
+        this.passwordInput = new InputElement(PLACEHOLDER.PASSWORD, 'password', ['input-password'], parent, 'password');
         this.passwordErrorMessage = new ElementCreator({
             tagName: 'span',
             classes: ['error-message'],
-            parent: this.formElement.getElement(),
+            parent: parent,
         });
-        return this.formElement.getElement();
     }
 
     private createButtons(parent: HTMLElement): HTMLElement {
@@ -254,18 +248,26 @@ export class LoginPageView extends View {
     }
 
     private setErrorMessage(value: string, type: INPUT_TYPE): void {
-        if (type === INPUT_TYPE.LOGIN && this.loginErrorMessage && typeof value === 'string') {
-            this.loginErrorMessage.getElement().textContent = value;
-        } else if (type === INPUT_TYPE.PASSWORD && this.passwordErrorMessage && typeof value === 'string') {
-            this.passwordErrorMessage.getElement().textContent = value;
+        if (this.loginErrorMessage && typeof value === 'string') {
+            switch (type) {
+                case INPUT_TYPE.LOGIN: {
+                    this.loginErrorMessage.getElement().textContent = value;
+                }
+                case INPUT_TYPE.PASSWORD: {
+                    if (this.passwordErrorMessage) this.passwordErrorMessage.getElement().textContent = value;
+                }
+            }
         }
     }
 
     private cleanErrorMessage(type: INPUT_TYPE): void {
-        if (type === INPUT_TYPE.LOGIN && this.loginErrorMessage) {
-            this.loginErrorMessage.getElement().textContent = '';
-        } else if (type === INPUT_TYPE.PASSWORD && this.passwordErrorMessage) {
-            this.passwordErrorMessage.getElement().textContent = '';
+        switch (type) {
+            case INPUT_TYPE.LOGIN: {
+                if (this.loginErrorMessage) this.loginErrorMessage.getElement().textContent = '';
+            }
+            case INPUT_TYPE.PASSWORD: {
+                if (this.passwordErrorMessage) this.passwordErrorMessage.getElement().textContent = '';
+            }
         }
     }
 }
