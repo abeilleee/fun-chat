@@ -4,7 +4,7 @@ import { getCurrentUsername } from '../../../storage/storage';
 import { unreadMessages } from '../dialog/dialog-reducer';
 import type { AllUsers, SelectedUser } from './types';
 import type { User } from '../../../client-api/types/user';
-import { ServerMessage } from '../../../client-api/types/server';
+import type { ServerMessage } from '../../../client-api/types/server';
 
 export const allUsers: AllUsers = {
     inactive: [],
