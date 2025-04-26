@@ -11,9 +11,11 @@ import type { Router } from '../../services/router/router';
 
 export function handlerBtnLogout(router: Router, clientApi: ClientApi): void {
     const data = getStorageData();
+
     if (data && 'login' in data && 'password' in data) {
         const login = data.login;
         const password = data.password;
+
         if (typeof login === 'string' && typeof password === 'string') {
             const payload: Payload = {
                 user: {
@@ -48,6 +50,7 @@ export function handlerBtnLogin(
     password: string,
     clientApi: ClientApi
 ): void {
+
     if (isValidLogin && isValidPassword) {
         const payload: Payload = {
             user: {
@@ -64,9 +67,10 @@ export function handlerBtnLogin(
 
 export function handlerBtnSend(text: string, clientApi: ClientApi): void {
     const recipientName = selectedUser.username;
-    clientApi.sendMessage(recipientName, text);
-    handlerReadingMessages(clientApi);
     const dialog = document.querySelector('.dialog-wrapper--active');
+    clientApi.sendMessage(recipientName, text);
+    handlerReadingMessages(clientApi);    
+
     if (dialog instanceof HTMLElement) scrollToBottom(dialog);
     isChatChangeToggler(false);
 }

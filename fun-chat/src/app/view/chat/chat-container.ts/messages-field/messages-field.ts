@@ -85,6 +85,7 @@ export class MessageField extends View {
         firstUnread?: number
     ): void {
         const currentUser = getCurrentUsername();
+
         if (message.status?.isReaded === false && message.from !== currentUser && idx === firstUnread && isChatChange) {
             this.delimeter = new ElementCreator({
                 tagName: 'div',
@@ -99,6 +100,7 @@ export class MessageField extends View {
             parent: this.dialogWrapper?.getElement(),
         });
         let msgStatus: boolean = false;
+
         if (className) {
             messageWrapper.getElement().classList.add(className);
             msgStatus = true;

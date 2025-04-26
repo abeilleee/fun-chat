@@ -17,10 +17,12 @@ export function loginHandler(loginElement: InputElement, validator: AuthValidato
             errorMessage = minLengthCheck;
         } else {
             const maxLengthCheck = validator.checkMaxLength(value, INPUT_TYPE.LOGIN);
+
             if (typeof maxLengthCheck === 'string') {
                 errorMessage = maxLengthCheck;
             } else {
                 const emptyCheck = validator.checkIsEmpty(value);
+
                 if (typeof emptyCheck === 'string') {
                     errorMessage = emptyCheck;
                 }
@@ -28,7 +30,6 @@ export function loginHandler(loginElement: InputElement, validator: AuthValidato
         }
         return errorMessage;
     }
-
     return;
 }
 
@@ -47,14 +48,17 @@ export function passwordHandler(passwordElement: InputElement, validator: AuthVa
             errorMessage = minLengthCheck;
         } else {
             const maxLengthCheck = validator.checkMaxLength(value, INPUT_TYPE.PASSWORD);
+
             if (typeof maxLengthCheck === 'string') {
                 errorMessage = maxLengthCheck;
             } else {
                 const emptyCheck = validator.checkIsEmpty(value);
+
                 if (typeof emptyCheck === 'string') {
                     errorMessage = emptyCheck;
                 } else {
                     const isReqiredLetters = validator.checkRequiredLetters(value);
+
                     if (typeof isReqiredLetters === 'string') {
                         errorMessage = isReqiredLetters;
                     }

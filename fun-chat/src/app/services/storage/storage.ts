@@ -8,6 +8,7 @@ export function setData(data: User): void {
 
 export function getStorageData(): object | null {
     const data = sessionStorage.getItem(STORAGE_NAME);
+
     if (data) {
         return JSON.parse(data);
     }
@@ -16,6 +17,7 @@ export function getStorageData(): object | null {
 
 export function getCurrentUsername(): string | undefined {
     const data = getStorageData();
+
     if (data && 'login' in data) {
         return String(data.login);
     }
@@ -23,6 +25,7 @@ export function getCurrentUsername(): string | undefined {
 
 export function getPassword(): string | undefined {
     const data = getStorageData();
+
     if (data && 'password' in data) {
         return String(data.password);
     }
@@ -30,6 +33,7 @@ export function getPassword(): string | undefined {
 
 export function isLogined(): boolean | undefined {
     const data = getStorageData();
+
     if (data && 'isLogined' in data && typeof data.isLogined === 'boolean') {
         return data.isLogined;
     }
@@ -37,6 +41,7 @@ export function isLogined(): boolean | undefined {
 
 export function toggleIsLogined(): void {
     const data = getStorageData();
+
     if (data && 'login' in data && 'password' in data) {
         const login = data.login;
         const password = data.password;

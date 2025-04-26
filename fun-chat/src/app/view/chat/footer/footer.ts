@@ -74,6 +74,7 @@ export class FooterView extends View {
             parent: parent,
             textContent: '2025',
         });
+
         return year.getElement();
     }
 

@@ -64,6 +64,7 @@ export class Contacts extends View {
             parent: this.userBox.getElement(),
             textContent: userName.login ? userName.login : '',
         });
+
         if (unreadCount && unreadCount !== 0) {
             this.setUnreadMessagesIndicator(this.userBox.getElement(), unreadCount);
         }
@@ -72,6 +73,7 @@ export class Contacts extends View {
     public filterContacts(): AllUsers | undefined {
         const searchStr = this.inputSearch.getValue();
         const allUsers = getAllUsers();
+
         if (searchStr)
             return {
                 active: allUsers.active.filter((user) => user.login.toLowerCase().includes(searchStr.toLowerCase())),
@@ -85,6 +87,7 @@ export class Contacts extends View {
         unreadMessages();
         this.cleanContacts();
         const users: AllUsers | undefined = filter ? this.filterContacts() : getAllUsers();
+
         if (users) {
             const activeUsers = users.active;
             const inactiveUsers = users.inactive;

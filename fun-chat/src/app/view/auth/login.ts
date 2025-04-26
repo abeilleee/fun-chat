@@ -68,6 +68,7 @@ export class LoginPageView extends View {
 
         this.createLoginElements(this.formElement.getElement());
         this.createPasswordElements(this.formElement.getElement());
+
         return this.formElement.getElement();
     }
 
@@ -128,6 +129,7 @@ export class LoginPageView extends View {
             this.buttonsBox.getElement(),
             BUTTON_NAME.ABOUT
         );
+
         return this.buttonsBox.getElement();
     }
 

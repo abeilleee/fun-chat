@@ -50,6 +50,7 @@ export class MessageInput extends View {
                 const inputValue = this.input?.getValue() || '';
                 this.sendButton?.setDisabled(inputValue.length === 0);
                 const text = this.input?.getValue();
+
                 if (text && text.trim().length !== 0) {
                     handlerBtnSend(text, this.clientApi);
                     this.input?.cleanInput();
@@ -64,6 +65,7 @@ export class MessageInput extends View {
         this.sendButton?.getElement().addEventListener('click', () => {
             this.addInputEventListener();
             const text = this.input?.getValue();
+
             if (text && text.trim().length !== 0) {
                 handlerBtnSend(text, this.clientApi);
                 this.input?.cleanInput();

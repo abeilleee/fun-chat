@@ -25,21 +25,28 @@ export function getUsers(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
     const { id, type, payload } = parsedData;
     const currentUser = getCurrentUsername();
+
     switch (type) {
         case USER_STATUS.INACTIVE: {
             const inactiveUsers = payload.users;
+
             if (Array.isArray(inactiveUsers)) {
                 allUsers.inactive = inactiveUsers.filter((elem) => elem.login !== currentUser);
             }
+
             dispatchEvent(allUsersChange);
+
             break;
         }
         case USER_STATUS.ACTIVE: {
             const activeUsers = payload.users;
+
             if (Array.isArray(activeUsers)) {
                 allUsers.active = activeUsers.filter((elem) => elem.login !== currentUser);
             }
+
             dispatchEvent(allUsersChange);
+
             break;
         }
     }
@@ -48,6 +55,7 @@ export function getUsers(data: string): void {
 export function checkExternalUsers(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
     const { id, type, payload } = parsedData;
+
     if (payload.user)
         switch (type) {
             case USER_STATUS.EXTERNAL_LOGOUT: {
@@ -58,6 +66,7 @@ export function checkExternalUsers(data: string): void {
                 allUsers.inactive = [...allUsers.inactive, logoutUser];
                 dispatchEvent(allUsersChange);
                 dispatchEvent(changeChatHistory);
+
                 break;
             }
             case USER_STATUS.EXTERNAL_LOGIN: {
@@ -68,6 +77,7 @@ export function checkExternalUsers(data: string): void {
                 allUsers.active = [...allUsers.active, user];
                 dispatchEvent(allUsersChange);
                 dispatchEvent(changeChatHistory);
+
                 break;
             }
         }
@@ -76,14 +86,17 @@ export function checkExternalUsers(data: string): void {
 export function handlerLoginLogout(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
     const { id, type, payload } = parsedData;
+
     switch (type) {
         case USER_STATUS.LOGIN: {
             dispatchEvent(onLogin);
             unreadMessages();
+
             break;
         }
         case USER_STATUS.LOGOUT: {
             unreadMessages();
+
             break;
         }
     }

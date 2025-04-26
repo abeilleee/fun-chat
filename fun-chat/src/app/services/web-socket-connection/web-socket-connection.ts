@@ -72,6 +72,7 @@ export class WebSocketConnection {
                 changeReadStatus(response);
                 deliverNotification(response);
             });
+
             this.websocket.addEventListener(EVENT_TYPE.CLOSE, () => {
                 this.isOpen = false;
                 dispatchEvent(connectionClosed);

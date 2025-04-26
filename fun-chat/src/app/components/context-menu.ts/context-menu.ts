@@ -28,10 +28,11 @@ export class ContextMenu {
         this.btnDelete = new Button(BUTTON_NAME.DELETE, ['button-delete'], this.menu.getElement());
         this.btnEdit = new Button(BUTTON_NAME.EDIT, ['button-edit'], this.menu.getElement());
         const offsetX = clientX - CONTEXT_MENU_WIDTH;
+        const currentMsgId = message.id;
         this.menu.getElement().style.left = `${offsetX}px`;
         this.menu.getElement().style.top = `${clientY}px`;
         this.isOpen = true;
-        const currentMsgId = message.id;
+
         if (currentMsgId) {
             this.setEventListeners(clientApi, currentMsgId, messageBox);
         }
@@ -69,6 +70,7 @@ export class ContextMenu {
                         classes: ['message'],
                         textContent: newText || '',
                     }).getElement();
+
                     if (newText) clientApi.editMessage(msgId, newText);
                     textArea.replaceWith(messageField);
                 }

@@ -32,6 +32,7 @@ export class HeaderView extends View {
 
     public setUserName(parent: HTMLElement): void {
         const userLogin = getCurrentUsername();
+
         if (userLogin) {
             const userName = new ElementCreator({
                 tagName: 'h3',
@@ -70,7 +71,6 @@ export class HeaderView extends View {
             classes: ['buttons-box'],
             parent: parent,
         });
-
         const buttonAbout = new Button(BUTTON_NAME.ABOUT, ['button-about'], buttonsBox.getElement(), BUTTON_NAME.ABOUT);
         const buttonLogout = new Button(
             BUTTON_NAME.LOGOUT,
@@ -78,12 +78,14 @@ export class HeaderView extends View {
             buttonsBox.getElement(),
             BUTTON_NAME.LOGOUT
         );
+
         return buttonsBox.getElement();
     }
 
     private buttonsEventListeners(): void {
         this.buttonsBox?.addEventListener('click', (event: MouseEvent) => {
             const targetElement = event?.target;
+
             if (targetElement instanceof HTMLElement) {
                 const action = targetElement.getAttribute('data-action');
 

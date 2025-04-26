@@ -18,6 +18,7 @@ export class View {
 
     public removeChildren(): void {
         const HTMLElement = this.getHTMLElement();
+
         while (HTMLElement.firstChild) {
             HTMLElement.removeChild(HTMLElement.firstChild);
         }
@@ -25,6 +26,7 @@ export class View {
 
     private createView(options: Options): ElementCreator {
         const element = new ElementCreator(options);
+
         return element;
     }
 }

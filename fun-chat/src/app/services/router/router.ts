@@ -28,8 +28,8 @@ export class Router {
 
     public redirectToMainPage(): void {
         const isAuth = isLogined();
-
         const path = window.location.pathname;
+
         if (isAuth && path === `/auth`) {
             this.navigate(PAGES.MAIN);
         }
@@ -38,6 +38,7 @@ export class Router {
     public redirectToAuthPage(): void {
         const isAuth = isLogined();
         const path = window.location.pathname;
+
         if (!isAuth && path === `/main`) {
             this.navigate(PAGES.AUTH);
         }
@@ -45,6 +46,7 @@ export class Router {
 
     private redirectToNotFoundPage(): void {
         const notFoundPage = this.routes.find((elem) => elem.path === String(PAGES.NOT_FOUND));
+
         if (notFoundPage) {
             this.navigate(notFoundPage.path);
         }
@@ -53,10 +55,12 @@ export class Router {
     private urlHandler(request: UserRequest): void {
         const targetPath = request.path;
         const route = this.routes.find((elem) => elem.path === targetPath);
+
         if (!route) {
             this.redirectToNotFoundPage();
             return;
         }
+
         route.callback(request.resource);
     }
 }

@@ -31,6 +31,7 @@ export function isDialogToggler(value: boolean): void {
 export function getMessages(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
     const { id, type, payload } = parsedData;
+
     if (payload.message && type === MESSAGE_ACTIONS.MSG_SEND) {
         const state: Dialog[] = dialogState;
         const isMymessage = id !== null;
@@ -38,14 +39,17 @@ export function getMessages(data: string): void {
         let targetDialog: Dialog | undefined;
         const recipient = payload.message.to;
         const sender = payload.message.from;
+
         targetDialog = isMymessage
             ? state.find((dialog) => dialog.login === recipient)
             : state.find((dialog) => dialog.login === sender);
+
         if (!targetDialog && recipient && sender) {
             const newDialog: Dialog = { login: isMymessage ? recipient : sender, messages: [] };
             state.push(newDialog);
             targetDialog = newDialog;
         }
+
         if (targetDialog && Array.isArray(targetDialog.messages)) {
             targetDialog.messages.push(message);
         }
@@ -64,14 +68,16 @@ export function getChatHistory(data: string): void {
     if (type === MESSAGE_ACTIONS.MSG_FROM_USER) {
         const state = dialogState;
         const requestId: string = id;
+
         if (payload.messages) {
             const messages: Message[] = payload.messages;
             const pendingState: PendingRequest[] = pendingRequests;
             const targetUserRequest = pendingState.find((request: PendingRequest) => request.requestId === requestId);
+
             if (targetUserRequest?.username) {
                 const recipient: string = targetUserRequest?.username;
-
                 let targetDialog = state.find((dialog) => dialog.login === recipient);
+
                 if (!targetDialog) {
                     targetDialog = {
                         login: recipient,
@@ -82,12 +88,10 @@ export function getChatHistory(data: string): void {
                     targetDialog.messages = messages;
                 }
             }
-
             const unreadMessagesNumber = messages.filter(
                 (message) => !message.status?.isReaded && message.from === targetUserRequest?.username
             ).length;
             if (targetUserRequest) targetUserRequest.unreadMessagesNumber = unreadMessagesNumber;
-
             dialogState = state;
             pendingRequests = pendingState;
         }
@@ -105,9 +109,9 @@ export function changeReadStatus(data: string): void {
     if (type === MESSAGE_ACTIONS.MSG_READ && payload.message && payload.message.status) {
         const status: boolean = payload.message.status.isReaded;
         const msgId: string | undefined = payload.message.id;
-
         const state = dialogState;
         const targetDialog = state.find((dialog) => dialog.login === selectedUser.username);
+
         targetDialog?.messages.forEach((message) => {
             if (message.id === msgId && message.status) {
                 message.status.isReaded = status;
@@ -120,11 +124,14 @@ export function changeReadStatus(data: string): void {
 export function deliverNotification(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
     const { id, type, payload } = parsedData;
+
     if (type === MESSAGE_ACTIONS.MSG_DELIVER) {
         const message = payload.message;
+
         if (message) {
             const msgId = message.id;
             const state = dialogState;
+
             if (message.status) {
                 const status = message.status?.isDelivered;
                 const targetDialog = state.forEach((dialog) => {
@@ -147,6 +154,7 @@ export let unreadMessagesNumber: UserUnreadMessages[] = [];
 export function unreadMessages(): void {
     const state = dialogState;
     const unreadMessagesMap: Map<string, number> = new Map();
+
     state.forEach((dialog) => {
         const user = dialog.login;
         const unreadCount = dialog.messages.filter(
@@ -169,6 +177,7 @@ export function unreadMessages(): void {
 export function checkDeletingMessage(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
     const { id, type, payload } = parsedData;
+
     if (payload.message && type === MESSAGE_ACTIONS.MSG_DELETE) {
         const newDialogState = dialogState.map((dialog) => ({
             ...dialog,
@@ -184,6 +193,7 @@ export function checkDeletingMessage(data: string): void {
 export function editMessage(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
     const { id, type, payload } = parsedData;
+
     if (type === MESSAGE_ACTIONS.MSG_EDIT && payload.message) {
         const msgId = payload.message.id;
         const text = payload.message.text;
