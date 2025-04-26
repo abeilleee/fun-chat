@@ -1,8 +1,8 @@
-import { USER_STATUS } from '../server-api/constants';
+import { USER_STATUS } from '../client-api/constants';
 import { getCurrentUsername, getPassword, isLogined } from '../storage/storage';
 import type { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
-import type { ClientApi } from '../server-api/client-api';
-import type { Payload } from '../server-api/types/user';
+import type { ClientApi } from '../client-api/client-api';
+import type { Payload } from '../client-api/types/user';
 
 export function openHandler(clientApi: ClientApi): void {
     const currentUserLogin = getCurrentUsername();

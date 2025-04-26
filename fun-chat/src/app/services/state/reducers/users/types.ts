@@ -1,9 +1,8 @@
-import type { User } from '../../../server-api/types/user';
+import type { User } from '../../../client-api/types/user';
 
 export type AllUsers = {
     inactive: User[];
     active: User[];
-    // selectedUser: SelectedUser;
 };
 
 export type SelectedUser = {

@@ -3,7 +3,7 @@ import { PAGES, type Route } from './services/router/types';
 import { Background } from './settings/background/background';
 import { MainView } from './view/main-view';
 import { WebSocketConnection } from './services/web-socket-connection/web-socket-connection';
-import { ClientApi } from './services/server-api/client-api';
+import { ClientApi } from './services/client-api/client-api';
 import type { View } from './view/view';
 import type { ChatView } from './view/chat/chat';
 
@@ -11,15 +11,12 @@ export class App {
     public router: Router;
     private background: Background;
     private mainView: MainView | null;
-    private chatPage: ChatView | null;
     private websocket: WebSocketConnection;
     private clientApi: ClientApi;
 
     constructor() {
         this.background = new Background();
         this.mainView = null;
-        this.chatPage = null;
-
         const routes = this.createRoutes();
         this.router = new Router(routes);
         this.websocket = new WebSocketConnection();

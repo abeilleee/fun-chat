@@ -1,6 +1,6 @@
 import type { ContextMenu } from '../../../../components/context-menu.ts/context-menu';
-import type { ClientApi } from '../../../../services/server-api/client-api';
-import type { Dialog, Message } from '../../../../services/server-api/types/chat';
+import type { ClientApi } from '../../../../services/client-api/client-api';
+import type { Dialog, Message } from '../../../../services/client-api/types/chat';
 import { changeDialogState, dialogState } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
 import { getCurrentUsername } from '../../../../services/storage/storage';

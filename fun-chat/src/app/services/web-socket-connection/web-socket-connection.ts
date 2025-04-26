@@ -1,4 +1,4 @@
-import { ClientApi } from '../server-api/client-api';
+import { ClientApi } from '../client-api/client-api';
 import {
     changeReadStatus,
     checkDeletingMessage,
@@ -10,9 +10,9 @@ import {
 import { checkExternalUsers, getUsers, handlerLoginLogout } from '../state/reducers/users/user-states-reducer';
 import { DELAY, EVENT_TYPE, SERVER_URL } from './constants';
 import { ConnectionWaiter } from '../../components/connection-waiter/connection-waiter';
-import { connectionClosed, connectionOpen } from '../custom-events/custom-events';
+import { connectionClosed } from '../custom-events/custom-events';
 import { closeHandler, openHandler } from './handlers';
-import type { Message } from '../server-api/types/chat';
+import type { Message } from '../client-api/types/chat';
 import { checkErrors } from '../state/reducers/auth/auth-reducer';
 
 export class WebSocketConnection {
@@ -49,7 +49,6 @@ export class WebSocketConnection {
             this.connectionWaiter.hideWaiter();
 
             openHandler(this.clientApi);
-            dispatchEvent(connectionOpen); //TODO: delete
         });
 
         this.websocket.addEventListener(EVENT_TYPE.ERROR, (event) => {

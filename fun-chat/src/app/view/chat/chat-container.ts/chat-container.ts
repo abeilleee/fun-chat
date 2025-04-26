@@ -1,5 +1,5 @@
-import type { ClientApi } from '../../../services/server-api/client-api';
-import { USER_STATUS } from '../../../services/server-api/constants';
+import type { ClientApi } from '../../../services/client-api/client-api';
+import { USER_STATUS } from '../../../services/client-api/constants';
 import { ElementCreator } from '../../../utils/element-creator';
 import type { Options } from '../../../utils/types';
 import { ContainerView } from '../../container/container';

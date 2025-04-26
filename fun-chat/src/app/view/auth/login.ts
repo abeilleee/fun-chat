@@ -6,14 +6,14 @@ import { InputElement } from '../../components/input/input';
 import { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 import { PAGES } from '../../services/router/types';
-import { USER_STATUS } from '../../services/server-api/constants';
+import { USER_STATUS } from '../../services/client-api/constants';
 import { setData } from '../../services/storage/storage';
 import { ElementCreator } from '../../utils/element-creator';
 import { View } from '../view';
 import { loginHandler, passwordHandler } from './handlers';
 import type { Options } from '../../utils/types';
-import type { User } from '../../services/server-api/types/user';
-import type { ClientApi } from '../../services/server-api/client-api';
+import type { User } from '../../services/client-api/types/user';
+import type { ClientApi } from '../../services/client-api/client-api';
 import type { Router } from '../../services/router/router';
 
 export class LoginPageView extends View {

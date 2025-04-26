@@ -20,11 +20,6 @@ export class Router {
             this.redirectToMainPage();
             this.redirectToAuthPage();
         });
-
-        // window.addEventListener('hashchange', () => {
-        //     this.redirectToMainPage();
-        //     this.redirectToAuthPage();
-        // });
     }
 
     public navigate(url: string): void {

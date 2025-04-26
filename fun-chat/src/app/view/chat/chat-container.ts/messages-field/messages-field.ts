@@ -1,7 +1,7 @@
 import { ContextMenu } from '../../../../components/context-menu.ts/context-menu';
 import { renderMessages } from '../../../../services/custom-events/custom-events';
-import type { ClientApi } from '../../../../services/server-api/client-api';
-import type { Message } from '../../../../services/server-api/types/chat';
+import type { ClientApi } from '../../../../services/client-api/client-api';
+import type { Message } from '../../../../services/client-api/types/chat';
 import {
     dialogState,
     isDialog,

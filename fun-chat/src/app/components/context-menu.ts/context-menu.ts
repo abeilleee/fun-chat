@@ -1,5 +1,5 @@
-import type { ClientApi } from '../../services/server-api/client-api';
-import type { Message } from '../../services/server-api/types/chat';
+import type { ClientApi } from '../../services/client-api/client-api';
+import type { Message } from '../../services/client-api/types/chat';
 import { ElementCreator } from '../../utils/element-creator';
 import { Button } from '../buttons/buttons';
 import { BUTTON_NAME } from '../buttons/constants';

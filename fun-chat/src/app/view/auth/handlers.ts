@@ -1,4 +1,3 @@
-import type { Button } from '../../components/buttons/buttons';
 import type { InputElement } from '../../components/input/input';
 import type { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';

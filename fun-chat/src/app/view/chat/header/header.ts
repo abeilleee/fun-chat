@@ -6,7 +6,7 @@ import { ElementCreator } from '../../../utils/element-creator';
 import { ContainerView } from '../../container/container';
 import { View } from '../../view';
 import type { Router } from '../../../services/router/router';
-import type { ClientApi } from '../../../services/server-api/client-api';
+import type { ClientApi } from '../../../services/client-api/client-api';
 import type { Options } from '../../../utils/types';
 
 export class HeaderView extends View {

@@ -1,5 +1,5 @@
 import { Modal } from '../../../../components/modal/modal';
-import { APP_ERROR } from '../../../server-api/constants';
+import { APP_ERROR } from '../../../client-api/constants';
 import { ERRORS } from '../../types';
 
 export function checkErrors(data: string): void {

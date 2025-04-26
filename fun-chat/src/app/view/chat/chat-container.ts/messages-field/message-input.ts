@@ -7,7 +7,7 @@ import { isChatChangeToggler } from '../../../../services/state/reducers/users/u
 import { View } from '../../../view';
 import { handlerReadingMessages } from './handlers';
 import type { Options } from '../../../../utils/types';
-import type { ClientApi } from '../../../../services/server-api/client-api';
+import type { ClientApi } from '../../../../services/client-api/client-api';
 
 export class MessageInput extends View {
     private input: InputElement | null;

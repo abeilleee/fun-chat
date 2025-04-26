@@ -1,5 +1,5 @@
 import { InputElement } from '../../../../components/input/input';
-import { USER_STATUS } from '../../../../services/server-api/constants';
+import { USER_STATUS } from '../../../../services/client-api/constants';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { View } from '../../../view';
 import { allUsers, getAllUsers, selectedUser } from '../../../../services/state/reducers/users/user-states-reducer';
@@ -11,9 +11,9 @@ import {
     unreadMessagesNumber,
 } from '../../../../services/state/reducers/dialog/dialog-reducer';
 import { generateId } from '../../../../utils/id-generator';
-import type { ClientApi } from '../../../../services/server-api/client-api';
+import type { ClientApi } from '../../../../services/client-api/client-api';
 import type { Options } from '../../../../utils/types';
-import type { User } from '../../../../services/server-api/types/user';
+import type { User } from '../../../../services/client-api/types/user';
 import type { AllUsers } from '../../../../services/state/reducers/users/types';
 
 export class Contacts extends View {

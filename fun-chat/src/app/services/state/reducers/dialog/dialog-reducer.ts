@@ -6,13 +6,13 @@ import {
     msgSend,
     selectedUserChanged,
 } from '../../../custom-events/custom-events';
-import { MESSAGE_ACTIONS } from '../../../server-api/constants';
+import { MESSAGE_ACTIONS } from '../../../client-api/constants';
 import { getCurrentUsername } from '../../../storage/storage';
 import { selectedUser } from '../users/user-states-reducer';
 import type { UserUnreadMessages } from '../../types';
 import type { PendingRequest } from '../users/types';
-import type { Dialog, Message } from '../../../server-api/types/chat';
-import type { ServerMessage } from '../../../server-api/types/server';
+import type { Dialog, Message } from '../../../client-api/types/chat';
+import type { ServerMessage } from '../../../client-api/types/server';
 
 export let pendingRequests: PendingRequest[] = [];
 export let dialogState = new Array<Dialog>();
@@ -99,11 +99,12 @@ export function getChatHistory(data: string): void {
 }
 
 export function changeReadStatus(data: string): void {
-    const { id, type, payload } = JSON.parse(data);
+    const parsedData: ServerMessage = JSON.parse(data);
+    const { id, type, payload } = parsedData;
 
-    if (type === MESSAGE_ACTIONS.MSG_READ) {
+    if (type === MESSAGE_ACTIONS.MSG_READ && payload.message && payload.message.status) {
         const status: boolean = payload.message.status.isReaded;
-        const msgId: string = payload.message.id;
+        const msgId: string | undefined = payload.message.id;
 
         const state = dialogState;
         const targetDialog = state.find((dialog) => dialog.login === selectedUser.username);
@@ -117,22 +118,26 @@ export function changeReadStatus(data: string): void {
 }
 
 export function deliverNotification(data: string): void {
-    const { id, type, payload } = JSON.parse(data);
+    const parsedData: ServerMessage = JSON.parse(data);
+    const { id, type, payload } = parsedData;
     if (type === MESSAGE_ACTIONS.MSG_DELIVER) {
-        const message: Message = payload.message;
-        const msgId = message.id;
-        const state = dialogState;
-        if (message.status) {
-            const status = message.status?.isDelivered;
-            const targetDialog = state.forEach((dialog) => {
-                dialog.messages.forEach((message) => {
-                    if (message.id === msgId && message.status) {
-                        message.status.isDelivered = status;
-                    }
+        const message = payload.message;
+        if (message) {
+            const msgId = message.id;
+            const state = dialogState;
+            if (message.status) {
+                const status = message.status?.isDelivered;
+                const targetDialog = state.forEach((dialog) => {
+                    dialog.messages.forEach((message) => {
+                        if (message.id === msgId && message.status) {
+                            message.status.isDelivered = status;
+                        }
+                    });
                 });
-            });
+            }
+
+            dialogState = state;
         }
-        dialogState = state;
     }
     dispatchEvent(changeChatHistory);
 }
@@ -162,11 +167,14 @@ export function unreadMessages(): void {
 }
 
 export function checkDeletingMessage(data: string): void {
-    const { id, type, payload } = JSON.parse(data);
-    if (type === MESSAGE_ACTIONS.MSG_DELETE) {
+    const parsedData: ServerMessage = JSON.parse(data);
+    const { id, type, payload } = parsedData;
+    if (payload.message && type === MESSAGE_ACTIONS.MSG_DELETE) {
         const newDialogState = dialogState.map((dialog) => ({
             ...dialog,
-            messages: dialog.messages.filter((message) => message.id !== payload.message.id),
+            messages: dialog.messages.filter((message) => {
+                if (payload.message) message.id !== payload.message.id;
+            }),
         }));
         dialogState = newDialogState;
         dispatchEvent(deleteMsg);
@@ -174,10 +182,11 @@ export function checkDeletingMessage(data: string): void {
 }
 
 export function editMessage(data: string): void {
-    const { id, type, payload } = JSON.parse(data);
-    if (type === MESSAGE_ACTIONS.MSG_EDIT) {
-        const msgId: string = payload.message.id;
-        const text: string = payload.message.text;
+    const parsedData: ServerMessage = JSON.parse(data);
+    const { id, type, payload } = parsedData;
+    if (type === MESSAGE_ACTIONS.MSG_EDIT && payload.message) {
+        const msgId = payload.message.id;
+        const text = payload.message.text;
         const state: Dialog[] = dialogState.map((dialog) => {
             return {
                 ...dialog,
