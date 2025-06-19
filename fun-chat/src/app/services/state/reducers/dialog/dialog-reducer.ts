@@ -182,7 +182,10 @@ export function checkDeletingMessage(data: string): void {
         const newDialogState = dialogState.map((dialog) => ({
             ...dialog,
             messages: dialog.messages.filter((message) => {
-                if (payload.message) message.id !== payload.message.id;
+                if (payload.message) {
+                    return message.id !== payload.message.id;
+                }
+                return true;
             }),
         }));
         dialogState = newDialogState;
