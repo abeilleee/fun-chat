@@ -50,7 +50,6 @@ export function handlerBtnLogin(
     password: string,
     clientApi: ClientApi
 ): void {
-
     if (isValidLogin && isValidPassword) {
         const payload: Payload = {
             user: {
@@ -69,7 +68,7 @@ export function handlerBtnSend(text: string, clientApi: ClientApi): void {
     const recipientName = selectedUser.username;
     const dialog = document.querySelector('.dialog-wrapper--active');
     clientApi.sendMessage(recipientName, text);
-    handlerReadingMessages(clientApi);    
+    handlerReadingMessages(clientApi);
 
     if (dialog instanceof HTMLElement) scrollToBottom(dialog);
     isChatChangeToggler(false);
