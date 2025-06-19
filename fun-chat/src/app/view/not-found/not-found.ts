@@ -29,7 +29,7 @@ export class NotFoundView extends View {
             parent: this.getHTMLElement(),
         });
 
-        const text = new ElementCreator({
+        new ElementCreator({
             tagName: 'h1',
             classes: ['title', 'title-not-found'],
             textContent: this.#default_text,

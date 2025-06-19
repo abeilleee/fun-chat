@@ -29,7 +29,8 @@ export class ConnectionWaiter {
             classes: ['modal-wrapper'],
             parent: document.body,
         }).getElement();
-        const modal = new ElementCreator({
+
+        new ElementCreator({
             tagName: 'div',
             classes: ['modal'],
             parent: this.modalWrapper,

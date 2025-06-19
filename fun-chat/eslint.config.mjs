@@ -1,40 +1,21 @@
-import { defineConfig } from 'eslint/config';
-import globals from 'globals';
-import js from '@eslint/js';
 import eslint from '@eslint/js';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import unicorn from 'eslint-plugin-unicorn';
 import tsParser from '@typescript-eslint/parser';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
-export default defineConfig([
-    { files: ['**/*.{js,mjs,cjs,ts}'] },
-    { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
-    { files: ['**/*.{js,mjs,cjs,ts}'], languageOptions: { globals: globals.browser } },
-    { files: ['**/*.{js,mjs,cjs,ts}'], plugins: { js }, extends: ['js/recommended'] },
-    tseslint.configs.recommended,
-    tseslint.config(eslint.configs.recommended, tseslint.configs.recommendedTypeChecked, {
-        languageOptions: {
-            parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
-    }),
+export default tseslint.config(
+    eslint.configs.recommended,
+    tseslint.configs.recommendedTypeChecked,
+    unicorn.configs.recommended,
+
     {
-        plugins: {
-            '@typescript-eslint': typescriptEslint,
-        },
-
+        ignores: ['**/dist/**', '**/*config.js', './.stylelintrc.js', './eslint.config.mjs'],
+    },
+    {
         languageOptions: {
-            globals: {
-                ...globals.browser,
-            },
-
+            globals: globals.browser,
             parser: tsParser,
-            ecmaVersion: 5,
-            sourceType: 'script',
-
             parserOptions: {
                 project: './tsconfig.json',
                 projectService: true,
@@ -42,82 +23,51 @@ export default defineConfig([
             },
         },
         linterOptions: {
-            noInlineConfig: true,
+            reportUnusedDisableDirectives: true,
         },
+    },
+
+    {
         rules: {
-            'no-plusplus': 'off',
-            'no-console': 'off',
-            'max-lines-per-function': ['error', { max: 40 }],
-
-            'max-len': [
-                'warn',
-                {
-                    code: 120,
-                },
-            ],
-
-            indent: [
-                'warn',
-                4,
-                {
-                    SwitchCase: 1,
-                },
-            ],
-
-            'import/prefer-default-export': 'off',
-
-            'no-param-reassign': [
-                'error',
-                {
-                    props: false,
-                },
-            ],
-
             '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'never' }],
-            '@typescript-eslint/consistent-type-imports': 'error',
             '@typescript-eslint/explicit-function-return-type': 'error',
-            '@typescript-eslint/no-unused-vars': 'off',
-            '@typescript-eslint/no-misused-promises': 'off',
             '@typescript-eslint/explicit-member-accessibility': [
                 'error',
                 { accessibility: 'explicit', overrides: { constructors: 'off' } },
             ],
             '@typescript-eslint/member-ordering': 'error',
-            'class-methods-use-this': 'off', //makes it mandatory to use 'this' inside methods
-
-            '@typescript-eslint/no-unsafe-argument': 'off', // make troubles for routing, change!
+            '@typescript-eslint/no-unused-vars': 'error',
+            'class-methods-use-this': 'off',
             '@typescript-eslint/no-unsafe-assignment': 'off',
-            '@typescript-eslint/no-unsafe-return': 'off',
             '@typescript-eslint/no-redundant-type-constituents': 'off',
-            '@typescript-eslint/no-unsafe-member-access': 'off',
+            '@typescript-eslint/no-misused-promises': 'off',
+            '@typescript-eslint/no-unsafe-return': 'off',
             '@typescript-eslint/no-unused-expressions': 'off',
-            '@typescript-eslint/no-base-to-string': 'off',
+            '@typescript-eslint/consistent-type-imports': 'off',
+            'unicorn/better-regex': 'off',
+            'unicorn/filename-case': 'off',
+            'unicorn/prefer-module': 0,
+            'unicorn/no-array-for-each': 0,
+            'unicorn/prevent-abbreviations': 0,
+            'unicorn/prefer-dom-node-dataset': 0,
+            'unicorn/prefer-query-selector': 0,
+            'unicorn/prefer-dom-node-remove': 0,
+            'unicorn/no-console-spaces': 0,
+            'unicorn/prefer-global-this': 0,
+            'unicorn/prefer-node-protocol': 0,
+            'unicorn/no-negated-condition': 0,
+            'unicorn/no-null': 0,
+            'unicorn/no-for-loop': 0,
+            'unicorn/prefer-math-min-max': 0,
+            'unicorn/prefer-spread': 0,
+            'unicorn/prefer-logical-operator-over-ternary': 0,
+            'unicorn/no-lonely-if': 0,
+            'unicorn/prefer-dom-node-append': 0,
+            'unicorn/prefer-switch': 0,
+            'unicorn/prefer-number-properties': 0,
+            'unicorn/prefer-add-event-listener': 0,
+            'unicorn/prefer-blob-reading-methods': 0,
+            'unicorn/no-nested-ternary': 0,
         },
-    },
-    eslintPluginUnicorn.configs.recommended,
-    {
-        rules: {
-            'unicorn/better-regex': 'warn',
-            'unicorn/prefer-module': 'off',
-            'unicorn/no-array-for-each': 'off',
-            'unicorn/prevent-abbreviations': 'off',
-            'unicorn/prefer-dom-node-dataset': 'off',
-            'unicorn/prefer-query-selector': 'off',
-            'unicorn/prefer-dom-node-remove': 'off',
-            'unicorn/no-console-spaces': 'off',
-            'unicorn/no-null': 'off',
-            'unicorn/no-for-loop': 'off',
-            'unicorn/prefer-math-min-max': 'off',
-            'unicorn/prefer-spread': 'off',
-            'unicorn/prefer-global-this': 'off',
-            'unicorn/prefer-logical-operator-over-ternary': 'off',
-            'unicorn/new-for-builtins': 'off',
-            'unicorn/no-negated-condition': 'off',
-            'unicorn/prefer-at': 'off', //O_O
-            'unicorn/no-new-array': 'off',
-            'unicorn/no-lonely-if': 'off',
-            'unicorn/explicit-length-check': 'off',
-            'unicorn/prefer-ternary': 'off',
-        },
-    },
-]);
+    }
+);

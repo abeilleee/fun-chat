@@ -11,7 +11,8 @@ export class Router {
         this.handler = new HistoryRoutesHandler(this.urlHandler.bind(this));
 
         document.addEventListener('DOMContentLoaded', () => {
-            this.handler.navigate(history.state);
+            const state: string | Event | PopStateEvent = history.state;
+            this.handler.navigate(state);
             this.redirectToMainPage();
             this.redirectToAuthPage();
         });

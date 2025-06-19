@@ -34,7 +34,7 @@ export class HeaderView extends View {
         const userLogin = getCurrentUsername();
 
         if (userLogin) {
-            const userName = new ElementCreator({
+            new ElementCreator({
                 tagName: 'h3',
                 classes: ['user-name'],
                 parent: parent,
@@ -71,13 +71,8 @@ export class HeaderView extends View {
             classes: ['buttons-box'],
             parent: parent,
         });
-        const buttonAbout = new Button(BUTTON_NAME.ABOUT, ['button-about'], buttonsBox.getElement(), BUTTON_NAME.ABOUT);
-        const buttonLogout = new Button(
-            BUTTON_NAME.LOGOUT,
-            ['button-logout'],
-            buttonsBox.getElement(),
-            BUTTON_NAME.LOGOUT
-        );
+        new Button(BUTTON_NAME.ABOUT, ['button-about'], buttonsBox.getElement(), BUTTON_NAME.ABOUT);
+        new Button(BUTTON_NAME.LOGOUT, ['button-logout'], buttonsBox.getElement(), BUTTON_NAME.LOGOUT);
 
         return buttonsBox.getElement();
     }

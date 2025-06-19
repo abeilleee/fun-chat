@@ -8,8 +8,6 @@ export class AuthValidator {
         const targetLength =
             type === INPUT_TYPE.LOGIN ? VALID_LOGIN_PARAMS.MIN_LENGTH : VALID_PASSWORD_PARAMS.MIN_LENGTH;
 
-        const option = type === INPUT_TYPE.LOGIN ? value.trim().length : value.length;
-
         if (value.length < +targetLength) {
             const errorMessage = `${ERROR_MESSAGES.SHORT} ${targetLength} characters`;
             return errorMessage;
@@ -21,7 +19,7 @@ export class AuthValidator {
         const targetLength =
             type === INPUT_TYPE.LOGIN ? VALID_LOGIN_PARAMS.MAX_LENGTH : VALID_PASSWORD_PARAMS.MAX_LENGTH;
 
-        const option = type === INPUT_TYPE.LOGIN ? value.trim().length : value.length;
+        type === INPUT_TYPE.LOGIN ? value.trim().length : value.length;
 
         if (value.length > +targetLength) {
             const errorMessage = `${ERROR_MESSAGES.LONG} ${targetLength} characters`;

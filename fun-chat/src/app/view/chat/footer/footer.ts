@@ -22,9 +22,9 @@ export class FooterView extends View {
             classes: ['footer-wrapper'],
             parent: container.getHTMLElement(),
         });
-        const logoBox = this.setLogo(footerWrapper.getElement());
-        const year = this.setYear(footerWrapper.getElement());
-        const author = this.setAuthor(footerWrapper.getElement());
+        this.setLogo(footerWrapper.getElement());
+        this.setYear(footerWrapper.getElement());
+        this.setAuthor(footerWrapper.getElement());
     }
 
     private setLogo(parent: HTMLElement): HTMLElement {
@@ -57,7 +57,7 @@ export class FooterView extends View {
             logoImg.src = 'assets/images/logo.svg';
         }
 
-        const title = new ElementCreator({
+        new ElementCreator({
             tagName: 'h3',
             classes: ['logo-title'],
             parent: logoBox.getElement(),
@@ -108,7 +108,7 @@ export class FooterView extends View {
             logoImg.src = 'assets/images/github.svg';
         }
 
-        const title = new ElementCreator({
+        new ElementCreator({
             tagName: 'h3',
             classes: ['logo-title'],
             parent: authorBox.getElement(),

@@ -1,12 +1,14 @@
 import { Modal } from '../../../../components/modal/modal';
 import { APP_ERROR } from '../../../client-api/constants';
+import { ServerMessage } from '../../../client-api/types/server';
 import { ERRORS } from '../../types';
 
 export function checkErrors(data: string): void {
-    const { id, type, payload } = JSON.parse(data);
+    const parsedData: ServerMessage = JSON.parse(data);
+    const { type, payload } = parsedData;
 
     if (type === APP_ERROR.ERROR) {
-        const error: string = payload.error;
+        const error: string = payload.error ? payload.error : '';
 
         if (
             error === String(ERRORS.DOUBLE_LOGIN) ||

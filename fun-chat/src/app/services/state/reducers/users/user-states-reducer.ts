@@ -23,7 +23,7 @@ export function isChatChangeToggler(value: boolean): void {
 
 export function getUsers(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
-    const { id, type, payload } = parsedData;
+    const { type, payload } = parsedData;
     const currentUser = getCurrentUsername();
 
     switch (type) {
@@ -54,7 +54,7 @@ export function getUsers(data: string): void {
 
 export function checkExternalUsers(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
-    const { id, type, payload } = parsedData;
+    const { type, payload } = parsedData;
 
     if (payload.user)
         switch (type) {
@@ -85,7 +85,7 @@ export function checkExternalUsers(data: string): void {
 
 export function handlerLoginLogout(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
-    const { id, type, payload } = parsedData;
+    const { type } = parsedData;
 
     switch (type) {
         case USER_STATUS.LOGIN: {

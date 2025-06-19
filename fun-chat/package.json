@@ -12,7 +12,7 @@
         "prepare": "cd .. && husky install fun-chat/.husky",
         "commit": "git-cz",
         "commitlint": "commitlint --edit",
-        "lint": "npx eslint src/**/*.ts",
+        "lint": "eslint .",
         "stylelint": "stylelint '**/*{.css,.scss}'",
         "stylelint:fix": "stylelint '**/*{.css,.scss}' --fix"
     },
@@ -60,7 +60,7 @@
         "*.(css|scss)": [
             "stylelint --fix"
         ],
-        "* .{ts, js, css, scss}": "eslint --fix src/",
+        "* .{ts, js}": "eslint --fix src/",
         "* .{ts,js,jsx,json,scss,css,md}": "prettier --write"
     }
 }

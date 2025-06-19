@@ -29,8 +29,8 @@ export class ChatContainerView extends View {
             classes: ['chat-wrapper'],
             parent: container.getHTMLElement(),
         });
-        const contactsList = new Contacts(chatWrapper.getElement(), this.clientApi);
-        const messageField = new MessageField(chatWrapper.getElement(), this.clientApi);
+        new Contacts(chatWrapper.getElement(), this.clientApi);
+        new MessageField(chatWrapper.getElement(), this.clientApi);
     }
 
     private setEventListeners(): void {

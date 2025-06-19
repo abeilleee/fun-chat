@@ -34,7 +34,7 @@ export class AboutView extends View {
             parent: this.getHTMLElement(),
         });
 
-        const textContent = new ElementCreator({
+        new ElementCreator({
             tagName: 'p',
             classes: ['content-information'],
             textContent: ABOUT_INFORMATION,

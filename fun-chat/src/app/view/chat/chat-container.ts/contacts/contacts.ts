@@ -58,7 +58,7 @@ export class Contacts extends View {
         const additionalClass = status === USER_STATUS.ACTIVE ? 'user-indicator--online' : 'user-indicator--offline';
         indicator.getElement().classList.add(additionalClass);
 
-        const user = new ElementCreator({
+        new ElementCreator({
             tagName: 'li',
             classes: ['user-element'],
             parent: this.userBox.getElement(),
@@ -102,7 +102,7 @@ export class Contacts extends View {
     }
 
     private setUnreadMessagesIndicator(parent: HTMLElement, unreadCount: number): void {
-        const unreadMessagesIndicator = new ElementCreator({
+        new ElementCreator({
             tagName: 'div',
             classes: ['messages-indicator'],
             parent: parent,

@@ -5,7 +5,6 @@ import { MainView } from './view/main-view';
 import { WebSocketConnection } from './services/web-socket-connection/web-socket-connection';
 import { ClientApi } from './services/client-api/client-api';
 import type { View } from './view/view';
-import type { ChatView } from './view/chat/chat';
 
 export class App {
     public router: Router;

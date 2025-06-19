@@ -24,12 +24,12 @@ export class MessageInput extends View {
         this.clientApi = clientApi;
         this.input = null;
         this.sendButton = null;
-        this.configure(parent);
+        this.configure();
         this.addInputEventListener();
         this.addBtnEventListener();
     }
 
-    private configure(parent: HTMLElement): void {
+    private configure(): void {
         this.input = new InputElement(PLACEHOLDER.WRITE, 'text', ['message-input'], this.getHTMLElement());
         this.sendButton = new Button(
             BUTTON_NAME.SEND,
@@ -51,7 +51,7 @@ export class MessageInput extends View {
                 this.sendButton?.setDisabled(inputValue.length === 0);
                 const text = this.input?.getValue();
 
-                if (text && text.trim().length !== 0) {
+                if (text && text.trim().length > 0) {
                     handlerBtnSend(text, this.clientApi);
                     this.input?.cleanInput();
                     this.sendButton?.setDisabled(true);
@@ -66,7 +66,7 @@ export class MessageInput extends View {
             this.addInputEventListener();
             const text = this.input?.getValue();
 
-            if (text && text.trim().length !== 0) {
+            if (text && text.trim().length > 0) {
                 handlerBtnSend(text, this.clientApi);
                 this.input?.cleanInput();
                 this.sendButton?.setDisabled(true);

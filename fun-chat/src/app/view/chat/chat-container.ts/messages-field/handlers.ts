@@ -20,7 +20,7 @@ export function changeMessagesStatus(clientApi: ClientApi): void {
     });
 }
 
-export function messageHandler(contextMenu: ContextMenu, message: Message, clientApi: ClientApi): void {
+export function messageHandler(contextMenu: ContextMenu): void {
     document.addEventListener('click', () => {
         contextMenu.closeMenu();
     });

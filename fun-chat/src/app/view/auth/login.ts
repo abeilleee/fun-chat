@@ -56,7 +56,7 @@ export class LoginPageView extends View {
 
     private configure(): void {
         const form = this.createForm();
-        const button = this.createButtons(form);
+        this.createButtons(form);
     }
 
     private createForm(): HTMLElement {
@@ -73,7 +73,7 @@ export class LoginPageView extends View {
     }
 
     private createLoginElements(parent: HTMLElement): void {
-        const header = new ElementCreator({
+        new ElementCreator({
             tagName: 'h3',
             classes: ['title-auth'],
             textContent: 'FUN CHAT',
@@ -97,7 +97,7 @@ export class LoginPageView extends View {
     }
 
     private createPasswordElements(parent: HTMLElement): void {
-        const labelPassword = new ElementCreator<HTMLLabelElement>({
+        new ElementCreator<HTMLLabelElement>({
             tagName: 'label',
             classes: ['label', 'label-password'],
             parent: parent,
@@ -123,12 +123,7 @@ export class LoginPageView extends View {
             this.buttonsBox.getElement(),
             BUTTON_NAME.LOGIN
         );
-        const buttonAbout = new Button(
-            BUTTON_NAME.ABOUT,
-            ['button-about-auth'],
-            this.buttonsBox.getElement(),
-            BUTTON_NAME.ABOUT
-        );
+        new Button(BUTTON_NAME.ABOUT, ['button-about-auth'], this.buttonsBox.getElement(), BUTTON_NAME.ABOUT);
 
         return this.buttonsBox.getElement();
     }

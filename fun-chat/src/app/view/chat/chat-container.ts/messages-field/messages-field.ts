@@ -18,7 +18,6 @@ import {
 import { getCurrentUsername } from '../../../../services/storage/storage';
 import { ElementCreator } from '../../../../utils/element-creator';
 import { formatTime } from '../../../../utils/format-time';
-import { generateId } from '../../../../utils/id-generator';
 import { scrollToBottom } from '../../../../utils/message-filled-utils';
 import type { Options } from '../../../../utils/types';
 import { View } from '../../../view';
@@ -113,7 +112,7 @@ export class MessageField extends View {
                 if (!this.contextMenu.isOpen && this.messageBox) {
                     this.contextMenu.showMenu(clientX, clientY, message, this.clientApi, messageWrapper.getElement());
                 }
-                messageHandler(this.contextMenu, message, this.clientApi);
+                messageHandler(this.contextMenu);
             });
         }
     }
@@ -125,9 +124,9 @@ export class MessageField extends View {
             parent: parent,
         });
 
-        const upperBox = this.createUpperBox(this.messageBox.getElement(), message);
+        this.createUpperBox(this.messageBox.getElement(), message);
 
-        const messageField = new ElementCreator({
+        new ElementCreator({
             tagName: 'div',
             classes: ['message'],
             parent: this.messageBox.getElement(),
@@ -139,7 +138,8 @@ export class MessageField extends View {
             classes: ['lower-box'],
             parent: this.messageBox.getElement(),
         });
-        const status = new ElementCreator({
+
+        new ElementCreator({
             tagName: 'div',
             classes: ['status'],
             parent: lowerBox.getElement(),
@@ -156,13 +156,15 @@ export class MessageField extends View {
             classes: ['upper-box'],
             parent: parent,
         });
-        const sender = new ElementCreator({
+
+        new ElementCreator({
             tagName: 'div',
             classes: ['sender'],
             parent: upperBox.getElement(),
             textContent: message.from,
         });
-        const date = new ElementCreator({
+
+        new ElementCreator({
             tagName: 'div',
             classes: ['date'],
             parent: upperBox.getElement(),
@@ -171,7 +173,7 @@ export class MessageField extends View {
     }
 
     private setEditedStatus(parent: HTMLElement, statusText = STATUS.EDITED): void {
-        const status = new ElementCreator({
+        new ElementCreator({
             tagName: 'div',
             classes: ['status-edit'],
             parent: parent,
@@ -237,13 +239,13 @@ export class MessageField extends View {
 
     private handlerSendMsg(): void {
         addEventListener('onMsgSend', () => {
-            const id = generateId();
             const dialogs = dialogState;
             if (this.dialogWrapper && isDialog && selectedUser.username.length > 0) {
                 this.dialogWrapper.getElement().textContent = CHAT_INTRO_TEXT.SELECT;
             }
             const foundDialog = dialogs.find((dialog) => dialog.login === selectedUser.username);
             if (foundDialog && 'messages' in foundDialog) {
+                // eslint-disable-next-line unicorn/prefer-at
                 const message: Message = foundDialog.messages[foundDialog.messages.length - 1];
                 this.createMessage(message, false);
             }

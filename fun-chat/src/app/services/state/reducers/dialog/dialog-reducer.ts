@@ -104,7 +104,7 @@ export function getChatHistory(data: string): void {
 
 export function changeReadStatus(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
-    const { id, type, payload } = parsedData;
+    const { type, payload } = parsedData;
 
     if (type === MESSAGE_ACTIONS.MSG_READ && payload.message && payload.message.status) {
         const status: boolean = payload.message.status.isReaded;
@@ -123,7 +123,7 @@ export function changeReadStatus(data: string): void {
 
 export function deliverNotification(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
-    const { id, type, payload } = parsedData;
+    const { type, payload } = parsedData;
 
     if (type === MESSAGE_ACTIONS.MSG_DELIVER) {
         const message = payload.message;
@@ -134,7 +134,7 @@ export function deliverNotification(data: string): void {
 
             if (message.status) {
                 const status = message.status?.isDelivered;
-                const targetDialog = state.forEach((dialog) => {
+                state.forEach((dialog) => {
                     dialog.messages.forEach((message) => {
                         if (message.id === msgId && message.status) {
                             message.status.isDelivered = status;
@@ -176,7 +176,7 @@ export function unreadMessages(): void {
 
 export function checkDeletingMessage(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
-    const { id, type, payload } = parsedData;
+    const { type, payload } = parsedData;
 
     if (payload.message && type === MESSAGE_ACTIONS.MSG_DELETE) {
         const newDialogState = dialogState.map((dialog) => ({
@@ -192,7 +192,7 @@ export function checkDeletingMessage(data: string): void {
 
 export function editMessage(data: string): void {
     const parsedData: ServerMessage = JSON.parse(data);
-    const { id, type, payload } = parsedData;
+    const { type, payload } = parsedData;
 
     if (type === MESSAGE_ACTIONS.MSG_EDIT && payload.message) {
         const msgId = payload.message.id;
