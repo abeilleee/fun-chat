@@ -71,8 +71,6 @@ export class ClientApi {
     public deleteMsg(idMsg: string): void {
         const id = generateId();
 
-        console.log('idMasg: ', idMsg);
-
         const message = {
             id: id,
             type: MESSAGE_ACTIONS.MSG_DELETE,
