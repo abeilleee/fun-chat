@@ -137,7 +137,7 @@ export class LoginPageView extends View {
                 if (typeof result === 'string' && result !== EMPTY) {
                     this.setErrorMessage(result, INPUT_TYPE.LOGIN);
                     this.isValidLogin = false;
-                } else if (result && result === EMPTY) {
+                } else if (result === EMPTY) {
                     this.isValidLogin = false;
                 } else {
                     this.isValidLogin = true;
@@ -231,7 +231,7 @@ export class LoginPageView extends View {
     }
 
     private setErrorMessage(value: string, type: INPUT_TYPE): void {
-        if (this.loginErrorMessage && typeof value === 'string') {
+        if (this.loginErrorMessage) {
             switch (type) {
                 case INPUT_TYPE.LOGIN: {
                     this.loginErrorMessage.getElement().textContent = value;

@@ -9,7 +9,7 @@ import { View } from '../view';
 export class NotFoundView extends View {
     public router: Router;
     private buttonBack: Button | null;
-    #default_text = 'Error. Page not found';
+    private default_text = 'Error. Page not found';
 
     constructor(router: Router) {
         const options: Options = {
@@ -32,7 +32,7 @@ export class NotFoundView extends View {
         new ElementCreator({
             tagName: 'h1',
             classes: ['title', 'title-not-found'],
-            textContent: this.#default_text,
+            textContent: this.default_text,
             parent: box.getElement(),
         });
 

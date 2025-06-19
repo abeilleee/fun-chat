@@ -16,15 +16,17 @@ export class HistoryRoutesHandler {
     }
 
     public navigate(url: string | PopStateEvent | Event): void {
-        const urlPath = window.location.pathname.slice(1);
         const result: UserRequest = { path: '', resource: '' };
-        const path = urlPath.split('/');
 
         if (typeof url === 'string') {
             this.pushHistory(url);
+            result.path = url;
+        } else {
+            const urlPath = window.location.pathname.slice(1);
+            const path = urlPath.split('/')[0];
+            result.path ||= path;
         }
 
-        [result.path = ''] = path;
         this.callback(result);
     }
 

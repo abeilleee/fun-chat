@@ -65,7 +65,7 @@ export class Contacts extends View {
             textContent: userName.login ? userName.login : '',
         });
 
-        if (unreadCount && unreadCount !== 0) {
+        if (unreadCount) {
             this.setUnreadMessagesIndicator(this.userBox.getElement(), unreadCount);
         }
     }
