@@ -2,35 +2,20 @@ import type { InputElement } from '../../components/input/input';
 import type { AuthValidator } from '../../services/auth-validator/auth-validator';
 import { EMPTY, INPUT_TYPE } from '../../services/auth-validator/constants';
 
-export function loginHandler(loginElement: InputElement, validator: AuthValidator): string | null | undefined {
+export function loginHandler(loginElement: InputElement, validator: AuthValidator): string | undefined {
     const value = loginElement.getValue();
 
     if (!value) {
         return EMPTY;
     }
 
-    if (value) {
-        let errorMessage: string | null = null;
+    const validationResults = [
+        validator.checkMinLength(value, INPUT_TYPE.LOGIN),
+        validator.checkMaxLength(value, INPUT_TYPE.LOGIN),
+        validator.checkIsEmpty(value),
+    ];
 
-        const minLengthCheck = validator.checkMinLength(value, INPUT_TYPE.LOGIN);
-        if (typeof minLengthCheck === 'string') {
-            errorMessage = minLengthCheck;
-        } else {
-            const maxLengthCheck = validator.checkMaxLength(value, INPUT_TYPE.LOGIN);
-
-            if (typeof maxLengthCheck === 'string') {
-                errorMessage = maxLengthCheck;
-            } else {
-                const emptyCheck = validator.checkIsEmpty(value);
-
-                if (typeof emptyCheck === 'string') {
-                    errorMessage = emptyCheck;
-                }
-            }
-        }
-        return errorMessage;
-    }
-    return;
+    return validationResults.find((error) => typeof error === 'string');
 }
 
 export function passwordHandler(passwordElement: InputElement, validator: AuthValidator): string | null | undefined {
@@ -40,32 +25,12 @@ export function passwordHandler(passwordElement: InputElement, validator: AuthVa
         return EMPTY;
     }
 
-    if (value) {
-        let errorMessage: string | null = null;
+    const validationResults = [
+        validator.checkMinLength(value, INPUT_TYPE.LOGIN),
+        validator.checkMaxLength(value, INPUT_TYPE.LOGIN),
+        validator.checkIsEmpty(value),
+        validator.checkRequiredLetters(value),
+    ];
 
-        const minLengthCheck = validator.checkMinLength(value, INPUT_TYPE.PASSWORD);
-        if (typeof minLengthCheck === 'string') {
-            errorMessage = minLengthCheck;
-        } else {
-            const maxLengthCheck = validator.checkMaxLength(value, INPUT_TYPE.PASSWORD);
-
-            if (typeof maxLengthCheck === 'string') {
-                errorMessage = maxLengthCheck;
-            } else {
-                const emptyCheck = validator.checkIsEmpty(value);
-
-                if (typeof emptyCheck === 'string') {
-                    errorMessage = emptyCheck;
-                } else {
-                    const isReqiredLetters = validator.checkRequiredLetters(value);
-
-                    if (typeof isReqiredLetters === 'string') {
-                        errorMessage = isReqiredLetters;
-                    }
-                }
-            }
-        }
-        return errorMessage;
-    }
-    return;
+    return validationResults.find((error) => typeof error === 'string');
 }

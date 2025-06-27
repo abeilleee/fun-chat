@@ -30,7 +30,6 @@ export default tseslint.config(
     {
         rules: {
             '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'never' }],
-            '@typescript-eslint/explicit-function-return-type': 'error',
             '@typescript-eslint/explicit-member-accessibility': [
                 'error',
                 { accessibility: 'explicit', overrides: { constructors: 'off' } },
@@ -44,6 +43,7 @@ export default tseslint.config(
             '@typescript-eslint/no-unsafe-return': 'off',
             '@typescript-eslint/no-unused-expressions': 'off',
             '@typescript-eslint/consistent-type-imports': 'off',
+            '@typescript-eslint/explicit-function-return-type': 'off',
             'unicorn/better-regex': 'off',
             'unicorn/filename-case': 'off',
             'unicorn/prefer-module': 0,

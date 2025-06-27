@@ -37,10 +37,10 @@ export class AuthValidator {
     }
 
     public checkRequiredLetters(password: string): string | boolean {
-        if (password.toUpperCase() === password && password.toLowerCase() === password) {
-            const errorMessage = ERROR_MESSAGES.LETTERS;
-            return errorMessage;
+        if (!/[A-ZА-ЯЁ]/.test(password)) {
+            return ERROR_MESSAGES.LETTERS;
         }
+
         return true;
     }
 
