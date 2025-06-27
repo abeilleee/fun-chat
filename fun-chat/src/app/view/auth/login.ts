@@ -18,14 +18,14 @@ import type { Router } from '../../services/router/router';
 
 export class LoginPageView extends View {
     public router: Router;
-    private formElement: ElementCreator | null;
-    private buttonsBox: ElementCreator | null;
-    private loginInput: InputElement | null;
-    private passwordInput: InputElement | null;
+    private formElement: ElementCreator | null = null;
+    private buttonsBox: ElementCreator | null = null;
+    private loginInput: InputElement | null = null;
+    private passwordInput: InputElement | null = null;
     private validator: AuthValidator;
-    private loginErrorMessage: ElementCreator | null;
-    private passwordErrorMessage: ElementCreator | null;
-    private loginButton: Button | null;
+    private loginErrorMessage: ElementCreator | null = null;
+    private passwordErrorMessage: ElementCreator | null = null;
+    private loginButton: Button | null = null;
     private isValidLogin: boolean = false;
     private isValidPassword: boolean = false;
     private clientApi: ClientApi;
@@ -37,13 +37,6 @@ export class LoginPageView extends View {
         };
         super(options);
         this.router = router;
-        this.formElement = null;
-        this.loginInput = null;
-        this.passwordInput = null;
-        this.buttonsBox = null;
-        this.loginErrorMessage = null;
-        this.passwordErrorMessage = null;
-        this.loginButton = null;
         this.validator = new AuthValidator();
         this.clientApi = clientApi;
         this.configure();
@@ -246,18 +239,6 @@ export class LoginPageView extends View {
     }
 
     private cleanErrorMessage(type: INPUT_TYPE): void {
-        switch (type) {
-            case INPUT_TYPE.LOGIN: {
-                if (this.loginErrorMessage) {
-                    this.loginErrorMessage.getElement().textContent = '';
-                }
-                break;
-            }
-
-            case INPUT_TYPE.PASSWORD: {
-                if (this.passwordErrorMessage) this.passwordErrorMessage.getElement().textContent = '';
-                break;
-            }
-        }
+        this.setErrorMessage('', type);
     }
 }
